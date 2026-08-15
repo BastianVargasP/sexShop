@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html class="dark" lang="es" style="">
+<head>
+    <%-include('partials/head')%>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex relative flex-col">
+<!-- TopNavBar -->
+
+<%- include('partials/header') %>
+
+<main class="flex-grow">
+    <!-- Hero Section -->
+    <section class="relative h-full flex items-center pt-20">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-cover bg-center object-cover"
+                 data-alt="A highly atmospheric, cinematic shot of draped silk or velvet in deep, rich purples and velvety blacks, gently illuminated by soft, golden, warm light creating elegant shadows and highlights. The mood is intimate, luxurious, mysterious, and sophisticated. Minimalist and refined, suitable as a background for a premium lifestyle brand."
+                 style="background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuBUCWdBUgyDOiv9Y2GxOD4C-HF4KmAkwnHEyppPZUsecxmWGLP3f88EtUeQHGt-D3csS6pWZLI1_rdujKW3SjthydiHb2XK7kRssu8SF7WMfmKcwFY3hMQrHbtleQ8Kuu5HTdmSxvIlW8zn-Qk7QqemYTRs_AzbKSyd_Mfk5rZ0sBtPIpR9lCpAS-1opcM6dKG9OtyVEk7oWeR9sM6-8FzSbSD6DG7cxz0kNUR36YQc0b0MbYTJPv0&quot;);"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-surface/40 via-surface/80 to-background"></div>
+        </div>
+        <div class="relative z-10 w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto text-center md:text-left pt-12 pb-24">
+            <div class="max-w-3xl fade-in-up visible">
+<span class="inline-block py-1 px-3 mb-6 border border-secondary/30 rounded-full font-label-sm text-label-sm text-secondary tracking-widest uppercase">
+                        Boutique Premium
+                    </span>
+                <h1 class="font-headline-xl text-headline-lg-mobile md:text-headline-xl text-on-background mb-6 drop-shadow-lg">
+                    Descubre el Lujo<br>de Sentir
+                </h1>
+                <p class="font-body-lg text-body-lg text-on-surface-variant mb-10 max-w-xl mx-auto md:mx-0">
+                    Explora nuestra colección boutique de bienestar y placer. Artículos diseñados para celebrar la
+                    intimidad con elegancia, sofisticación y absoluto misterio.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-6">
+                    <a class="group relative inline-flex items-center justify-center px-10 py-4 overflow-hidden rounded-full font-label-md text-label-md uppercase tracking-wider text-[#0A0A0A] bg-secondary hover:bg-secondary-fixed transition-colors duration-300 shadow-[0_0_20px_rgba(212,175,55,0.15)] hover:shadow-[0_0_30px_rgba(212,175,55,0.3)]"
+                       href="/productos">
+                        <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></span>
+                        <span class="relative flex items-center gap-2">Explorar colección</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<!-- Footer -->
+
+<%- include('partials/footer') %>
+
+<script>
+    // Simple scroll animation observer
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.fade-in-up').forEach(el => {
+        observer.observe(el);
+    });
+
+    // Trigger initial fade in for hero
+    setTimeout(() => {
+        document.querySelectorAll('.fade-in-up')[0]?.classList.add('visible');
+    }, 100);
+
+    // Header scroll effect
+    window.addEventListener('scroll', () => {
+        const header = document.getElementById('main-header');
+        if (window.scrollY > 50) {
+            header.classList.add('shadow-md', 'bg-surface/90');
+            header.classList.remove('bg-surface/60', 'shadow-sm');
+        } else {
+            header.classList.remove('shadow-md', 'bg-surface/90');
+            header.classList.add('bg-surface/60', 'shadow-sm');
+        }
+    });
+</script>
+
+
+</body>
+</html>

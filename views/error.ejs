@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+    <%- include('partials/head') %>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md overflow-x-hidden selection:bg-secondary/30 selection:text-secondary">
+<!-- Supressing TopNavBar as per task relevance logic (Error 404 implies dead end / canvas prioritization) -->
+<!-- Main Content Canvas -->
+<main class="flex-grow flex items-center justify-center relative w-full h-screen px-margin-mobile md:px-margin-desktop overflow-hidden">
+    <!-- Subtle Background Image / Texture -->
+    <div class="absolute inset-0 z-0 opacity-20 mix-blend-screen pointer-events-none"
+         data-alt="A highly detailed, ultra-macro shot of a luxurious, dark purple and gold abstract texture resembling spilled premium perfume or liquid silk. Deep blacks dominate the background with subtle, organic waves of metallic gold reflecting soft, sophisticated studio lighting. The mood is mysterious, elegant, and deeply sensual, perfectly suited for a high-end wellness brand aesthetic."
+         style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBhDo2K0UgXz5-2KlWdSftCV6xEDN0vOCpe5x2fbJbCY8dhmi6Xi0M2px8dRY-0aB1Gua-D6nONN_LtUA8x38QlRWQ36KfsHpiTwaMppv8NmuFlqeCWpogRK8FATYZoQCQXDgGX8p6X0kPBOoKatJ2bs78RrOFgOFAcpPaNLs-VK-xQiF4fxiFr9Hofhiv9YS2uYwOKrEpQfeAkpAdTouc_nQ9B_rMHsPHIIcrVhjAP6I5cjdDW4YM')"></div>
+    <!-- Radial Gradient for depth -->
+    <div class="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-surface-container/40 via-background to-background pointer-events-none"></div>
+    <!-- 404 Content Container -->
+    <div class="relative z-10 flex flex-col items-center text-center max-w-2xl w-full">
+        <div class="relative mb-8">
+            <!-- Large 404 Decorative -->
+            <h1 class="text-[120px] md:text-[200px] leading-none font-headline-xl text-gradient-gold opacity-90 drop-shadow-xl select-none tracking-tighter">
+                404</h1>
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[120%] h-1/2 bg-secondary/5 blur-[100px] rounded-full pointer-events-none"></div>
+        </div>
+        <h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-4 tracking-tight">
+            Página no encontrada</h2>
+        <p class="font-body-lg text-body-lg text-on-surface-variant mb-12 max-w-md mx-auto opacity-80">
+            Lo sentimos, el elixir que buscas no parece estar aquí. Es posible que la página haya sido movida o el
+            enlace sea incorrecto.
+        </p>
+        <!-- Call to Action -->
+        <a class="group relative inline-flex items-center justify-center px-10 py-4 overflow-hidden rounded-full font-label-md text-label-md uppercase tracking-wider text-[#0A0A0A] bg-secondary hover:bg-secondary-fixed transition-colors duration-300 shadow-[0_0_20px_rgba(212,175,55,0.15)] hover:shadow-[0_0_30px_rgba(212,175,55,0.3)]"
+           href="/">
+            <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></span>
+            <span class="relative flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">arrow_back</span>
+                    Volver al inicio
+                </span>
+        </a>
+    </div>
+</main>
+<!-- Supressing Footer as per task relevance logic (Error 404 implies dead end / canvas prioritization) -->
+<style>
+    @keyframes shimmer {
+        100% {
+            transform: translateX(100%);
+        }
+    }
+</style>
+</body>
+</html>

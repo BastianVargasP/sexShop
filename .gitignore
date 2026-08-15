@@ -1,0 +1,24 @@
+# Dependencias
+node_modules/
+
+# Variables de entorno
+.env
+.env.*
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Build
+dist/
+build/
+
+# Cobertura
+coverage/
+
+# IDE
+.idea/workspace.xml
+
+# Mac
+.DS_Store

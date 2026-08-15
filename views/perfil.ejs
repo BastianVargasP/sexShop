@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html class="dark" lang="es" style="">
+<head>
+    <%-include('partials/head')%>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex relative flex-col">
+<!-- TopNavBar -->
+<%- include('partials/header')%>
+<!-- Main Content Layout -->
+<main class="flex-grow flex flex-col md:flex-row px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full gap-gutter py-12">
+    <!-- Sidebar Navigation -->
+    <aside class="w-full md:w-1/4 flex-shrink-0">
+        <div class="glass-panel rounded-xl p-6 top-28 bg-surface-container">
+            <div class="flex items-center gap-4 mb-8 pb-6 border-b border-secondary/10">
+                <div class="w-16 h-16 rounded-full bg-surface-container-highest flex items-center justify-center overflow-hidden border border-secondary/20">
+                    <img class="w-full h-full object-cover" data-alt="A highly detailed close-up portrait of an elegant woman with subtle, sophisticated lighting in a premium, dark-mode aesthetic. The mood is mysterious and refined, fitting a luxury lifestyle brand. High quality, soft focus background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvgmV5qpCtXUzlle7kVx5ckmnjFfPifz_eQRhoMP1QPwWRBH2F3Ax_U0hIjcJKeH2-8PKPq0w3tRq6hjeRN9aoS3KOlazJ__SVQ57Y3zissk1Rr7BOY-voPuAm11qmJXFXFU9byNXB89GUOKjntv0uC4nMzG5sYBJqGCJN00AJzXOtgt09jKHdC5eIKKZ4ayAHikOX8CwLGcK9DLmDwi-P1-nNuPHP2bcAwZKsybtfS5EOXqw2a2U">
+                </div>
+                <div>
+                    <h2 class="font-headline-md text-body-lg font-bold text-on-surface">Isabella V.</h2>
+                    <p class="font-body-md text-label-sm text-on-surface-variant">Socia Premium</p>
+                </div>
+            </div>
+            <nav class="flex flex-col gap-2">
+                <a class="flex items-center gap-3 px-4 py-3 rounded-lg font-label-md text-label-md text-secondary bg-surface-container-high border-l-2 border-secondary transition-colors" href="/perfil">
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+                    Mis datos
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-secondary hover:bg-surface-container-highest transition-all duration-300" href="/pedidos">
+                    <span class="material-symbols-outlined">receipt_long</span>
+                    <span class="font-label-md text-label-md">Mis pedidos</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-secondary hover:bg-surface-container-highest transition-all duration-300" href="/direcciones">
+                    <span class="material-symbols-outlined">location_on</span>
+                    <span class="font-label-md text-label-md">Direcciones</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-secondary hover:bg-surface-container-highest transition-all duration-300" href="/favoritos">
+                    <span class="material-symbols-outlined">favorite</span>
+                    <span class="font-label-md text-label-md">Lista de deseos</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-secondary hover:bg-surface-container-highest transition-all duration-300" href="/pagos">
+                    <span class="material-symbols-outlined">credit_card</span>
+                    <span class="font-label-md text-label-md">Métodos de pago</span>
+                </a>
+                <div class="mt-8 pt-4 border-t border-secondary/10">
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-error hover:text-error-container hover:bg-error/10 transition-all duration-300" href="/">
+                        <span class="material-symbols-outlined">logout</span>
+                        <span class="font-label-md text-label-md">Cerrar Sesión</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </aside>
+    <!-- Canvas Area -->
+    <div class="w-full md:w-3/4 flex flex-col gap-12">
+        <!-- Page Header -->
+        <section class="mb-4">
+            <h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2">Mis Datos</h1>
+            <p class="font-body-md text-body-md text-on-surface-variant">Gestiona tu información personal y preferencias para una experiencia a medida.</p>
+        </section>
+        <!-- Personal Info Form (Bento Style Grid) -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="glass-panel p-8 rounded-xl md:col-span-2 relative overflow-hidden">
+                <div class="absolute -right-16 -top-16 w-48 h-48 bg-primary/5 rounded-full blur-3xl"></div>
+                <h3 class="font-headline-md text-body-lg text-secondary mb-6 border-b border-secondary/20 pb-2 inline-block">Información Básica</h3>
+                <form class="grid grid-cols-1 md:grid-cols-2 gap-6"><!-- Name Input -->
+                    <div class="relative group">
+                        <div class="flex items-center gap-4 border-b border-surface-variant pb-2">
+                            <label class="w-1/3 text-on-surface-variant font-label-md text-label-md uppercase tracking-wider" for="firstName" style="text-shadow: 0px 0px 1px rgba(0,0,0,0.5);">Nombre</label>
+                            <input class="flex-1 bg-transparent border-0 focus:ring-0 text-on-surface font-body-md text-body-md p-0 placeholder-on-surface-variant/30" id="firstName" name="firstName" placeholder="Nombre" required="" type="text" value="Isabella">
+                        </div>
+                    </div>
+                    <!-- Last Name Input -->
+                    <div class="relative group">
+                        <div class="flex items-center gap-4 border-b border-surface-variant pb-2">
+                            <label class="w-1/3 text-on-surface-variant font-label-md text-label-md uppercase tracking-wider" for="lastName" style="text-shadow: 0px 0px 1px rgba(0,0,0,0.5);">Apellidos</label>
+                            <input class="flex-1 bg-transparent border-0 focus:ring-0 text-on-surface font-body-md text-body-md p-0 placeholder-on-surface-variant/30" id="lastName" name="lastName" placeholder="Apellidos" required="" type="text" value="Valverde">
+                        </div>
+                    </div>
+                    <!-- Email Input -->
+                    <div class="relative group md:col-span-2">
+                        <div class="flex items-center gap-4 border-b border-surface-variant pb-2">
+                            <label class="w-1/3 text-on-surface-variant font-label-md text-label-md uppercase tracking-wider" for="email" style="text-shadow: 0px 0px 1px rgba(0,0,0,0.5);">Email</label>
+                            <input class="flex-1 bg-transparent border-0 focus:ring-0 text-on-surface font-body-md text-body-md p-0 placeholder-on-surface-variant/30" id="email" name="email" placeholder="correo@ejemplo.com" required="" type="email" value="isabella.v@luxuria.com">
+                        </div>
+                    </div>
+                    <!-- Phone Input -->
+                    <div class="relative group">
+                        <div class="flex items-center gap-4 border-b border-surface-variant pb-2">
+                            <label class="w-1/3 text-on-surface-variant font-label-md text-label-md uppercase tracking-wider" for="phone" style="text-shadow: 0px 0px 1px rgba(0,0,0,0.5);">Teléfono</label>
+                            <input class="flex-1 bg-transparent border-0 focus:ring-0 text-on-surface font-body-md text-body-md p-0 placeholder-on-surface-variant/30" id="phone" name="phone" placeholder="+34 000 000 000" required="" type="tel" value="+56 9 xxxxxxxx">
+                        </div>
+                    </div>
+                    <!-- DOB Input -->
+                    <div class="relative group">
+                        <div class="flex items-center gap-4 border-b border-surface-variant pb-2">
+                            <label class="w-1/3 text-on-surface-variant font-label-md text-label-md uppercase tracking-wider" for="dob" style="text-shadow: 0px 0px 1px rgba(0,0,0,0.5);">Nacimiento</label>
+                            <input class="flex-1 bg-transparent border-0 focus:ring-0 text-on-surface font-body-md text-body-md p-0 placeholder-on-surface-variant/30" id="dob" name="dob" required="" type="date" value="1990-05-15">
+                        </div>
+                    </div>
+                    <!-- Submit Button -->
+                    <div class="md:col-span-2 flex justify-end pt-4">
+                        <button class="group relative inline-flex items-center justify-center px-10 py-4 overflow-hidden rounded-full font-label-md text-label-md uppercase tracking-wider text-[#0A0A0A] bg-secondary hover:bg-secondary-fixed transition-colors duration-300 shadow-[0_0_20px_rgba(212,175,55,0.15)] hover:shadow-[0_0_30px_rgba(212,175,55,0.3)]" type="submit">
+                            Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+</main>
+<!-- Footer -->
+<%- include('partials/footer')%>
+</body></html>

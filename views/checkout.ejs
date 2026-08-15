@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html class="dark" lang="es" style="">
+<head>
+    <%-include('partials/head')%>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen selection:bg-secondary selection:text-surface-lowest flex flex-col">
+<!-- TopNavBar -->
+<%-include('partials/header')%>
+<!-- Supressing Top Navigation as per instructions for Transactional/Checkout pages -->
+<main class="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-12 md:py-6">
+    <!-- Header -->
+    <header class="mb-6 text-center md:text-left border-b border-surface-container-high pb-2">
+        <h1 class="font-headline-xl text-headline-xl text-on-surface mb-2">Checkout</h1>
+    </header>
+    <!-- Layout Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter lg:gap-16">
+        <!-- Left Column: Forms -->
+        <div class="lg:col-span-7 space-y-12">
+            <!-- Shipping Section -->
+            <section class="card-glass p-8 rounded-xl glass-panel rounded-xl top-28 bg-surface-container">
+                <div class="flex items-center gap-4 mb-8">
+                    <span class="material-symbols-outlined text-secondary text-3xl"
+                          style="font-variation-settings: 'FILL' 1;">local_shipping</span>
+                    <h2 class="font-headline-md text-headline-md text-on-surface">Dirección de Envío</h2>
+                    <div class="flex gap-4 mt-4 mb-6"><label class="flex items-center gap-2 cursor-pointer group"><input
+                                    checked=""
+                                    class="form-radio text-secondary bg-transparent border-outline-variant focus:ring-secondary w-4 h-4"
+                                    name="shipping_type" type="radio" value="saved"/><span
+                                    class="font-label-md text-label-md text-on-surface group-hover:text-secondary transition-colors">Usar dirección guardada</span></label><label
+                                class="flex items-center gap-2 cursor-pointer group"><input
+                                    class="form-radio text-secondary bg-transparent border-outline-variant focus:ring-secondary w-4 h-4"
+                                    name="shipping_type" type="radio" value="new"/><span
+                                    class="font-label-md text-label-md text-on-surface group-hover:text-secondary transition-colors">Nueva dirección</span></label>
+                    </div>
+                </div>
+                <div class="p-4 border border-secondary bg-primary-container/10 rounded-lg mb-6"
+                     id="saved-address-card">
+                    <div class="flex justify-between items-start">
+                        <div class="space-y-1"><p class="font-label-md text-on-surface">Isabella Rossi</p>
+                            <p class="text-sm text-on-surface-variant">Calle de la Seda 12</p>
+                            <p class="text-sm text-on-surface-variant">28001 Madrid, España</p></div>
+                        <span class="material-symbols-outlined text-secondary">check_circle</span></div>
+                </div>
+                <form class="space-y-6 hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="relative-input-group">
+                            <input class="input-glass w-full px-2 py-4 text-on-surface bg-transparent focus:ring-0"
+                                   id="nombre" placeholder=" " type="text"/>
+                            <label class="font-label-md text-label-md" for="nombre">Nombre</label>
+                        </div>
+                        <div class="relative-input-group">
+                            <input class="input-glass w-full px-2 py-4 text-on-surface bg-transparent focus:ring-0"
+                                   id="apellidos" placeholder=" " type="text"/>
+                            <label class="font-label-md text-label-md" for="apellidos">Apellidos</label>
+                        </div>
+                    </div>
+                    <div class="relative-input-group">
+                        <input class="input-glass w-full px-2 py-4 text-on-surface bg-transparent focus:ring-0"
+                               id="direccion" placeholder=" " type="text"/>
+                        <label class="font-label-md text-label-md" for="direccion">Dirección Completa</label>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="relative-input-group md:col-span-2">
+                            <input class="input-glass w-full px-2 py-4 text-on-surface bg-transparent focus:ring-0"
+                                   id="ciudad" placeholder=" " type="text"/>
+                            <label class="font-label-md text-label-md" for="ciudad">Ciudad</label>
+                        </div>
+                        <div class="relative-input-group">
+                            <input class="input-glass w-full px-2 py-4 text-on-surface bg-transparent focus:ring-0"
+                                   id="cp" placeholder=" " type="text"/>
+                            <label class="font-label-md text-label-md" for="cp">Código Postal</label>
+                        </div>
+                    </div>
+                    <div class="relative-input-group">
+                        <input class="input-glass w-full px-2 py-4 text-on-surface bg-transparent focus:ring-0"
+                               id="telefono" placeholder=" " type="tel"/>
+                        <label class="font-label-md text-label-md" for="telefono">Teléfono de Contacto</label>
+                    </div>
+                </form>
+            </section>
+            <!-- Payment Section -->
+            <section class="card-glass p-8 rounded-xl glass-panel rounded-xl top-28 bg-surface-container">
+                <div class="flex items-center gap-4 mb-8">
+                    <span class="material-symbols-outlined text-secondary text-3xl"
+                          style="font-variation-settings: 'FILL' 1;">payment</span>
+                    <h2 class="font-headline-md text-headline-md text-on-surface">Método de Pago</h2>
+                    <div class="flex gap-4 mt-4 mb-6"><label class="flex items-center gap-2 cursor-pointer group"><input
+                                    checked=""
+                                    class="form-radio text-secondary bg-transparent border-outline-variant focus:ring-secondary w-4 h-4"
+                                    name="payment_type" type="radio" value="saved"/><span
+                                    class="font-label-md text-label-md text-on-surface group-hover:text-secondary transition-colors">Usar método guardado</span></label><label
+                                class="flex items-center gap-2 cursor-pointer group"><input
+                                    class="form-radio text-secondary bg-transparent border-outline-variant focus:ring-secondary w-4 h-4"
+                                    name="payment_type" type="radio" value="new"/><span
+                                    class="font-label-md text-label-md text-on-surface group-hover:text-secondary transition-colors">Nuevo método</span></label>
+                    </div>
+                </div>
+                <div class="p-4 border border-secondary bg-primary-container/10 rounded-lg mb-6"
+                     id="saved-payment-card">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4"><span
+                                    class="material-symbols-outlined text-on-surface-variant">credit_card</span>
+                            <div><p class="font-label-md text-on-surface">Visa terminada en 4242</p>
+                                <p class="text-sm text-on-surface-variant">Expira 12/26</p></div>
+                        </div>
+                        <span class="material-symbols-outlined text-secondary">check_circle</span></div>
+                </div>
+                <div class="space-y-4 hidden">
+                    <!-- Credit Card Option -->
+                    <label class="block cursor-pointer">
+                        <div class="flex items-center p-4 border border-outline-variant rounded-lg bg-surface-container-low hover:border-secondary transition-colors group peer-checked:border-secondary peer-checked:bg-primary-container/10">
+                            <input checked=""
+                                   class="form-radio text-secondary bg-transparent border-outline-variant focus:ring-secondary focus:ring-offset-surface w-5 h-5"
+                                   name="payment_method" type="radio" value="credit_card"/>
+                            <div class="ml-4 flex-grow flex items-center justify-between">
+                                <span class="font-label-md text-label-md text-on-surface group-hover:text-secondary transition-colors">Tarjeta de Crédito / Débito</span>
+                                <div class="flex gap-2 text-outline-variant">
+                                    <span class="material-symbols-outlined">credit_card</span>
+                                </div>
+                            </div>
+                        </div>
+                    </label>
+                    <!-- Credit Card Form (Visible when selected) -->
+                    <div class="pl-9 pr-4 py-4 space-y-6">
+                        <div class="relative-input-group">
+                            <input class="input-glass w-full px-2 py-4 text-on-surface bg-transparent focus:ring-0"
+                                   id="cc-number" placeholder=" " type="text"/>
+                            <label class="font-label-md text-label-md" for="cc-number">Número de Tarjeta</label>
+                        </div>
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="relative-input-group">
+                                <input class="input-glass w-full px-2 py-4 text-on-surface bg-transparent focus:ring-0"
+                                       id="cc-exp" placeholder=" " type="text"/>
+                                <label class="font-label-md text-label-md" for="cc-exp">MM/AA</label>
+                            </div>
+                            <div class="relative-input-group">
+                                <input class="input-glass w-full px-2 py-4 text-on-surface bg-transparent focus:ring-0"
+                                       id="cc-cvc" placeholder=" " type="text"/>
+                                <label class="font-label-md text-label-md" for="cc-cvc">CVC</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- PayPal Option -->
+                    <label class="block cursor-pointer mt-4">
+                        <div class="flex items-center p-4 border border-outline-variant rounded-lg bg-surface-container-low hover:border-secondary transition-colors group">
+                            <input class="form-radio text-secondary bg-transparent border-outline-variant focus:ring-secondary focus:ring-offset-surface w-5 h-5"
+                                   name="payment_method" type="radio" value="paypal"/>
+                            <div class="ml-4 flex-grow flex items-center justify-between">
+                                <span class="font-label-md text-label-md text-on-surface group-hover:text-secondary transition-colors">PayPal</span>
+                                <span class="font-headline-md text-lg font-bold text-on-surface-variant italic">PayPal</span>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            </section>
+        </div>
+        <!-- Right Column: Order Summary (Sticky) -->
+        <div class="lg:col-span-5 relative glass-panel rounded-xl golden-glow transition-all duration-300 group overflow-hidden">
+            <div class="sticky top-8 card-glass p-8 rounded-xl shadow-lg shadow-black/50">
+                <h2 class="font-headline-md text-headline-md text-secondary mb-6 border-b border-surface-container-high pb-4">
+                    Resumen del Pedido</h2>
+                <!-- Items -->
+                <div class="space-y-6 mb-8 max-h-[40vh] overflow-y-auto pr-2 custom-scrollbar">
+                    <!-- Item 1 -->
+                    <div class="flex items-start gap-4">
+                        <div class="w-20 h-24 bg-surface-container-high rounded flex-shrink-0 overflow-hidden border border-outline-variant/30">
+                            <img class="w-full h-full object-cover"
+                                 data-alt="A macro shot of a sleek, matte black glass bottle of premium perfume or intimacy oil resting on a dark velvet surface. Subtle golden rim lighting highlights the elegant curves of the bottle. The overall aesthetic is luxurious, minimal, and mysterious, set in a dark studio environment."
+                                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRBKecIGM6tH0h1vgP48g-9pFH9lwBKEhtuxy__e6DAm26m_ugx5B2tZHbVLjV2AIrZuRfCZzbpDB1TBoJWyfo2BU39sLErF58a1m0oQ13uQGH7sH_YXZ5SU-zO3-Q0XC_fD2m4m0GYmzRcCw3pSUaZoK3m2F_j7plcu0l0pNd2lEwTzLMPmECBv6Rpu7nslw7RC1s5ztRUAVPJe8MpTiE9BcKvhu9UGuVz9pNF-JW8qb2fnI72FY"/>
+                        </div>
+                        <div class="flex-grow">
+                            <h3 class="font-label-md text-label-md text-on-surface mb-1">Elixir Nocturno</h3>
+                            <p class="font-body-md text-sm text-on-surface-variant mb-2">Edición Limitada 50ml</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-outline">Cant: 1</span>
+                                <span class="font-label-md text-label-md text-secondary">€125.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Item 2 -->
+                    <div class="flex items-start gap-4">
+                        <div class="w-20 h-24 bg-surface-container-high rounded flex-shrink-0 overflow-hidden border border-outline-variant/30">
+                            <img class="w-full h-full object-cover"
+                                 data-alt="A sophisticated close-up of a designer personal massager crafted from smooth, midnight-blue silicone with 18k gold accents. It sits elegantly on a dark marble plinth. Soft, moody lighting emphasizes its sculptural, ergonomic shape, portraying an aesthetic of high-end wellness and exclusivity."
+                                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZNaT1HJMgTVfNgoPVQMwleasfA13rY5Pm5uL6YDBy2ycZm5fN0viiPCApzXjRpnTWri4r9q6zFBnMkY7iXpYB4HPSjskMrb9TBZys01A0kgEWdDBmGbO0MuJke7b0rJDyzajuJKNT8g9GfpPnO06quHsHxo0KJqSwu1zRBusLPsuGhM5FsCeYT3vUQfexMqoOfpqQtkFRGRdK5hECLOXuDpnd4KVVgTDXo1JKEgzqKhd37wh817Y"/>
+                        </div>
+                        <div class="flex-grow">
+                            <h3 class="font-label-md text-label-md text-on-surface mb-1">Sculpt Aura</h3>
+                            <p class="font-body-md text-sm text-on-surface-variant mb-2">Azul Medianoche</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-outline">Cant: 1</span>
+                                <span class="font-label-md text-label-md text-secondary">€195.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Totals -->
+                <div class="border-t border-surface-container-high pt-6 space-y-4">
+                    <div class="flex justify-between font-body-md text-body-md text-on-surface-variant">
+                        <span class="">Subtotal</span>
+                        <span class="">€320.00</span>
+                    </div>
+                    <div class="flex justify-between font-body-md text-body-md text-on-surface-variant">
+                        <span class="">Envío Express</span>
+                        <span class="">€15.00</span>
+                    </div>
+                    <div class="flex justify-between font-headline-md text-xl text-secondary pt-4 border-t border-surface-container-high mt-4">
+                        <span class="">Total</span>
+                        <span class="">€335.00</span>
+                    </div>
+                </div>
+                <!-- Action -->
+                <button class="w-full bg-secondary text-on-secondary-container font-label-md text-label-md py-4 rounded-md uppercase tracking-widest font-bold hover:bg-secondary-fixed transition-colors mt-4 flex justify-center items-center gap-2 group">
+                    Completar Pago
+                    <span class="material-symbols-outlined text-sm">lock</span>
+                </button>
+                <p class="text-center font-label-sm text-label-sm text-outline mt-4">
+                    Al completar el pago, aceptas nuestros <a class="text-secondary hover:underline"
+                                                              href="#">Términos</a> y <a
+                            class="text-secondary hover:underline" href="#">Política de Privacidad</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- Footer -->
+<%-include('partials/footer')%>
+</body>
+</html>
