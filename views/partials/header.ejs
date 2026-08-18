@@ -24,7 +24,7 @@
                 </button>
                 <button class="text-secondary hover:text-secondary/80 transition-colors duration-300 active:scale-95 ease-in-out relative">
                     <a class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 0;" href="/carrito">shopping_bag</a>
-                    <span class="absolute -top-1 -right-1 bg-secondary text-on-secondary w-4 h-4 rounded-full flex items-center justify-center font-label-sm text-[10px] font-bold">0</span>
+                    <span id="carritoContador" class="absolute -top-1 -right-1 bg-secondary text-on-secondary w-4 h-4 rounded-full flex items-center justify-center font-label-sm text-[10px] font-bold"><%= cantidadCarrito %></span>
                 </button>
                 <button class="text-secondary hover:text-secondary/80 transition-colors duration-300 active:scale-95 ease-in-out">
                     <a class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 0;" href="/auth/logout" title="Cerrar sesión">logout</a>
@@ -36,4 +36,7 @@
             <% } %>
         </div>
     </div>
+    <script>
+        window.usuarioLogueado = <%- usuario ? 'true' : 'false' %>;
+    </script>
 </header>

@@ -100,8 +100,7 @@
                         <div>
                             <div class="flex justify-between items-start mb-2">
                                 <h3 class="font-headline-md text-[24px] text-on-surface"><%= item.producto_nombre %></h3>
-                                <p class="font-body-md text-body-md text-secondary font-medium"><%= Number(item.precio_unitario).toFixed(2) %>
-                                    €</p>
+                                <p class="font-body-md text-body-md text-secondary font-medium"><%= formatearCLP(item.precio_unitario) %></p>
                             </div>
                             <p class="font-body-md text-body-md text-on-surface-variant mb-4"><%= item.producto_descripcion %></p>
                         </div>
@@ -118,16 +117,16 @@
                 <div class="space-y-4 font-body-md text-body-md text-on-surface-variant border-b border-surface-variant pb-6 mb-6">
                     <div class="flex justify-between">
                         <span>Subtotal</span>
-                        <span>$<%= Number(pedido.subtotal).toFixed(2) %></span>
+                        <span><%= formatearCLP(pedido.subtotal) %></span>
                     </div>
                     <div class="flex justify-between">
                         <span>Envío (Express)</span>
-                        <span>$<%= Number(pedido.envio).toFixed(2) %></span>
+                        <span><%= formatearCLP(pedido.envio) %></span>
                     </div>
                 </div>
                 <div class="flex justify-between items-center mb-8">
                     <span class="font-body-lg text-body-lg text-on-surface">Total</span>
-                    <span class="font-headline-md text-headline-md text-secondary">$<%= Number(pedido.total).toFixed(2) %></span>
+                    <span class="font-headline-md text-headline-md text-secondary"><%= formatearCLP(pedido.total) %></span>
                 </div>
                 <button class="w-full py-4 bg-transparent border border-secondary text-secondary font-label-md text-label-md uppercase tracking-widest hover:bg-secondary hover:text-on-secondary transition-colors duration-300 flex items-center justify-center gap-2">
                     <span class="material-symbols-outlined text-[18px]">download</span>

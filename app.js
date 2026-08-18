@@ -6,6 +6,8 @@ import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
+import {formatearCLP} from "./helpers/formato.js";
+import { getDbClient } from './helpers/database.js';
 
 // Importación de archivos de ruteo (locales) según el éstandar ES6
 import indexRouter from './routes/index.js';
@@ -59,8 +61,26 @@ app.use(session({
 }));
 
 // Middleware "inyector": copia el usuario de la sesión a res.locals para TODAS las vistas
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
     res.locals.usuario = req.session.usuario || null;
+    res.locals.formatearCLP = formatearCLP;
+    res.locals.cantidadCarrito = 0;
+
+    if (req.session.usuario) {
+        const conexion = getDbClient();
+        try {
+            await conexion.connect();
+            const resultado = await conexion.query(
+                'SELECT COALESCE(SUM(cantidad), 0) AS total FROM carrito_items WHERE cliente_id = $1',
+                [req.session.usuario.id]
+            );
+            res.locals.cantidadCarrito = Number(resultado.rows[0].total);
+        } catch (error) {
+            registrarActividad(`🛒❌ MIDDLEWARE cantidadCarrito - ERROR: ${error.message}`);
+        } finally {
+            await conexion.end();
+        }
+    }
     next();
 });
 // --- FIN: Configuración de sesión ---

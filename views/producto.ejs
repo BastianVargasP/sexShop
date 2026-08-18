@@ -37,7 +37,7 @@
             </div>
         </div>
         <!-- Product Info (Right) -->
-        <div class="w-full lg:w-2/5 flex flex-col pt-4 md:pt-8 sticky top-28">
+        <div class="w-full lg:w-2/5 flex flex-col pt-4 md:pt-8 top-28">
             <% const categoriaLabels = { joyeria: 'Joyería Íntima', estimuladores: 'Estimuladores', cosmetica: 'Cosmética Sensorial', kits: 'Kits Exclusivos' }; %>
             <!-- Brand / Category -->
             <div class="mb-2">
@@ -47,7 +47,7 @@
             <h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface"><%= producto.nombre %></h1>
             <!-- Price -->
             <div class="mb-8 mt-4">
-                <span class="font-headline-md text-headline-md text-secondary"><%= Number(producto.precio).toFixed(2) %>€</span>
+                <span class="font-headline-md text-headline-md text-secondary"><%= formatearCLP(producto.precio) %></span>
             </div>
             <!-- Description -->
             <p class="font-body-lg text-body-lg text-on-surface-variant mb-8 leading-relaxed">
@@ -55,7 +55,8 @@
             </p>
             <!-- Actions -->
             <div class="flex flex-col gap-4 mb-12">
-                <button class="w-full bg-secondary text-on-secondary font-label-md text-label-md uppercase tracking-wider py-4 rounded-lg hover:bg-secondary-fixed transition-colors font-bold gold-glow flex items-center justify-center gap-2">
+                <button type="button" data-add-carrito data-producto-id="<%= producto.id %>"
+                        class="w-full bg-secondary text-on-secondary font-label-md text-label-md uppercase tracking-wider py-4 rounded-lg hover:bg-secondary-fixed transition-colors font-bold gold-glow flex items-center justify-center gap-2">
                     <span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
                     Añadir al Carrito
                 </button>
@@ -77,13 +78,23 @@
             </div>
             <!-- Accordions for Details -->
             <div class="flex flex-col gap-4">
-                <details class="group border-b border-surface-container-highest pb-4" open="">
+                <details class="group border-b border-surface-container-highest pb-4">
                     <summary class="flex justify-between items-center cursor-pointer list-none font-headline-md text-body-lg text-on-background hover:text-secondary transition-colors">
-                        Descripción
+                        Características
                         <span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
                     </summary>
                     <div class="pt-4 font-body-md text-body-md text-on-surface-variant">
-                        <%= producto.descripcion %>
+                        <% if (producto.caracteristicas && producto.caracteristicas.length > 0) { %>
+                            <ul class="list-disc list-inside space-y-2">
+                                <% producto.caracteristicas.forEach(caracteristica => { %>
+                                    <li class="flex items-start gap-3">
+                                        <span class="material-symbols-outlined text-secondary text-sm mt-1" data-icon="circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">circle</span>
+                                        <%= caracteristica %></li>
+                                <% }) %>
+                            </ul>
+                        <% } else { %>
+                            <p>Este producto no tiene características adicionales registradas.</p>
+                        <% } %>
                     </div>
                 </details>
                 <details class="group border-b border-surface-container-highest pb-4">
@@ -122,7 +133,7 @@
                         <% } %>
                         <h3 class="font-headline-md text-headline-md text-on-surface mb-2"><%= rel.nombre %></h3>
                         <p class="font-body-md text-body-md text-on-surface-variant mb-4 line-clamp-2"><%= rel.descripcion_corta %></p>
-                        <span class="font-headline-md text-body-lg text-secondary"><%= Number(rel.precio).toFixed(2) %>€</span>
+                            <span class="font-headline-md text-body-lg text-secondary"><%= formatearCLP(rel.precio) %></span>
                     </div>
                 </a>
             </div>
@@ -133,6 +144,7 @@
 </main>
 <!-- Footer -->
 <%-include('partials/footer')%>
+<script src="/javascripts/carrito.js"></script>
 <script src="/javascripts/favoritos.js"></script>
 
 </body>

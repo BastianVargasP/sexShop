@@ -58,7 +58,7 @@
                     <p class="font-body-md text-sm text-on-surface-variant line-clamp-2"><%= fav.producto_descripcion %></p>
                     <% } %>
                     <div class="flex justify-between items-center mt-2">
-                        <span class="font-label-md text-lg text-secondary"><%= Number(fav.precio).toFixed(2) %>€</span>
+                        <span class="font-label-md text-lg text-secondary"><%= formatearCLP(fav.precio) %></span>
                         <button class="bg-secondary text-on-secondary-container hover:bg-secondary-fixed transition-colors p-2 rounded-full flex items-center justify-center">
                             <span class="material-symbols-outlined text-sm">shopping_bag</span>
                         </button>

@@ -107,8 +107,9 @@
                         </a>
                         <p class="font-body-md text-sm text-on-surface-variant line-clamp-2"><%= producto.descripcion_corta %></p>
                         <div class="flex justify-between items-center mt-2">
-                            <span class="font-label-md text-lg text-secondary"><%= Number(producto.precio).toFixed(2) %>€</span>
-                            <button class="bg-secondary text-on-secondary-container hover:bg-secondary-fixed transition-colors p-2 rounded-full flex items-center justify-center">
+                            <span class="font-label-md text-lg text-secondary"><%= formatearCLP(producto.precio) %></span>
+                            <button type="button" data-add-carrito data-producto-id="<%= producto.id %>"
+                                    class="bg-secondary text-on-secondary-container hover:bg-secondary-fixed transition-colors p-2 rounded-full flex items-center justify-center">
                                 <span class="material-symbols-outlined text-sm">shopping_bag</span>
                             </button>
                         </div>
@@ -123,4 +124,5 @@
 <%-include('partials/footer')%>
 <script src="/javascripts/productos.js"></script>
 <script src="/javascripts/favoritos.js"></script>
+<script src="/javascripts/carrito.js"></script>
 </body></html>
