@@ -16,54 +16,54 @@
                 Volver a Direcciones
             </a>
         </div>
-        <h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface-variant mb-12 text-center">Añadir Nueva Dirección</h1>
+        <h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface-variant mb-12 text-center">Editar Dirección</h1>
         <!-- Form -->
-        <form class="space-y-8 bg-surface-container/30 p-8 md:p-12 rounded-xl backdrop-blur-sm border border-secondary/10 shadow-lg"  action="/nueva-direccion" method="POST">
+        <form class="space-y-8 bg-surface-container/30 p-8 md:p-12 rounded-xl backdrop-blur-sm border border-secondary/10 shadow-lg" action="/direcciones/<%= direccion.id %>/editar" method="POST">
             <!-- Etiqueta -->
             <div class="relative group">
                 <label class="block font-label-md text-label-md text-on-surface-variant mb-2" for="etiqueta">Etiqueta</label>
-                <input class="w-full bg-transparent border-0 border-b border-outline-variant text-on-background font-body-md py-3 px-0 input-gold-focus focus:ring-0 transition-colors" id="etiqueta" name="etiqueta" placeholder="Ej. Casa" type="text"/>
+                <input class="w-full bg-transparent border-0 border-b border-outline-variant text-on-background font-body-md py-3 px-0 input-gold-focus focus:ring-0 transition-colors" id="etiqueta" name="etiqueta" placeholder="Ej. Casa" type="text" value="<%= direccion.etiqueta %>"/>
             </div>
             <!-- Dirección -->
             <div class="relative group">
                 <label class="block font-label-md text-label-md text-on-surface-variant mb-2" for="address">Dirección (calle, número, piso/puerta)</label>
-                <input class="w-full bg-transparent border-0 border-b border-outline-variant text-on-background font-body-md py-3 px-0 input-gold-focus focus:ring-0 transition-colors" id="address" name="address" placeholder="Ej. Paseo de Gracia, 42, Ático" type="text"/>
+                <input class="w-full bg-transparent border-0 border-b border-outline-variant text-on-background font-body-md py-3 px-0 input-gold-focus focus:ring-0 transition-colors" id="address" name="address" placeholder="Ej. Paseo de Gracia, 42, Ático" type="text" value="<%= direccion.direccion %>" required/>
             </div>
             <!-- Ciudad y Código Postal -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="relative group">
                     <label class="block font-label-md text-label-md text-on-surface-variant mb-2" for="city">Ciudad</label>
-                    <input class="w-full bg-transparent border-0 border-b border-outline-variant text-on-background font-body-md py-3 px-0 input-gold-focus focus:ring-0 transition-colors" id="city" name="city" placeholder="Ej. Lo Miranda" type="text"/>
+                    <input class="w-full bg-transparent border-0 border-b border-outline-variant text-on-background font-body-md py-3 px-0 input-gold-focus focus:ring-0 transition-colors" id="city" name="city" placeholder="Ej. Lo Miranda" type="text" value="<%= direccion.ciudad %>" required/>
                 </div>
                 <div class="relative group">
                     <label class="block font-label-md text-label-md text-on-surface-variant mb-2" for="postalCode">Código Postal</label>
-                    <input class="w-full bg-transparent border-0 border-b border-outline-variant text-on-background font-body-md py-3 px-0 input-gold-focus focus:ring-0 transition-colors" id="postalCode" name="postalCode" placeholder="Ej. 08007" type="text"/>
+                    <input class="w-full bg-transparent border-0 border-b border-outline-variant text-on-background font-body-md py-3 px-0 input-gold-focus focus:ring-0 transition-colors" id="postalCode" name="postalCode" placeholder="Ej. 08007" type="text" value="<%= direccion.codigo_postal || '' %>"/>
                 </div>
             </div>
-            <!-- Provincia y País -->
+            <!-- Comuna y Región -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="relative group">
-                    <label class="block font-label-md text-label-md text-on-surface-variant mb-2" for="comuna">Comuna</label>
-                    <input class="w-full bg-transparent border-0 border-b border-outline-variant text-on-background font-body-md py-3 px-0 input-gold-focus focus:ring-0 transition-colors" id="province" name="province" placeholder="Ej. Doñihue" type="text"/>
+                    <label class="block font-label-md text-label-md text-on-surface-variant mb-2" for="province">Comuna</label>
+                    <input class="w-full bg-transparent border-0 border-b border-outline-variant text-on-background font-body-md py-3 px-0 input-gold-focus focus:ring-0 transition-colors" id="province" name="province" placeholder="Ej. Doñihue" type="text" value="<%= direccion.comuna || '' %>"/>
                 </div>
                 <div class="relative group">
-                    <label class="block font-label-md text-label-md text-on-surface-variant mb-2" for="region">Región</label>
+                    <label class="block font-label-md text-label-md text-on-surface-variant mb-2" for="country">Región</label>
                     <select class="w-full bg-transparent border-0 border-b border-outline-variant text-on-background font-body-md py-3 px-0 input-gold-focus focus:ring-0 transition-colors appearance-none cursor-pointer" id="country" name="country">
-                        <option class="bg-surface-container text-on-background" value="ohiggins">O'higgins</option>
-                        <option class="bg-surface-container text-on-background" value="valparaiso">Valparaíso</option>
-                        <option class="bg-surface-container text-on-background" value="maule">Maule</option>
-                        <option class="bg-surface-container text-on-background" value="magallanes">Magallanes</option>
+                        <option class="bg-surface-container text-on-background" value="ohiggins" <%= direccion.region === 'ohiggins' ? 'selected' : '' %>>O'higgins</option>
+                        <option class="bg-surface-container text-on-background" value="valparaiso" <%= direccion.region === 'valparaiso' ? 'selected' : '' %>>Valparaíso</option>
+                        <option class="bg-surface-container text-on-background" value="maule" <%= direccion.region === 'maule' ? 'selected' : '' %>>Maule</option>
+                        <option class="bg-surface-container text-on-background" value="magallanes" <%= direccion.region === 'magallanes' ? 'selected' : '' %>>Magallanes</option>
                     </select>
                 </div>
             </div>
             <!-- Teléfono -->
             <div class="relative group">
                 <label class="block font-label-md text-label-md text-on-surface-variant mb-2" for="phone">Teléfono</label>
-                <input class="w-full bg-transparent border-0 border-b border-outline-variant text-on-background font-body-md py-3 px-0 input-gold-focus focus:ring-0 transition-colors" id="phone" name="phone" placeholder="Ej. +56 9 xxxxxxxx" type="tel"/>
+                <input class="w-full bg-transparent border-0 border-b border-outline-variant text-on-background font-body-md py-3 px-0 input-gold-focus focus:ring-0 transition-colors" id="phone" name="phone" placeholder="Ej. +56 9 xxxxxxxx" type="tel" value="<%= direccion.telefono || '' %>"/>
             </div>
             <!-- Checkbox Predeterminada -->
             <div class="flex items-center pt-4">
-                <input class="w-5 h-5 rounded-sm border-outline-variant bg-transparent text-secondary focus:ring-secondary focus:ring-offset-background cursor-pointer" id="defaultAddress" type="checkbox"/>
+                <input class="w-5 h-5 rounded-sm border-outline-variant bg-transparent text-secondary focus:ring-secondary focus:ring-offset-background cursor-pointer" id="defaultAddress" name="defaultAddress" type="checkbox" <%= direccion.predeterminada ? 'checked' : '' %>/>
                 <label class="ml-3 font-body-md text-body-md text-on-surface-variant cursor-pointer" for="defaultAddress">Establecer como dirección predeterminada</label>
             </div>
             <!-- Actions -->
@@ -73,7 +73,7 @@
                     <span>Cancelar</span>
                 </a>
                 <button class="w-full md:w-2/3 py-4 px-6 bg-secondary text-[#0A0A0A] font-label-md text-label-md text-center rounded-sm hover:bg-secondary/90 transition-colors shadow-[0_0_15px_rgba(212,175,55,0.15)] hover:shadow-[0_0_20px_rgba(212,175,55,0.3)]" type="submit">
-                    Guardar Dirección
+                    Guardar Cambios
                 </button>
             </div>
         </form>

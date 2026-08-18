@@ -1,27 +1,39 @@
 <header class="top-0 w-full z-50 border-b border-secondary/20 bg-surface/60 backdrop-blur-xl shadow-sm transition-all duration-300">
-<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto h-20">
-    <!-- Brand -->
-    <a class="font-headline-md text-headline-md font-bold text-secondary tracking-tight" href="/">
-        Luxuria &amp; Sentido
-    </a>
-    <!-- Navigation Links (Desktop) -->
-    <nav class="hidden md:flex space-x-8">
-        <a class="font-label-md text-label-md text-on-surface hover:text-secondary transition-colors duration-300" href="/productos">Productos</a>
-        <a class="font-label-md text-label-md text-on-surface hover:text-secondary transition-colors duration-300" href="#">Novedades</a>
-        <a class="font-label-md text-label-md text-on-surface hover:text-secondary transition-colors duration-300" href="#">Best Sellers</a>
-        <a class="font-label-md text-label-md text-on-surface hover:text-secondary transition-colors duration-300" href="#">Ofertas</a>
-    </nav>
-    <!-- Trailing Icons -->
-    <div class="flex items-center space-x-4">
-        <button class="text-secondary hover:text-secondary/80 transition-colors duration-300 active:scale-95 ease-in-out">
-            <a class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 0;" href="/perfil">person</a>
-        </button>
-        <button class="text-secondary hover:text-secondary/80 transition-colors duration-300 active:scale-95 ease-in-out relative">
-            <a class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 0;" href="/carrito">shopping_bag</a>
-            <span class="absolute -top-1 -right-1 bg-secondary text-on-secondary w-4 h-4 rounded-full flex items-center justify-center font-label-sm text-[10px] font-bold">0</span>
-        </button>
-        <button class="text-secondary hover:text-secondary/80 transition-colors duration-300 active:scale-95 ease-in-out">
-            <a class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 0;" href="/auth/login">login</a>
-        </button></div>
-</div>
+    <div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto h-20">
+        <!-- Brand -->
+        <a class="font-headline-md text-headline-md font-bold text-secondary tracking-tight" href="/">
+            Luxuria &amp; Sentido
+        </a>
+        <!-- Navigation Links (Desktop) -->
+        <nav class="hidden md:flex space-x-8">
+            <a class="font-label-md text-label-md text-on-surface hover:text-secondary transition-colors duration-300"
+               href="/productos">Productos</a>
+            <a class="font-label-md text-label-md text-on-surface hover:text-secondary transition-colors duration-300"
+               href="#">Novedades</a>
+            <a class="font-label-md text-label-md text-on-surface hover:text-secondary transition-colors duration-300"
+               href="#">Best Sellers</a>
+            <a class="font-label-md text-label-md text-on-surface hover:text-secondary transition-colors duration-300"
+               href="#">Ofertas</a>
+        </nav>
+        <!-- Trailing Icons -->
+        <div class="flex items-center space-x-4">
+            <% if (usuario) { %>
+                <span class="hidden md:inline font-label-sm text-label-sm text-on-surface-variant">Hola, <%= usuario.nombre %></span>
+                <button class="text-secondary hover:text-secondary/80 transition-colors duration-300 active:scale-95 ease-in-out">
+                    <a class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 0;" href="/perfil">person</a>
+                </button>
+                <button class="text-secondary hover:text-secondary/80 transition-colors duration-300 active:scale-95 ease-in-out relative">
+                    <a class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 0;" href="/carrito">shopping_bag</a>
+                    <span class="absolute -top-1 -right-1 bg-secondary text-on-secondary w-4 h-4 rounded-full flex items-center justify-center font-label-sm text-[10px] font-bold">0</span>
+                </button>
+                <button class="text-secondary hover:text-secondary/80 transition-colors duration-300 active:scale-95 ease-in-out">
+                    <a class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 0;" href="/auth/logout" title="Cerrar sesión">logout</a>
+                </button>
+            <% } else { %>
+                <button class="text-secondary hover:text-secondary/80 transition-colors duration-300 active:scale-95 ease-in-out">
+                    <a class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 0;" href="/auth/login">login</a>
+                </button>
+            <% } %>
+        </div>
+    </div>
 </header>

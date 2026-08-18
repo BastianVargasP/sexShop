@@ -9,47 +9,7 @@
 <!-- Main Layout -->
 <main class="flex-grow flex flex-col md:flex-row px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full gap-gutter py-12">
     <!-- Sidebar Navigation -->
-    <aside class="w-full md:w-1/4 flex-shrink-0">
-        <div class="glass-panel rounded-xl p-6 top-28 bg-surface-container">
-            <div class="flex items-center gap-4 mb-8 pb-6 border-b border-secondary/10">
-                <div class="w-16 h-16 rounded-full bg-surface-container-highest flex items-center justify-center overflow-hidden border border-secondary/20">
-                    <img class="w-full h-full object-cover" data-alt="A highly detailed close-up portrait of an elegant woman with subtle, sophisticated lighting in a premium, dark-mode aesthetic. The mood is mysterious and refined, fitting a luxury lifestyle brand. High quality, soft focus background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvgmV5qpCtXUzlle7kVx5ckmnjFfPifz_eQRhoMP1QPwWRBH2F3Ax_U0hIjcJKeH2-8PKPq0w3tRq6hjeRN9aoS3KOlazJ__SVQ57Y3zissk1Rr7BOY-voPuAm11qmJXFXFU9byNXB89GUOKjntv0uC4nMzG5sYBJqGCJN00AJzXOtgt09jKHdC5eIKKZ4ayAHikOX8CwLGcK9DLmDwi-P1-nNuPHP2bcAwZKsybtfS5EOXqw2a2U">
-                </div>
-                <div>
-                    <h2 class="font-headline-md text-body-lg font-bold text-on-surface">Isabella V.</h2>
-                    <p class="font-body-md text-label-sm text-on-surface-variant">Socia Premium</p>
-                </div>
-            </div>
-            <nav class="flex flex-col gap-2">
-                <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-secondary hover:bg-surface-container-highest transition-all duration-300" href="/perfil">
-                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
-                    Mis datos
-                </a>
-                <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-secondary hover:bg-surface-container-highest transition-all duration-300" href="/pedidos">
-                    <span class="material-symbols-outlined">receipt_long</span>
-                    <span class="font-label-md text-label-md">Mis pedidos</span>
-                </a>
-                <a class="flex items-center gap-3 px-4 py-3 rounded-lg font-label-md text-label-md text-secondary bg-surface-container-high border-l-2 border-secondary transition-colors" href="/direcciones">
-                    <span class="material-symbols-outlined">location_on</span>
-                    <span class="font-label-md text-label-md">Direcciones</span>
-                </a>
-                <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-secondary hover:bg-surface-container-highest transition-all duration-300" href="/favoritos">
-                    <span class="material-symbols-outlined">favorite</span>
-                    <span class="font-label-md text-label-md">Lista de deseos</span>
-                </a>
-                <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-secondary hover:bg-surface-container-highest transition-all duration-300" href="/pagos">
-                    <span class="material-symbols-outlined">credit_card</span>
-                    <span class="font-label-md text-label-md">Métodos de pago</span>
-                </a>
-                <div class="mt-8 pt-4 border-t border-secondary/10">
-                    <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-error hover:text-error-container hover:bg-error/10 transition-all duration-300" href="/">
-                        <span class="material-symbols-outlined">logout</span>
-                        <span class="font-label-md text-label-md">Cerrar Sesión</span>
-                    </a>
-                </div>
-            </nav>
-        </div>
-    </aside>
+    <%- include('partials/sidebar-cuenta', { activo: 'direcciones' }) %>
     <!-- Main Content Canvas -->
     <section class="flex-grow flex flex-col gap-8">
         <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-surface-container-high pb-6">
@@ -63,45 +23,57 @@
                 <span class="relative flex items-center gap-2">Añadir Nueva Dirección</span>
             </a>
         </header>
+
+        <% if (direcciones.length === 0) { %>
+            <div class="glass-panel rounded-xl p-12 flex flex-col items-center justify-center text-center gap-4">
+                <span class="material-symbols-outlined text-secondary text-5xl">location_off</span>
+                <p class="font-body-md text-body-md text-on-surface-variant">Aún no has agregado ninguna dirección.</p>
+                <a href="/nueva-direccion" class="mt-2 font-label-md text-label-md text-secondary hover:text-secondary-fixed underline underline-offset-4 transition-colors">
+                    Añadir mi primera dirección
+                </a>
+            </div>
+        <% } else { %>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Address Card 1 (Default) -->
+            <% direcciones.forEach(dir => { %>
+            <!-- Address Card -->
             <div class="glass-panel p-6 rounded-lg gold-glow transition-all duration-300 flex flex-col justify-between relative overflow-hidden group">
                 <div>
                     <div class="flex justify-between items-start mb-4">
-                        <h3 class="font-label-md text-label-md text-secondary">Casa (Principal)</h3>
+                        <h3 class="font-label-md text-label-md <%= dir.predeterminada ? 'text-secondary' : 'text-on-surface' %>">
+                            <%= dir.etiqueta %><%= dir.predeterminada ? ' (Principal)' : '' %>
+                        </h3>
+                        <% if (dir.predeterminada) { %>
                         <span class="bg-secondary/10 text-secondary px-2 py-1 rounded-full font-label-sm text-label-sm border border-secondary/20">Predeterminada</span>
+                        <% } %>
                     </div>
                     <address class="not-italic font-body-md text-body-md text-on-surface-variant flex flex-col gap-1">
-                        <span>Av. de la Libertad 123, Piso 4B</span>
-                        <span>Madrid, 28001</span>
-                        <span>España</span>
-                        <span class="mt-2 text-on-surface-variant text-sm">+56 9 XXXXXXXX</span>
+                        <span><%= dir.direccion %></span>
+                        <span>
+                            <%= dir.ciudad %><% if (dir.codigo_postal) { %>, <%= dir.codigo_postal %><% } %>
+                        </span>
+                        <% if (dir.comuna || dir.region) { %>
+                        <span><%= [dir.comuna, dir.region].filter(Boolean).join(', ') %></span>
+                        <% } %>
+                        <% if (dir.telefono) { %>
+                        <span class="mt-2 text-on-surface-variant text-sm"><%= dir.telefono %></span>
+                        <% } %>
                     </address>
                 </div>
-                <div class="flex gap-4 mt-8 border-t border-surface-container-high pt-4">
-                    <button class="text-secondary hover:text-secondary-fixed font-label-sm text-label-sm uppercase tracking-wider transition-colors">Editar</button>
+                <div class="flex items-center gap-4 mt-8 border-t border-surface-container-high pt-4">
+                    <a href="/direcciones/<%= dir.id %>/editar" class="text-secondary hover:text-secondary-fixed font-label-sm text-label-sm uppercase tracking-wider transition-colors">Editar</a>
+                    <% if (!dir.predeterminada) { %>
+                    <form method="POST" action="/direcciones/<%= dir.id %>/eliminar" class="contents" onsubmit="return confirm('¿Eliminar esta dirección?');">
+                        <button type="submit" class="text-on-surface-variant hover:text-error font-label-sm text-label-sm uppercase tracking-wider transition-colors">Eliminar</button>
+                    </form>
+                    <form method="POST" action="/direcciones/<%= dir.id %>/predeterminada" class="contents">
+                        <button type="submit" class="text-on-surface-variant hover:text-secondary font-label-sm text-label-sm uppercase tracking-wider transition-colors ml-auto">Hacer Principal</button>
+                    </form>
+                    <% } %>
                 </div>
             </div>
-            <!-- Address Card 2 -->
-            <div class="glass-panel p-6 rounded-lg gold-glow transition-all duration-300 flex flex-col justify-between relative overflow-hidden group">
-                <div>
-                    <div class="flex justify-between items-start mb-4">
-                        <h3 class="font-label-md text-label-md text-on-surface">Oficina</h3>
-                    </div>
-                    <address class="not-italic font-body-md text-body-md text-on-surface-variant flex flex-col gap-1">
-                        <span>Paseo de la Castellana 89, Planta 12</span>
-                        <span>Madrid, 28046</span>
-                        <span>España</span>
-                        <span class="mt-2 text-on-surface-variant text-sm">+56 9 XXXXXXXX</span>
-                    </address>
-                </div>
-                <div class="flex gap-4 mt-8 border-t border-surface-container-high pt-4">
-                    <button class="text-secondary hover:text-secondary-fixed font-label-sm text-label-sm uppercase tracking-wider transition-colors">Editar</button>
-                    <button class="text-on-surface-variant hover:text-error font-label-sm text-label-sm uppercase tracking-wider transition-colors">Eliminar</button>
-                    <button class="text-on-surface-variant hover:text-secondary font-label-sm text-label-sm uppercase tracking-wider transition-colors ml-auto">Hacer Principal</button>
-                </div>
-            </div>
+            <% }) %>
         </div>
+        <% } %>
     </section>
 </main>
 <!-- Footer (Shared Component) -->

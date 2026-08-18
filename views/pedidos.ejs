@@ -9,55 +9,7 @@
 <!-- Main Content Layout -->
 <main class="flex-grow flex flex-col md:flex-row px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full gap-gutter py-12">
     <!-- Sidebar Navigation -->
-    <aside class="w-full md:w-1/4 flex-shrink-0">
-        <div class="glass-panel rounded-xl p-6 top-28 bg-surface-container">
-            <div class="flex items-center gap-4 mb-8 pb-6 border-b border-secondary/10">
-                <div class="w-16 h-16 rounded-full bg-surface-container-highest flex items-center justify-center overflow-hidden border border-secondary/20">
-                    <img class="w-full h-full object-cover"
-                         data-alt="A highly detailed close-up portrait of an elegant woman with subtle, sophisticated lighting in a premium, dark-mode aesthetic. The mood is mysterious and refined, fitting a luxury lifestyle brand. High quality, soft focus background."
-                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvgmV5qpCtXUzlle7kVx5ckmnjFfPifz_eQRhoMP1QPwWRBH2F3Ax_U0hIjcJKeH2-8PKPq0w3tRq6hjeRN9aoS3KOlazJ__SVQ57Y3zissk1Rr7BOY-voPuAm11qmJXFXFU9byNXB89GUOKjntv0uC4nMzG5sYBJqGCJN00AJzXOtgt09jKHdC5eIKKZ4ayAHikOX8CwLGcK9DLmDwi-P1-nNuPHP2bcAwZKsybtfS5EOXqw2a2U">
-                </div>
-                <div>
-                    <h2 class="font-headline-md text-body-lg font-bold text-on-surface">Isabella V.</h2>
-                    <p class="font-body-md text-label-sm text-on-surface-variant">Socia Premium</p>
-                </div>
-            </div>
-            <nav class="flex flex-col gap-2">
-                <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-secondary hover:bg-surface-container-highest transition-all duration-300"
-                   href="/perfil">
-                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
-                    Mis datos
-                </a>
-                <a class="flex items-center gap-3 px-4 py-3 rounded-lg font-label-md text-label-md text-secondary bg-surface-container-high border-l-2 border-secondary transition-colors"
-                   href="/pedidos">
-                    <span class="material-symbols-outlined">receipt_long</span>
-                    <span class="font-label-md text-label-md">Mis pedidos</span>
-                </a>
-                <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-secondary hover:bg-surface-container-highest transition-all duration-300"
-                   href="/direcciones">
-                    <span class="material-symbols-outlined">location_on</span>
-                    <span class="font-label-md text-label-md">Direcciones</span>
-                </a>
-                <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-secondary hover:bg-surface-container-highest transition-all duration-300"
-                   href="/favoritos">
-                    <span class="material-symbols-outlined">favorite</span>
-                    <span class="font-label-md text-label-md">Lista de deseos</span>
-                </a>
-                <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-secondary hover:bg-surface-container-highest transition-all duration-300"
-                   href="/pagos">
-                    <span class="material-symbols-outlined">credit_card</span>
-                    <span class="font-label-md text-label-md">Métodos de pago</span>
-                </a>
-                <div class="mt-8 pt-4 border-t border-secondary/10">
-                    <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-error hover:text-error-container hover:bg-error/10 transition-all duration-300"
-                       href="/">
-                        <span class="material-symbols-outlined">logout</span>
-                        <span class="font-label-md text-label-md">Cerrar Sesión</span>
-                    </a>
-                </div>
-            </nav>
-        </div>
-    </aside>
+    <%- include('partials/sidebar-cuenta', { activo: 'pedidos' }) %>
     <!-- Main Area: Order History -->
     <section class="flex-grow flex flex-col gap-8">
         <div class="border-b border-secondary/10 pb-4">
@@ -68,78 +20,43 @@
         </div>
         <!-- Orders List -->
         <div class="flex flex-col gap-4">
-            <!-- Order Item 1 -->
-            <article
-                    class="glass-panel rounded-xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 hover:border-secondary/40 transition-colors duration-300">
-                <div class="flex items-center gap-6">
-                    <div class="w-16 h-16 rounded bg-surface-container-highest border border-secondary/20 flex items-center justify-center text-secondary">
-                        <span class="material-symbols-outlined text-[32px]">local_shipping</span>
-                    </div>
-                    <div class="flex flex-col gap-1">
-                        <span class="font-label-md text-label-md text-secondary">#LX-89042</span>
-                        <span class="font-body-md text-[14px] text-on-surface-variant">Realizado el 12 Oct 2023</span>
-                    </div>
-                </div>
-                <div class="flex flex-col md:items-end gap-2 w-full md:w-auto border-t md:border-t-0 border-secondary/10 pt-4 md:pt-0">
-                    <div class="flex items-center justify-between md:justify-end gap-6 w-full">
-                        <span class="font-headline-md text-[20px] text-on-surface">85,00€</span>
-                        <span class="font-label-sm text-label-sm px-3 py-1 bg-secondary/10 text-secondary rounded border border-secondary/30 flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px]">check_circle</span> Entregado
-                            </span>
-                    </div>
-                    <a href="/pedido" class="w-full md:w-auto mt-2 px-6 py-2 border border-secondary text-secondary rounded font-label-md text-label-md hover:bg-secondary hover:text-background transition-colors duration-300">
-                        Ver Detalles
-                    </a>
-                </div>
-            </article>
-            <!-- Order Item 2 -->
-            <article
-                    class="glass-panel rounded-xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 hover:border-secondary/40 transition-colors duration-300">
-                <div class="flex items-center gap-6">
-                    <div class="w-16 h-16 rounded bg-surface-container-highest border border-secondary/20 flex items-center justify-center text-secondary">
-                        <span class="material-symbols-outlined text-[32px]">inventory_2</span>
-                    </div>
-                    <div class="flex flex-col gap-1">
-                        <span class="font-label-md text-label-md text-secondary">#LX-88910</span>
-                        <span class="font-body-md text-[14px] text-on-surface-variant">Realizado el 05 Sep 2023</span>
-                    </div>
-                </div>
-                <div class="flex flex-col md:items-end gap-2 w-full md:w-auto border-t md:border-t-0 border-secondary/10 pt-4 md:pt-0">
-                    <div class="flex items-center justify-between md:justify-end gap-6 w-full">
-                        <span class="font-headline-md text-[20px] text-on-surface">142,50€</span>
-                        <span class="font-label-sm text-label-sm px-3 py-1 bg-secondary/10 text-secondary rounded border border-secondary/30 flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px]">check_circle</span> Entregado
-                            </span>
-                    </div>
-                    <a href="#" class="w-full md:w-auto mt-2 px-6 py-2 border border-secondary text-secondary rounded font-label-md text-label-md hover:bg-secondary hover:text-background transition-colors duration-300">
-                        Ver Detalles
-                    </a>
-                </div>
-            </article>
-            <!-- Order Item 3 (Different Status) -->
-            <article
-                    class="glass-panel rounded-xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 hover:border-secondary/40 transition-colors duration-300 opacity-80">
-                <div class="flex items-center gap-6">
-                    <div class="w-16 h-16 rounded bg-surface-container-highest border border-outline/20 flex items-center justify-center text-outline">
-                        <span class="material-symbols-outlined text-[32px]">assignment_return</span>
-                    </div>
-                    <div class="flex flex-col gap-1">
-                        <span class="font-label-md text-label-md text-secondary">#LX-87550</span>
-                        <span class="font-body-md text-[14px] text-on-surface-variant">Realizado el 22 Jul 2023</span>
-                    </div>
-                </div>
-                <div class="flex flex-col md:items-end gap-2 w-full md:w-auto border-t md:border-t-0 border-secondary/10 pt-4 md:pt-0">
-                    <div class="flex items-center justify-between md:justify-end gap-6 w-full">
-                        <span class="font-headline-md text-[20px] text-on-surface">60,00€</span>
-                        <span class="font-label-sm text-label-sm px-3 py-1 bg-surface-container-highest text-on-surface-variant rounded border border-outline/30 flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px]">replay</span> Devuelto
-                            </span>
-                    </div>
-                    <a href="#" class="w-full md:w-auto mt-2 px-6 py-2 border border-secondary text-secondary rounded font-label-md text-label-md hover:bg-secondary hover:text-background transition-colors duration-300">
-                        Ver Detalles
-                    </a>
-                </div>
-            </article>
+            <% if (pedidos.length === 0) { %>
+                <p class="font-body-md text-body-md text-on-surface-variant text-center py-12">Aún no tienes pedidos
+                    realizados.</p>
+            <% } else { %>
+                <% pedidos.forEach(pedido => { %>
+                    <article
+                            class="glass-panel rounded-xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 hover:border-secondary/40 transition-colors duration-300">
+                        <div class="flex items-center gap-6">
+                            <div class="w-16 h-16 rounded bg-surface-container-highest border border-secondary/20 flex items-center justify-center text-secondary">
+                    <span class="material-symbols-outlined text-[32px]">
+                        <%= pedido.estado === 'entregado' ? 'local_shipping' : pedido.estado === 'devuelto' ? 'assignment_return' : 'inventory_2' %>
+                    </span>
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <span class="font-label-md text-label-md text-secondary">#<%= pedido.numero_pedido %></span>
+                                <span class="font-body-md text-[14px] text-on-surface-variant">Realizado el <%= new Date(pedido.created_at).toLocaleDateString('es-CL', {
+                                        day: '2-digit',
+                                        month: 'short',
+                                        year: 'numeric'
+                                    }) %></span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col md:items-end gap-2 w-full md:w-auto border-t md:border-t-0 border-secondary/10 pt-4 md:pt-0">
+                            <div class="flex items-center justify-between md:justify-end gap-6 w-full">
+                                <span class="font-headline-md text-[20px] text-on-surface"><%= Number(pedido.total).toFixed(2) %>€</span>
+                                <span class="font-label-sm text-label-sm px-3 py-1 bg-secondary/10 text-secondary rounded border border-secondary/30 flex items-center gap-1 capitalize">
+                        <span class="material-symbols-outlined text-[14px]">check_circle</span> <%= pedido.estado %>
+                    </span>
+                            </div>
+                            <a href="/pedido/<%= pedido.id %>"
+                               class="w-full md:w-auto mt-2 px-6 py-2 border border-secondary text-secondary rounded font-label-md text-label-md hover:bg-secondary hover:text-background transition-colors duration-300">
+                                Ver Detalles
+                            </a>
+                        </div>
+                    </article>
+                <% }) %>
+            <% } %>
         </div>
     </section>
 </main>

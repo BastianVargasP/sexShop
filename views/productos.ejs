@@ -17,7 +17,7 @@
         <aside class="w-full lg:w-1/4 flex-shrink-0 space-y-8 glass-panel p-6 rounded-lg self-start top-28">
             <div class="mb-6 flex justify-between items-center">
                 <h2 class="font-headline-md text-xl text-secondary">Filtros</h2>
-                <button class="text-on-surface-variant hover:text-secondary text-sm flex items-center gap-1 transition-colors" id="limpiarFiltro">
+                <button type="button" id="limpiarFiltro" class="text-on-surface-variant hover:text-secondary text-sm flex items-center gap-1 transition-colors">
                     <span class="material-symbols-outlined text-sm">restart_alt</span> Limpiar
                 </button>
             </div>
@@ -25,27 +25,27 @@
             <div class="space-y-4">
                 <h3 class="font-label-md text-label-md text-on-surface border-b border-surface-variant pb-2">Categoría</h3>
                 <ul class="space-y-2">
-                    <li class="">
+                    <li>
                         <label class="flex items-center gap-3 cursor-pointer group">
-                            <input id="joyeria" class="form-checkbox h-4 w-4 text-primary-container bg-surface-container-highest border-outline-variant focus:ring-primary focus:ring-offset-background rounded-sm" type="checkbox">
+                            <input name="categoria" value="joyeria" class="form-checkbox h-4 w-4 text-primary-container bg-surface-container-highest border-outline-variant focus:ring-primary focus:ring-offset-background rounded-sm" type="checkbox">
                             <span class="font-body-md text-body-md text-on-surface-variant group-hover:text-secondary transition-colors">Joyería Íntima</span>
                         </label>
                     </li>
-                    <li class="">
+                    <li>
                         <label class="flex items-center gap-3 cursor-pointer group">
-                            <input id="estimuladores" checked="" class="form-checkbox h-4 w-4 text-primary-container bg-surface-container-highest border-outline-variant focus:ring-primary focus:ring-offset-background rounded-sm" type="checkbox">
-                            <span class="font-body-md text-body-md text-secondary transition-colors">Estimuladores Premium</span>
+                            <input name="categoria" value="estimuladores" class="form-checkbox h-4 w-4 text-primary-container bg-surface-container-highest border-outline-variant focus:ring-primary focus:ring-offset-background rounded-sm" type="checkbox">
+                            <span class="font-body-md text-body-md text-on-surface-variant group-hover:text-secondary transition-colors">Estimuladores Premium</span>
                         </label>
                     </li>
-                    <li class="">
+                    <li>
                         <label class="flex items-center gap-3 cursor-pointer group">
-                            <input id="cosmetica" class="form-checkbox h-4 w-4 text-primary-container bg-surface-container-highest border-outline-variant focus:ring-primary focus:ring-offset-background rounded-sm" type="checkbox">
+                            <input name="categoria" value="cosmetica" class="form-checkbox h-4 w-4 text-primary-container bg-surface-container-highest border-outline-variant focus:ring-primary focus:ring-offset-background rounded-sm" type="checkbox">
                             <span class="font-body-md text-body-md text-on-surface-variant group-hover:text-secondary transition-colors">Cosmética Sensorial</span>
                         </label>
                     </li>
-                    <li class="">
+                    <li>
                         <label class="flex items-center gap-3 cursor-pointer group">
-                            <input id="kits" class="form-checkbox h-4 w-4 text-primary-container bg-surface-container-highest border-outline-variant focus:ring-primary focus:ring-offset-background rounded-sm" type="checkbox">
+                            <input name="categoria" value="kits" class="form-checkbox h-4 w-4 text-primary-container bg-surface-container-highest border-outline-variant focus:ring-primary focus:ring-offset-background rounded-sm" type="checkbox">
                             <span class="font-body-md text-body-md text-on-surface-variant group-hover:text-secondary transition-colors">Kits Exclusivos</span>
                         </label>
                     </li>
@@ -55,86 +55,66 @@
         <!-- Product Grid -->
         <div class="flex-1">
             <div class="flex justify-between items-center mb-6">
-                <span class="font-label-sm text-label-sm text-on-surface-variant">Mostrando 1-12 de 48 productos</span>
+                <span id="contadorProductos" class="font-label-sm text-label-sm text-on-surface-variant">
+                    <%= productos.length %> producto<%= productos.length !== 1 ? 's' : '' %> encontrado<%= productos.length !== 1 ? 's' : '' %>
+                </span>
                 <div class="flex items-center gap-2">
                     <span class="font-label-sm text-label-sm text-on-surface-variant">Ordenar por:</span>
-                    <select class="bg-surface-container border border-outline-variant text-on-surface text-sm rounded focus:ring-secondary focus:border-secondary p-1 pr-8">
-                        <option>Recomendados</option>
-                        <option>Precio: Menor a Mayor</option>
-                        <option>Precio: Mayor a Menor</option>
-                        <option>Novedades</option>
+                    <select id="ordenSelect" class="bg-surface-container border border-outline-variant text-on-surface text-sm rounded focus:ring-secondary focus:border-secondary p-1 pr-8">
+                        <option value="recomendados">Recomendados</option>
+                        <option value="precio-asc">Precio: Menor a Mayor</option>
+                        <option value="precio-desc">Precio: Mayor a Menor</option>
+                        <option value="novedades">Novedades</option>
                     </select>
                 </div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                <!-- Product Card 1 -->
-                <div class="glass-panel rounded-lg overflow-hidden flex flex-col hover-gold-glow transition-all duration-300 group cursor-pointer bg-surface-container-low border border-surface-container">
-                    <div class="absolute top-4 left-4 z-10 bg-primary-fixed-dim text-on-primary-fixed text-xs font-bold px-2 py-1 rounded-sm uppercase tracking-wider">
-                        Nuevo
-                    </div>
-                    <button class="absolute top-4 right-4 z-10 text-on-surface-variant hover:text-secondary transition-colors">
-                        <span class="material-symbols-outlined">favorite</span>
-                    </button>
-                    <div class="relative h-80 w-full overflow-hidden bg-surface-container-lowest">
-                        <img class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100" data-alt="A sleek, minimalist premium intimate stimulator with a matte black and subtle gold finish, resting elegantly on a dark velvet surface. The lighting is soft and dramatic, highlighting its sophisticated, sculptural form. The background is a pure, deep obsidian, conveying luxury, mystery, and high-end design in a dark-mode boutique setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIGwnNIrku2vZcFxB9ShumHcMdmTF3LANeteliHLNq0abkJhhHsPrZl3R06_fygGn0eUP2FFl0G59hbgND1TdKX1xi6ehKogw-Vaf3pauQpUISiUtNS_FMPRRzl3WVzXX50uRPUkvhkNqDzEyjAIzkYCiX_rYI-v-XklTWD2v9rGxim1fFHj5-Xx1BOaLQeC1jsUhVeACFToxju5m7oybwaAt66dhRJcNgTQ3_0VMIQ_ovAF5a270">
-                    </div>
-                    <div class="p-5 flex flex-col gap-2 relative z-20 bg-gradient-to-t from-surface-container-highest via-surface-container/90 to-transparent">
-                        <h3 class="font-headline-md text-lg text-on-surface group-hover:text-secondary transition-colors truncate">L'Éclipse Oro</h3>
-                        <p class="font-body-md text-sm text-on-surface-variant line-clamp-2">Masajeador de doble acción con acabados en oro de 24k.</p>
-                        <div class="flex justify-between items-center mt-2">
-                            <span class="font-label-md text-lg text-secondary">€185.00</span>
-                            <button class="bg-secondary text-on-secondary-container hover:bg-secondary-fixed transition-colors p-2 rounded-full flex items-center justify-center">
-                                <span class="material-symbols-outlined text-sm">shopping_bag</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <!-- Product Card 2 -->
-                <div class="glass-panel rounded-lg overflow-hidden flex flex-col hover-gold-glow transition-all duration-300 group cursor-pointer bg-surface-container-low border border-surface-container">
-                    <div class="absolute top-4 left-4 z-10 bg-primary-container text-secondary text-xs font-bold px-2 py-1 rounded-sm uppercase tracking-wider">
-                        Edición Limitada
-                    </div>
-                    <button class="absolute top-4 right-4 z-10 text-secondary transition-colors">
-                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">favorite</span>
-                    </button>
-                    <div class="relative h-80 w-full overflow-hidden bg-surface-container-lowest">
-                        <img class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100" data-alt="A luxurious glass bottle of massage oil or intimate serum, featuring dark tinted glass and a minimalist gold label. It sits on a dark, slightly reflective surface. Warm, subtle spotlighting creates a delicate golden rim light around the bottle, emphasizing premium quality, sensual wellness, and luxury cosmetics in a dark aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEv1vd2JSzc4Eh4lTSy-BAQu7bgMMF9OrP9G6ScTkWrKAIPlUpecEZKLXdfgEip5J-yCbbqFfz-MoeInLN4Mvsrz_YaSGSoMEjD_rC1eAgKCpUfs2QEr-kRjMKc1aHaUvOSJlbMRoCvf4GK7D53Vpk0b7X7YIWcdGGeWumIV704x1THX0vIzeqITwJ7cBICGxUWC3FOTx4Zv8jeNqMBbH-PZCXeUuOBhrjwhzjdsX76nveUK_A9oo">
-                    </div>
-                    <div class="p-5 flex flex-col gap-2 relative z-20 bg-gradient-to-t from-surface-container-highest via-surface-container/90 to-transparent">
-                        <h3 class="font-headline-md text-lg text-on-surface group-hover:text-secondary transition-colors truncate">Néctar de Medianoche</h3>
-                        <p class="font-body-md text-sm text-on-surface-variant line-clamp-2">Sérum íntimo hidratante con infusión de orquídea negra.</p>
-                        <div class="flex justify-between items-center mt-2">
-                            <span class="font-label-md text-lg text-secondary">€65.00</span>
-                            <button class="bg-secondary text-on-secondary-container hover:bg-secondary-fixed transition-colors p-2 rounded-full flex items-center justify-center">
-                                <span class="material-symbols-outlined text-sm">shopping_bag</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <!-- Product Card 3 -->
-                <div class="glass-panel rounded-lg overflow-hidden flex flex-col hover-gold-glow transition-all duration-300 group cursor-pointer bg-surface-container-low border border-surface-container">
-                    <button class="absolute top-4 right-4 z-10 text-on-surface-variant hover:text-secondary transition-colors">
-                        <span class="material-symbols-outlined">favorite</span>
-                    </button>
-                    <div class="relative h-80 w-full overflow-hidden bg-surface-container-lowest">
-                        <img class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100" data-alt="A delicate piece of intimate jewelry, specifically a fine gold chain with a small, elegant geometric pendant. It is draped over a smooth, dark grey, stone-like surface. The lighting highlights the sparkle of the gold against the moody, dark background, conveying exclusivity, delicate craftsmanship, and sophisticated luxury." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5UZC6PK-19YDmYLl5E6JLBl2iEK9NNhBIdaU41s8JRUaR2BfT28pxUBXjiLe72sagRSeVjHLoVu4UHzcrkwh87k8p46AySPuLW-9AFL4hmOaS40KkZCZjiR0X1nMnqVYA4cqRgR0s-U-N7EcGoj9upQpGcIlWrbMlaBHK6sL-AAZWLaHg-M6h-Rp3zw5ImDhfsQV6r5k4bOGRMXm7ZcfM5v5QXCehdZiB5revIzWzaZDWjv5KaaE">
-                    </div>
-                    <div class="p-5 flex flex-col gap-2 relative z-20 bg-gradient-to-t from-surface-container-highest via-surface-container/90 to-transparent">
-                        <h3 class="font-headline-md text-lg text-on-surface group-hover:text-secondary transition-colors truncate">Cadena Áurea</h3>
-                        <p class="font-body-md text-sm text-on-surface-variant line-clamp-2">Joyería corporal en oro macizo de 18k. Diseño minimalista.</p>
-                        <div class="flex justify-between items-center mt-2">
-                            <span class="font-label-md text-lg text-secondary">€240.00</span>
-                            <button class="bg-transparent border border-secondary text-secondary hover:bg-secondary/10 transition-colors p-2 rounded-full flex items-center justify-center">
-                                <span class="material-symbols-outlined text-sm">shopping_bag</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="mt-12 flex justify-center">
-                <button class="border border-secondary text-secondary hover:bg-secondary/10 px-8 py-3 rounded-full font-label-md transition-colors uppercase tracking-widest text-sm">
-                    Cargar Más
+
+            <div id="estadoVacio" class="glass-panel rounded-xl p-16 flex flex-col items-center justify-center text-center gap-4" style="display:none;">
+                <span class="material-symbols-outlined text-secondary text-5xl">search_off</span>
+                <p class="font-body-md text-body-md text-on-surface-variant">No encontramos productos con esos filtros.</p>
+                <button type="button" id="limpiarFiltroVacio" onclick="document.querySelector('#limpiarFiltro').click()" class="mt-2 font-label-md text-label-md text-secondary hover:text-secondary-fixed underline underline-offset-4 transition-colors">
+                    Ver toda la colección
                 </button>
+            </div>
+
+            <div id="gridProductos" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <% productos.forEach(producto => { %>
+                <% const esFavorito = favoritosIds.has(producto.id); %>
+                <!-- Product Card -->
+                <div class="producto-card relative glass-panel rounded-lg overflow-hidden flex flex-col hover-gold-glow transition-all duration-300 group bg-surface-container-low border border-surface-container"
+                     data-categoria="<%= producto.categoria %>"
+                     data-precio="<%= producto.precio %>"
+                     data-creado="<%= new Date(producto.created_at).getTime() %>"
+                     data-destacado="<%= producto.destacado ? '1' : '0' %>">
+                    <% if (producto.etiqueta) { %>
+                    <div class="absolute top-4 left-4 z-10 bg-primary-fixed-dim text-on-primary-fixed text-xs font-bold px-2 py-1 rounded-sm uppercase tracking-wider">
+                        <%= producto.etiqueta %>
+                    </div>
+                    <% } %>
+                    <button type="button" data-favorito-toggle data-producto-id="<%= producto.id %>" data-favorito="<%= esFavorito ? 'true' : 'false' %>"
+                            title="<%= esFavorito ? 'Quitar de favoritos' : 'Añadir a favoritos' %>"
+                            class="absolute top-4 right-4 z-10 <%= esFavorito ? 'text-secondary' : 'text-on-surface-variant hover:text-secondary' %> transition-colors">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' <%= esFavorito ? 1 : 0 %>;">favorite</span>
+                    </button>
+                    <div class="relative h-80 w-full overflow-hidden bg-surface-container-lowest">
+                        <a href="/producto/<%= producto.id %>" class="block w-full h-full">
+                            <img class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100" src="<%= producto.imagen %>" alt="<%= producto.nombre %>">
+                        </a>
+                    </div>
+                    <div class="p-5 flex flex-col gap-2 relative z-20 bg-gradient-to-t from-surface-container-highest via-surface-container/90 to-transparent">
+                        <a href="/producto/<%= producto.id %>">
+                            <h3 class="font-headline-md text-lg text-on-surface group-hover:text-secondary transition-colors truncate"><%= producto.nombre %></h3>
+                        </a>
+                        <p class="font-body-md text-sm text-on-surface-variant line-clamp-2"><%= producto.descripcion_corta %></p>
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="font-label-md text-lg text-secondary"><%= Number(producto.precio).toFixed(2) %>€</span>
+                            <button class="bg-secondary text-on-secondary-container hover:bg-secondary-fixed transition-colors p-2 rounded-full flex items-center justify-center">
+                                <span class="material-symbols-outlined text-sm">shopping_bag</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <% }) %>
             </div>
         </div>
     </div>
@@ -142,4 +122,5 @@
 <!-- Footer -->
 <%-include('partials/footer')%>
 <script src="/javascripts/productos.js"></script>
+<script src="/javascripts/favoritos.js"></script>
 </body></html>

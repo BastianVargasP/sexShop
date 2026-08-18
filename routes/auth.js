@@ -8,11 +8,11 @@ import { estaAutenticado, esInvitado } from "../middlewares/auth.js";
 
 const router = express.Router();
 
-router.get('/login', (req, res) => {
+router.get('/login', esInvitado,(req, res) => {
     res.render('login');
 });
 
-router.get('/registro', (req, res) => {
+router.get('/registro', esInvitado,(req, res) => {
     res.render('registro');
 });
 
@@ -62,7 +62,9 @@ router.post('/login', async (req, res) => {
         req.session.usuario = {
             id: usuario.id,
             nombre: usuario.nombre,
-            email: usuario.email
+            apellido: usuario.apellido,
+            email: usuario.email,
+            telefono: usuario.telefono
         };
         console.log('linea 67');
         registrarActividad(`🔐 POST /autenticacion/login - ÉXITO: Sesión iniciada para ${email}.`);
@@ -137,6 +139,19 @@ router.post('/registro', async (req, res) => {
     } finally {
         await conexion.end();
     }
+});
+
+router.get('/logout', (req, res) => {
+    const email = req.session.usuario?.email;
+    req.session.destroy((err) => {
+        if (err) {
+            registrarActividad(`🔐❌ GET /autenticacion/logout - ERROR: ${err.message}`);
+        } else {
+            registrarActividad(`🔐 GET /autenticacion/logout - ÉXITO: Sesión cerrada (${email}).`);
+        }
+        res.clearCookie('connect.sid');
+        res.redirect('/');
+    });
 });
 
 export default router;

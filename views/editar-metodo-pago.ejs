@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+    <%-include('partials/head')%>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<%- include('partials/header')%>
+<!-- Main Content -->
+<main class="flex-grow pt-8 pb-24 px-margin-mobile md:px-margin-desktop">
+    <div class="max-w-2xl mx-auto w-full">
+        <!-- Breadcrumbs / Back -->
+        <div class="mb-4">
+            <a href="/pagos" class="inline-flex items-center gap-2 px-4 py-2 border border-secondary text-secondary font-label-md text-label-md uppercase tracking-widest hover:bg-secondary hover:text-on-secondary transition-colors duration-300 rounded">
+                <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+                Volver a Métodos de Pago
+            </a>
+        </div>
+        <h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface-variant mb-4 text-center">Editar Método de Pago</h1>
+        <p class="font-body-md text-body-md text-on-surface-variant text-center mb-12 max-w-md mx-auto">
+            Tarjeta terminada en <span class="text-secondary">•••• <%= metodo.ultimos_digitos %></span>. Por seguridad, el número de tarjeta no se puede modificar aquí — elimina este método y añade uno nuevo si cambió tu tarjeta.
+        </p>
+        <!-- Form -->
+        <form class="space-y-8 bg-surface-container/30 p-8 md:p-12 rounded-xl backdrop-blur-sm border border-secondary/10 shadow-lg" action="/pagos/<%= metodo.id %>/editar" method="POST">
+            <!-- Marca -->
+            <div class="relative group">
+                <label class="block font-label-md text-label-md text-on-surface-variant mb-2" for="marca">Marca</label>
+                <select class="w-full bg-transparent border-0 border-b border-outline-variant text-on-background font-body-md py-3 px-0 input-gold-focus focus:ring-0 transition-colors appearance-none cursor-pointer" id="marca" name="marca" required>
+                    <option class="bg-surface-container text-on-background" value="Visa" <%= metodo.marca === 'Visa' ? 'selected' : '' %>>Visa</option>
+                    <option class="bg-surface-container text-on-background" value="Mastercard" <%= metodo.marca === 'Mastercard' ? 'selected' : '' %>>Mastercard</option>
+                    <option class="bg-surface-container text-on-background" value="American Express" <%= metodo.marca === 'American Express' ? 'selected' : '' %>>American Express</option>
+                    <option class="bg-surface-container text-on-background" value="Otra" <%= metodo.marca === 'Otra' ? 'selected' : '' %>>Otra</option>
+                </select>
+            </div>
+            <!-- Vencimiento y Titular -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="relative group">
+                    <label class="block font-label-md text-label-md text-on-surface-variant mb-2" for="vencimiento">Vencimiento (MM/AA)</label>
+                    <input class="w-full bg-transparent border-0 border-b border-outline-variant text-on-background font-body-md py-3 px-0 input-gold-focus focus:ring-0 transition-colors" id="vencimiento" name="vencimiento" placeholder="12/28" type="text" maxlength="5" value="<%= metodo.vencimiento %>" required/>
+                </div>
+                <div class="relative group">
+                    <label class="block font-label-md text-label-md text-on-surface-variant mb-2" for="titular">Titular</label>
+                    <input class="w-full bg-transparent border-0 border-b border-outline-variant text-on-background font-body-md py-3 px-0 input-gold-focus focus:ring-0 transition-colors" id="titular" name="titular" type="text" value="<%= metodo.titular %>" required/>
+                </div>
+            </div>
+            <!-- Checkbox Predeterminado -->
+            <div class="flex items-center pt-4">
+                <input class="w-5 h-5 rounded-sm border-outline-variant bg-transparent text-secondary focus:ring-secondary focus:ring-offset-background cursor-pointer" id="defaultMetodo" name="defaultMetodo" type="checkbox" <%= metodo.predeterminada ? 'checked' : '' %>/>
+                <label class="ml-3 font-body-md text-body-md text-on-surface-variant cursor-pointer" for="defaultMetodo">Establecer como método predeterminado</label>
+            </div>
+            <!-- Actions -->
+            <div class="flex flex-col-reverse md:flex-row gap-4 pt-8">
+                <a class="w-full md:w-1/3 py-4 px-6 border border-secondary text-secondary font-label-md text-label-md text-center rounded-sm hover:bg-secondary/10 transition-colors"
+                   href="/pagos">
+                    <span>Cancelar</span>
+                </a>
+                <button class="w-full md:w-2/3 py-4 px-6 bg-secondary text-[#0A0A0A] font-label-md text-label-md text-center rounded-sm hover:bg-secondary/90 transition-colors shadow-[0_0_15px_rgba(212,175,55,0.15)] hover:shadow-[0_0_20px_rgba(212,175,55,0.3)]" type="submit">
+                    Guardar Cambios
+                </button>
+            </div>
+        </form>
+    </div>
+</main>
+<!-- Footer -->
+<%- include('partials/footer')%>
+</body></html>

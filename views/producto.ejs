@@ -14,70 +14,45 @@
         <div class="w-full lg:w-3/5 flex flex-col gap-4">
             <!-- Main Image -->
             <div class="w-full aspect-square md:aspect-[4/5] bg-surface-container rounded-xl overflow-hidden relative group cursor-pointer hover:border hover:border-secondary/20 transition-all duration-300">
-                <img alt="Producto Principal" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A highly detailed close-up shot of a sleek, premium intimate wellbeing device in a deep midnight purple tone with subtle rose gold accents. The device is resting on a dark velvet surface. Lighting is soft, cinematic, and dramatic, highlighting the smooth, velvety silicone texture and elegant curves. The overall mood is luxurious, sophisticated, and deeply sensual, embodying a high-end boutique aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjZ72fYMISPlo_-qGI97DxJzqROrhB2u4oMshO7YJdffrHOyoMSqdjKpsEJrcJPaqg8ZiRMT675p8SwjziUaGjzwV79MlgJeeH6E8y5sA5U7zwvGLY3tQRKtiry7X0QBRLZWsJ5geqepRpdNVLq6ekQm_YI1pj8r2BJlLwnH9Dcb218QTw1bJIbjddye_vMlsGtnzXhShc2EUl6DDzIT0lev4qc-eod6gMt0Vei6cdX4z01fEVPpg">
+                <img alt="<%= producto.nombre %>" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="<%= producto.imagen %>">
                 <!-- Chips -->
                 <div class="absolute top-4 left-4 flex flex-col gap-2 z-10">
-                    <span class="bg-primary-container text-secondary font-label-sm text-label-sm px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-md">Best Seller</span>
-                    <span class="bg-surface-container-lowest/80 text-secondary font-label-sm text-label-sm px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-md border border-secondary/30">Envío Gratis</span>
+                    <% if (producto.etiqueta) { %>
+                    <span class="bg-primary-container text-secondary font-label-sm text-label-sm px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-md"><%= producto.etiqueta %></span>
+                    <% } %>
+                    <span class="bg-surface-container-lowest/80 text-secondary font-label-sm text-label-sm px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-md border border-secondary/30">Envío Discreto</span>
                 </div>
                 <!-- Wishlist FAB -->
-                <button id="btnWishlist" class="absolute top-4 right-4 h-12 w-12 rounded-full bg-surface-container-lowest/50 backdrop-blur-md border border-secondary/20 flex items-center justify-center text-on-surface hover:text-secondary hover:border-secondary transition-all duration-300 z-10">
-                    <span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+                <button type="button" data-favorito-toggle data-producto-id="<%= producto.id %>" data-favorito="<%= esFavorito ? 'true' : 'false' %>"
+                        title="<%= esFavorito ? 'Quitar de favoritos' : 'Añadir a favoritos' %>"
+                        class="absolute top-4 right-4 h-12 w-12 rounded-full bg-surface-container-lowest/50 backdrop-blur-md border <%= esFavorito ? 'border-secondary text-secondary' : 'border-secondary/20 text-on-surface hover:text-secondary hover:border-secondary' %> flex items-center justify-center transition-all duration-300 z-10">
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' <%= esFavorito ? 1 : 0 %>;">favorite</span>
                 </button>
             </div>
             <!-- Thumbnails -->
             <div class="flex gap-4 overflow-x-auto hide-scroll pb-2">
                 <button class="w-20 md:w-24 aspect-square flex-shrink-0 rounded-lg overflow-hidden border-2 border-secondary bg-surface-container">
-                    <img alt="Vista 1" class="w-full h-full object-cover" data-alt="Thumbnail view 1 of a sleek, premium intimate wellbeing device in midnight purple. The device is angled slightly to show the ergonomic design. Dark, luxurious lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBojgK0SxxjUMS_AkieRzsZzE5qKH71yxthVJoSaH2J-mDdCtxN6MrB4-hn1pHsoEzXQ21AdlHZ9tpt_WaYRHapmF7t7bI4zLxgf4jSTHphXM12SLbzXowb1mnj1hjnUQOWjXZp_HuXKRjANlRDOJM4LEeqmau-XjBtDwjlC0KYd23aGuXZR1WxX--8AX3pIIvuVtC4A2M1yWSd84QRz2Hm8SvK6-_tqwmR7VERjJlQJNK71Tc9llA">
-                </button>
-                <button class="w-20 md:w-24 aspect-square flex-shrink-0 rounded-lg overflow-hidden border border-transparent hover:border-secondary/50 bg-surface-container transition-colors">
-                    <img alt="Vista 2" class="w-full h-full object-cover" data-alt="Thumbnail view 2 of a premium intimate wellbeing device showing the control panel with elegant rose gold buttons. Dark, luxurious lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhDEQEMStOMWfpfzAz7-Fomy9k5JbQbRwCn7OgSUqNFb7MGoxUJRX_U_men0QKRJ2vGVUa850tNkIDSl3OQdY3br6ZlKnBfrjS4y9rXcaFIzimFaBQ9dDmOsQruHO4-Xw0Su0jvgucygVJfOB24x4niImfE0YQCGLi40TazMQvSrnsN8-5AqH1yC2a8Xjs-AT7qnGV_Ed8wv2s9HafSPvw2Ph0Th0QI9r_O0IFc7LB3pKlLptZzGI">
-                </button>
-                <button class="w-20 md:w-24 aspect-square flex-shrink-0 rounded-lg overflow-hidden border border-transparent hover:border-secondary/50 bg-surface-container transition-colors">
-                    <img alt="Vista 3" class="w-full h-full object-cover" data-alt="Thumbnail view 3 of a premium intimate wellbeing device in packaging. A sleek, matte black box with gold foil lettering. Dark, luxurious lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZ1P9oREWrX_-P9bv-Ll32FDRqmZI1OmgDPGRasZgz5pRdUftKFLh2APiw_KGSi5f4A_n7a8hzTdown9epkaBsO5qLjmHSKdWil85AB-nH36IpR4sRt7clIjn6bm-ByhhUHrlypwyjZYkafD5yqRG0Vn1lipHigcyDhL7CC5jur_p0-r4WCZz7oOrQmEwqvGmWAeFSIG1l8vRgd1oyLg_EurJx-WIwCyag8byJ0xalmhM-gGf2WbU">
-                </button>
-                <button class="w-20 md:w-24 aspect-square flex-shrink-0 rounded-lg overflow-hidden border border-transparent hover:border-secondary/50 bg-surface-container transition-colors flex items-center justify-center relative">
-                    <img alt="Vista 4" class="w-full h-full object-cover opacity-60" data-alt="Thumbnail view 4 showing lifestyle context. The premium intimate wellbeing device resting on a marble nightstand next to a glowing candle. Dark, luxurious lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcm8pibiajevPWhlEtVoY9GN_hNgmfGG7SpyPgtafjLk9GE-cC6VKy9wsgNHI6-lGtaxS6wjeQzbtTEjjeLBz7jHz0eOMOi1lSWICIg7Fm2XSpFdNHUbdi-RN7_bIhb6HDm-mljsHVw_qHG1cAztpp0HwnUszc56ZipQeVW1SsanvccZi-lsR6Nx9d3zaOgprbt32D-NISIgdch5j5b55ZYTgDIc4tjOnr9qDDT7qvcIwFAMy0fuU">
-                    <span class="material-symbols-outlined absolute text-on-surface text-3xl">play_circle</span>
+                    <img alt="Vista principal" class="w-full h-full object-cover" src="<%= producto.imagen %>">
                 </button>
             </div>
         </div>
         <!-- Product Info (Right) -->
         <div class="w-full lg:w-2/5 flex flex-col pt-4 md:pt-8 sticky top-28">
+            <% const categoriaLabels = { joyeria: 'Joyería Íntima', estimuladores: 'Estimuladores', cosmetica: 'Cosmética Sensorial', kits: 'Kits Exclusivos' }; %>
             <!-- Brand / Category -->
             <div class="mb-2">
-                <span class="font-label-md text-label-md text-secondary tracking-widest uppercase">Estimuladores</span>
+                <span class="font-label-md text-label-md text-secondary tracking-widest uppercase"><%= categoriaLabels[producto.categoria] || producto.categoria %></span>
             </div>
             <!-- Title -->
-            <h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Éxtasis Profundo Pro</h1>
-            <!-- Rating -->
-            <div class="flex items-center gap-2 mb-6">
-                <div class="flex text-secondary">
-                    <span class="material-symbols-outlined" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
-                    <span class="material-symbols-outlined" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
-                    <span class="material-symbols-outlined" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
-                    <span class="material-symbols-outlined" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
-                    <span class="material-symbols-outlined" data-icon="star_half" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star_half</span>
-                </div>
-                <span class="font-body-md text-body-md text-on-surface-variant underline decoration-secondary/30 underline-offset-4 cursor-pointer hover:text-secondary transition-colors">(124 Reseñas)</span>
-            </div>
+            <h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface"><%= producto.nombre %></h1>
             <!-- Price -->
-            <div class="mb-8">
-                <span class="font-headline-md text-headline-md text-secondary">€129.00</span>
+            <div class="mb-8 mt-4">
+                <span class="font-headline-md text-headline-md text-secondary"><%= Number(producto.precio).toFixed(2) %>€</span>
             </div>
             <!-- Description -->
             <p class="font-body-lg text-body-lg text-on-surface-variant mb-8 leading-relaxed">
-                Descubre una nueva dimensión del placer. Diseñado con silicona aterciopelada de grado médico y tecnología de ondas sónicas de última generación, este dispositivo ofrece una estimulación profunda y sin contacto. Sumérgete en un viaje íntimo de lujo y sofisticación.
+                <%= producto.descripcion %>
             </p>
-            <!-- Color Selection -->
-            <div class="mb-8">
-                <span class="font-label-md text-label-md text-on-surface uppercase mb-3 block">Color: <span class="text-secondary ml-2">Púrpura Medianoche</span></span>
-                <div class="bg-surface-container-low p-4 rounded-xl flex gap-4 w-fit">
-                    <button aria-label="Color Púrpura Medianoche" class="w-10 h-10 rounded-full bg-[#2c0050] border-2 border-secondary gold-glow"></button>
-                    <button aria-label="Color Obsidiana" class="w-10 h-10 rounded-full bg-[#0a0a0a] border border-transparent hover:border-secondary/50 transition-colors"></button>
-                    <button aria-label="Color Rojo Carmesí" class="w-10 h-10 rounded-full bg-[#8b0000] border border-transparent hover:border-secondary/50 transition-colors"></button>
-                </div>
-            </div>
             <!-- Actions -->
             <div class="flex flex-col gap-4 mb-12">
                 <button class="w-full bg-secondary text-on-secondary font-label-md text-label-md uppercase tracking-wider py-4 rounded-lg hover:bg-secondary-fixed transition-colors font-bold gold-glow flex items-center justify-center gap-2">
@@ -102,38 +77,15 @@
             </div>
             <!-- Accordions for Details -->
             <div class="flex flex-col gap-4">
-                <!-- Características -->
                 <details class="group border-b border-surface-container-highest pb-4" open="">
                     <summary class="flex justify-between items-center cursor-pointer list-none font-headline-md text-body-lg text-on-background hover:text-secondary transition-colors">
-                        Características
+                        Descripción
                         <span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
                     </summary>
                     <div class="pt-4 font-body-md text-body-md text-on-surface-variant">
-                        <ul class="flex flex-col gap-3">
-                            <li class="flex items-start gap-3">
-                                <span class="material-symbols-outlined text-secondary text-sm mt-1" data-icon="circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">circle</span>
-                                Tecnología Air Pulse avanzada para estimulación sin contacto.
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <span class="material-symbols-outlined text-secondary text-sm mt-1" data-icon="circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">circle</span>
-                                11 intensidades de ondas de presión.
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <span class="material-symbols-outlined text-secondary text-sm mt-1" data-icon="circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">circle</span>
-                                Silicona supersuave de grado médico, amigable con el cuerpo.
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <span class="material-symbols-outlined text-secondary text-sm mt-1" data-icon="circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">circle</span>
-                                Totalmente sumergible (IPX7) para disfrutar en la bañera.
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <span class="material-symbols-outlined text-secondary text-sm mt-1" data-icon="circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">circle</span>
-                                Batería recargable mediante cable magnético USB.
-                            </li>
-                        </ul>
+                        <%= producto.descripcion %>
                     </div>
                 </details>
-                <!-- Envío y Devoluciones -->
                 <details class="group border-b border-surface-container-highest pb-4">
                     <summary class="flex justify-between items-center cursor-pointer list-none font-headline-md text-body-lg text-on-background hover:text-secondary transition-colors">
                         Envío y Devoluciones
@@ -146,60 +98,42 @@
             </div>
         </div>
     </section>
-    <!-- Related Products (Bento Grid Style) -->
-    <section class="mt-16">
+
+    <!-- Productos Relacionados -->
+    <% if (relacionados.length > 0) { %>
+    <section class="mt-20">
         <h2 class="font-headline-md text-headline-md text-on-background mb-12 text-center">Completa tu Experiencia</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Large Feature Card -->
-            <div class="md:col-span-2 relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden group border border-surface-container-highest hover:border-secondary/30 transition-all duration-500 bg-surface-container-low">
-                <img alt="Lubricante Premium" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A luxurious scene featuring a premium intimate lubricant in an elegant, minimalist dark glass bottle. The bottle sits on a dark slate surface, surrounded by subtle, shimmering droplets. Lighting is dramatic and high-contrast, emphasizing the gold accents on the bottle label. Overall mood is deeply sensual and high-end boutique." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL7INv2NJXU272da06HTLGZSt_DdNxkcYNkOJCTQ67RShIqqIBhUUvrfl3HjLi5kpVWWFLNlPeIi3fyCB6on3MNwU0RneAN5Bup159grCYdmqMLUzstQQCXPNW1Y_-hYvfKJ46h6gdAcyCeKIw9aPjnIu3xhzRql7vZPEEiqYluxhk1ldpzGqdQGMRHeMsumwNqVs7SrMlQuSYUO23EFPM_0sIaUGuL_Lkgd2No6NCpTQa0fhznGM">
-                <div class="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent"></div>
-                <div class="absolute bottom-0 left-0 p-8 w-full">
-                    <span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider mb-2 block">Esencial</span>
-                    <h3 class="font-headline-md text-headline-md text-on-surface mb-2">Seda Líquida Premium</h3>
-                    <p class="font-body-md text-body-md text-on-surface-variant mb-4 max-w-md">El complemento perfecto para maximizar las sensaciones. Fórmula a base de agua, compatible con silicona.</p>
-                    <div class="flex justify-between items-end">
-                        <span class="font-headline-md text-body-lg text-secondary">€24.00</span>
-                        <button class="bg-surface/60 backdrop-blur-md border border-secondary text-secondary p-3 rounded-full hover:bg-secondary hover:text-background transition-colors gold-glow">
-                            <span class="material-symbols-outlined" data-icon="add_shopping_cart">add_shopping_cart</span>
-                        </button>
+            <% relacionados.forEach(rel => { %>
+            <% const relEsFavorito = favoritosIds.has(rel.id); %>
+            <div class="producto-card relative rounded-2xl overflow-hidden group border border-surface-container-highest hover:border-secondary/30 transition-all duration-500 bg-surface-container-low flex flex-col">
+                <button type="button" data-favorito-toggle data-producto-id="<%= rel.id %>" data-favorito="<%= relEsFavorito ? 'true' : 'false' %>"
+                        title="<%= relEsFavorito ? 'Quitar de favoritos' : 'Añadir a favoritos' %>"
+                        class="absolute top-4 right-4 z-10 <%= relEsFavorito ? 'text-secondary' : 'text-on-surface-variant hover:text-secondary' %> transition-colors">
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' <%= relEsFavorito ? 1 : 0 %>;">favorite</span>
+                </button>
+                <a href="/producto/<%= rel.id %>" class="block">
+                    <div class="relative h-56 w-full overflow-hidden bg-surface-container-lowest">
+                        <img alt="<%= rel.nombre %>" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="<%= rel.imagen %>">
                     </div>
-                </div>
+                    <div class="p-6">
+                        <% if (rel.etiqueta) { %>
+                        <span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider mb-2 block"><%= rel.etiqueta %></span>
+                        <% } %>
+                        <h3 class="font-headline-md text-headline-md text-on-surface mb-2"><%= rel.nombre %></h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant mb-4 line-clamp-2"><%= rel.descripcion_corta %></p>
+                        <span class="font-headline-md text-body-lg text-secondary"><%= Number(rel.precio).toFixed(2) %>€</span>
+                    </div>
+                </a>
             </div>
-            <!-- Small Cards -->
-            <div class="flex flex-col gap-6">
-                <div class="relative h-[190px] md:h-[238px] rounded-2xl overflow-hidden group border border-surface-container-highest hover:border-secondary/30 transition-all duration-500 flex items-center p-4 bg-surface-container-low">
-                    <div class="w-1/2 h-full flex-shrink-0">
-                        <img alt="Limpiador" class="w-full h-full object-cover rounded-lg" data-alt="A sleek, metallic luxury massage wand in deep rose gold, standing upright against a dark, textured background. Dramatic lighting highlighting its curves. High-end sensual boutique vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBV8B9oR0xR8M_my_paW_inKs8yEb5QXI2iiw9Z-hB5ZGN6ZSoLTmOkB7jpoavGX7XD88OnQtPfTdj6pO1A5lJndZCHqtvZzD5a67iDLrfqMWatLQtHiIGaAe_hdHEOLz2IR0KYFTi3CCZ2EaPetP08fv8hPr8n9ZHXZb7sI-LQ70qEhEN1kthlB5HsFydn9XEOnDmt2A1QS7KVSkZtaP-eJIVvunVbOla17T-PW2cnWpLj51rY414">
-                    </div>
-                    <div class="w-1/2 pl-4 flex flex-col justify-center">
-                        <span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider mb-1 block">Cuidado</span>
-                        <h3 class="font-headline-md text-body-lg text-on-surface mb-1">Bruma Purificante</h3>
-                        <span class="font-body-md text-body-md text-secondary mb-3">€18.00</span>
-                        <button class="text-on-surface hover:text-secondary font-label-sm text-label-sm uppercase flex items-center gap-1 transition-colors">
-                            Añadir <span class="material-symbols-outlined text-sm" data-icon="arrow_right_alt">arrow_right_alt</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="relative h-[190px] md:h-[238px] rounded-2xl overflow-hidden group border border-surface-container-highest hover:border-secondary/30 transition-all duration-500 flex items-center p-4 bg-surface-container-low">
-                    <div class="w-1/2 h-full flex-shrink-0">
-                        <img alt="Funda" class="w-full h-full object-cover rounded-lg" data-alt="A beautifully crafted, minimalist silk storage pouch for intimate devices. Dark purple silk material resting on a dark vanity table. Soft, luxurious lighting. High-end sensual boutique vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlskooOEew2zfTQlZmXelROQsGWgdwPZA0KjHtCDxbTENjDDGCcaiMUMM7k_xQUU3GSvF6R6kbRAS5VTuq6o_4EGcxhyA46VGhiQgC2NEUW_31r3G-7dvBVoEMRU2j_dQ-32SjvE8khAyKhIylbiT3o3OCZkRVjiY91mL8J__eYm_3uD7M3Uo6SRc1oHUbmsVe28hyLrylv2KNyLW5hDx69fAlqEBWYRr52KVU90eD8rAVHHYfeDI">
-                    </div>
-                    <div class="w-1/2 pl-4 flex flex-col justify-center">
-                        <span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider mb-1 block">Accesorios</span>
-                        <h3 class="font-headline-md text-body-lg text-on-surface mb-1">Funda de Seda</h3>
-                        <span class="font-body-md text-body-md text-secondary mb-3">€35.00</span>
-                        <button class="text-on-surface hover:text-secondary font-label-sm text-label-sm uppercase flex items-center gap-1 transition-colors">
-                            Añadir <span class="material-symbols-outlined text-sm" data-icon="arrow_right_alt">arrow_right_alt</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <% }) %>
         </div>
     </section>
+    <% } %>
 </main>
 <!-- Footer -->
 <%-include('partials/footer')%>
+<script src="/javascripts/favoritos.js"></script>
 
 </body>
 </html>

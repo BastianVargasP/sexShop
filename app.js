@@ -47,9 +47,9 @@ app.use(session({
             database: config.db.database,
         },
         tableName: 'session',
-        createTableIfMissing: false,
+        createTableIfMissing: true,
     }),
-    secret: config.db.secret,
+    secret: config.session.secret,
     resave: false,
     saveUninitialized: false,
     cookie: {

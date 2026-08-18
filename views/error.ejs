@@ -18,7 +18,7 @@
         <div class="relative mb-8">
             <!-- Large 404 Decorative -->
             <h1 class="text-[120px] md:text-[200px] leading-none font-headline-xl text-gradient-gold opacity-90 drop-shadow-xl select-none tracking-tighter">
-                404</h1>
+                <%= error.status || 500 %></h1>
             <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[120%] h-1/2 bg-secondary/5 blur-[100px] rounded-full pointer-events-none"></div>
         </div>
         <h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-4 tracking-tight">
