@@ -11,8 +11,15 @@ import { getDbClient } from './helpers/database.js';
 
 // Importación de archivos de ruteo (locales) según el éstandar ES6
 import indexRouter from './routes/index.js';
-import usersRouter from './routes/users.js';
 import authRouter from './routes/auth.js';
+import usersRouter from './routes/users.js';
+import perfilRouter from './routes/perfil.js';
+import productosRouter from './routes/productos.js';
+import direccionesRouter from './routes/direcciones.js';
+import pedidosRouter from './routes/pedidos.js';
+import carritoRouter from './routes/carrito.js';
+import favoritosRouter from './routes/favoritos.js';
+import checkoutRouter from './routes/checkout.js';
 
 // Importación de configuración y logger propios del proyecto
 import {config} from "./config/config.js";
@@ -98,6 +105,13 @@ try {
 
 // Acá están las rutas configuradas y existentes de mi proyecto
 app.use('/', indexRouter);
+app.use('/', productosRouter);
+app.use('/', perfilRouter);
+app.use('/', pedidosRouter);
+app.use('/', direccionesRouter);
+app.use('/', carritoRouter);
+app.use('/', favoritosRouter);
+app.use('/', checkoutRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
 

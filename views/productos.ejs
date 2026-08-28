@@ -97,12 +97,12 @@
                         <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' <%= esFavorito ? 1 : 0 %>;">favorite</span>
                     </button>
                     <div class="relative h-80 w-full overflow-hidden bg-surface-container-lowest">
-                        <a href="/producto/<%= producto.id %>" class="block w-full h-full">
+                        <a href="/productos/<%= producto.id %>" class="block w-full h-full">
                             <img class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100" src="<%= producto.imagen %>" alt="<%= producto.nombre %>">
                         </a>
                     </div>
                     <div class="p-5 flex flex-col gap-2 relative z-20 bg-gradient-to-t from-surface-container-highest via-surface-container/90 to-transparent">
-                        <a href="/producto/<%= producto.id %>">
+                        <a href="/productos/<%= producto.id %>">
                             <h3 class="font-headline-md text-lg text-on-surface group-hover:text-secondary transition-colors truncate"><%= producto.nombre %></h3>
                         </a>
                         <p class="font-body-md text-sm text-on-surface-variant line-clamp-2"><%= producto.descripcion_corta %></p>

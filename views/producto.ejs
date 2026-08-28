@@ -123,7 +123,7 @@
                         class="absolute top-4 right-4 z-10 <%= relEsFavorito ? 'text-secondary' : 'text-on-surface-variant hover:text-secondary' %> transition-colors">
                     <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' <%= relEsFavorito ? 1 : 0 %>;">favorite</span>
                 </button>
-                <a href="/producto/<%= rel.id %>" class="block">
+                <a href="/productos/<%= rel.id %>" class="block">
                     <div class="relative h-56 w-full overflow-hidden bg-surface-container-lowest">
                         <img alt="<%= rel.nombre %>" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="<%= rel.imagen %>">
                     </div>

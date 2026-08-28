@@ -40,7 +40,7 @@
                     <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">favorite</span>
                 </button>
                 <div class="relative h-80 w-full overflow-hidden bg-surface-container-lowest">
-                    <a href="/producto/<%= fav.producto_id %>" class="block w-full h-full">
+                    <a href="/productos/<%= fav.producto_id %>" class="block w-full h-full">
                         <% if (fav.producto_imagen) { %>
                         <img class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100" src="<%= fav.producto_imagen %>" alt="<%= fav.producto_nombre %>">
                         <% } else { %>
@@ -51,7 +51,7 @@
                     </a>
                 </div>
                 <div class="p-5 flex flex-col gap-2 relative z-20 bg-gradient-to-t from-surface-container-highest via-surface-container/90 to-transparent">
-                    <a href="/producto/<%= fav.producto_id %>">
+                    <a href="/productos/<%= fav.producto_id %>">
                         <h3 class="font-headline-md text-lg text-on-surface group-hover:text-secondary transition-colors truncate"><%= fav.producto_nombre %></h3>
                     </a>
                     <% if (fav.producto_descripcion) { %>
@@ -59,7 +59,7 @@
                     <% } %>
                     <div class="flex justify-between items-center mt-2">
                         <span class="font-label-md text-lg text-secondary"><%= formatearCLP(fav.precio) %></span>
-                        <button class="bg-secondary text-on-secondary-container hover:bg-secondary-fixed transition-colors p-2 rounded-full flex items-center justify-center">
+                        <button type="button" data-add-carrito data-producto-id="<%= fav.producto_id %>" class="bg-secondary text-on-secondary-container hover:bg-secondary-fixed transition-colors p-2 rounded-full flex items-center justify-center">
                             <span class="material-symbols-outlined text-sm">shopping_bag</span>
                         </button>
                     </div>
@@ -71,5 +71,6 @@
 </main>
 <!-- Footer -->
 <%-include('partials/footer')%>
+<script src="/javascripts/carrito.js"></script>
 <script src="/javascripts/favoritos.js"></script>
 </body></html>

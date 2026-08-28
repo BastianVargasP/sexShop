@@ -1,4 +1,13 @@
 (function () {
+    const formateadorCLP = new Intl.NumberFormat('es-CL', {
+        style: 'currency',
+        currency: 'CLP',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+    });
+
+    const formatearCLP = (valor) => formateadorCLP.format(Number(valor) || 0);
+
     function mostrarToast(mensaje, tipo) {
         let contenedor = document.querySelector('#toast-container');
         if (!contenedor) {
@@ -57,14 +66,14 @@
             const precioEl = fila.querySelector('[data-carrito-precio-unitario]');
             const precioUnitario = Number(precioEl.dataset.carritoPrecioUnitario);
             const totalFila = precioUnitario * cantidad;
-            precioEl.textContent = `${totalFila.toFixed(2)}€`;
+            precioEl.textContent = formatearCLP(totalFila);
             subtotal += totalFila;
         });
 
         const subtotalEl = document.querySelector('#carritoSubtotal');
         const totalEl = document.querySelector('#carritoTotal');
-        if (subtotalEl) subtotalEl.textContent = `${subtotal.toFixed(2)}€`;
-        if (totalEl) totalEl.textContent = `${subtotal.toFixed(2)}€`;
+        if (subtotalEl) subtotalEl.textContent = formatearCLP(subtotal);
+        if (totalEl) totalEl.textContent = formatearCLP(subtotal);
     }
 
     // Añadir al carrito (botones en /productos y /producto/:id)
