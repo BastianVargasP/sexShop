@@ -7,7 +7,7 @@ import morgan from 'morgan';
 import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
 import {formatearCLP} from "./helpers/formato.js";
-import { getDbClient } from './helpers/database.js';
+import { pool } from './helpers/database.js';
 
 // Importación de archivos de ruteo (locales) según el éstandar ES6
 import indexRouter from './routes/index.js';
@@ -17,6 +17,7 @@ import perfilRouter from './routes/perfil.js';
 import productosRouter from './routes/productos.js';
 import direccionesRouter from './routes/direcciones.js';
 import pedidosRouter from './routes/pedidos.js';
+import pagosRouter from './routes/pagos.js';
 import carritoRouter from './routes/carrito.js';
 import favoritosRouter from './routes/favoritos.js';
 import checkoutRouter from './routes/checkout.js';
@@ -27,7 +28,6 @@ import {registrarActividad} from "./helpers/logger.js";
 import {sequelize} from "./config/sequelize.js";
 
 // La creación del objeto que levanta el servidor
-// El servidor podría ser levantado únicamente con Node.js, pero ocupamos Express.js
 const app = express();
 
 // Activación del motor de plantillas, o vistas (EJS - Embebed JavaScript)
@@ -74,18 +74,14 @@ app.use(async (req, res, next) => {
     res.locals.cantidadCarrito = 0;
 
     if (req.session.usuario) {
-        const conexion = getDbClient();
         try {
-            await conexion.connect();
-            const resultado = await conexion.query(
+            const resultado = await pool.query(
                 'SELECT COALESCE(SUM(cantidad), 0) AS total FROM carrito_items WHERE cliente_id = $1',
                 [req.session.usuario.id]
             );
             res.locals.cantidadCarrito = Number(resultado.rows[0].total);
         } catch (error) {
             registrarActividad(`🛒❌ MIDDLEWARE cantidadCarrito - ERROR: ${error.message}`);
-        } finally {
-            await conexion.end();
         }
     }
     next();
@@ -108,6 +104,7 @@ app.use('/', indexRouter);
 app.use('/', productosRouter);
 app.use('/', perfilRouter);
 app.use('/', pedidosRouter);
+app.use('/', pagosRouter);
 app.use('/', direccionesRouter);
 app.use('/', carritoRouter);
 app.use('/', favoritosRouter);
@@ -122,11 +119,9 @@ app.use((req, res, next) => {
 
 // Acá se configura los errores en general
 app.use((err, req, res, next) => {
-    // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-    // render the error page
     res.status(err.status || 500);
     res.render('error');
 });

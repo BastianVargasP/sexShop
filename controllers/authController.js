@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import validator from 'validator';
 
 import { registrarActividad } from '../helpers/logger.js';
-import { getDbClient } from '../helpers/database.js';
+import { pool } from '../helpers/database.js';
 
 const MENSAJE_CREDENCIALES_INVALIDAS = 'Email o contraseña incorrectos.';
 
@@ -15,7 +15,6 @@ export const mostrarRegistro = (req, res) => {
 };
 
 export const procesarLogin = async (req, res) => {
-    const conexion = getDbClient();
     try {
         const { email, password } = req.body;
 
@@ -27,8 +26,7 @@ export const procesarLogin = async (req, res) => {
             });
         }
 
-        await conexion.connect();
-        const resultado = await conexion.query(
+        const resultado = await pool.query(
             'SELECT id, nombre, apellido, email, password_hash, telefono FROM clientes WHERE email = $1',
             [email]
         );
@@ -71,13 +69,10 @@ export const procesarLogin = async (req, res) => {
             mensaje: 'Ocurrió un error al iniciar sesión.',
             error: { status: 500, stack: error.message }
         });
-    } finally {
-        await conexion.end();
     }
 };
 
 export const procesarRegistro = async (req, res) => {
-    const conexion = getDbClient();
     try {
         const { nombre, apellido, email, password, telefono } = req.body;
 
@@ -102,14 +97,13 @@ export const procesarRegistro = async (req, res) => {
         registrarActividad(`🔐 SEGURIDAD: Hasheando contraseña para nuevo registro (${email}).`);
         const passwordHash = await bcrypt.hash(password, 10);
 
-        await conexion.connect();
         const insertSql = `
             INSERT INTO clientes (nombre, apellido, email, password_hash, telefono)
             VALUES ($1, $2, $3, $4, $5)
-            RETURNING id, nombre, apellido, email, telefono
+                RETURNING id, nombre, apellido, email, telefono
         `;
         const valores = [validator.escape(nombre), validator.escape(apellido), email, passwordHash, telefono];
-        await conexion.query(insertSql, valores);
+        await pool.query(insertSql, valores);
 
         registrarActividad(`🔐 POST /autenticacion/registro - ÉXITO: Usuario registrado correctamente (${email}).`);
         res.redirect('/auth/login');
@@ -130,8 +124,6 @@ export const procesarRegistro = async (req, res) => {
             mensaje: mensajeError,
             error: { status: statusCode, stack: error.message }
         });
-    } finally {
-        await conexion.end();
     }
 };
 

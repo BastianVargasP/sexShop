@@ -1,28 +1,25 @@
-import { getDbClient } from '../helpers/database.js';
+import { pool } from '../helpers/database.js';
 import { registrarActividad } from '../helpers/logger.js';
 import { quiereJson } from '../helpers/peticiones.js';
 
 /* ==================== Agregar producto al carrito ==================== */
 
 export const agregarAlCarrito = async (req, res, next) => {
-    const conexion = getDbClient();
     try {
-        await conexion.connect();
-
-        const productoResult = await conexion.query('SELECT id FROM productos WHERE id = $1', [req.params.id]);
+        const productoResult = await pool.query('SELECT id FROM productos WHERE id = $1', [req.params.id]);
         if (productoResult.rows.length === 0) {
             return next(); // producto inexistente -> 404
         }
 
-        await conexion.query(
+        await pool.query(
             `INSERT INTO carrito_items (cliente_id, producto_id, cantidad)
              VALUES ($1, $2, 1)
-             ON CONFLICT (cliente_id, producto_id)
+                 ON CONFLICT (cliente_id, producto_id)
              DO UPDATE SET cantidad = carrito_items.cantidad + 1`,
             [req.session.usuario.id, req.params.id]
         );
 
-        const totalResult = await conexion.query(
+        const totalResult = await pool.query(
             'SELECT COALESCE(SUM(cantidad), 0) AS total FROM carrito_items WHERE cliente_id = $1',
             [req.session.usuario.id]
         );
@@ -39,23 +36,18 @@ export const agregarAlCarrito = async (req, res, next) => {
             return res.status(500).json({ ok: false, error: 'No se pudo añadir el producto al carrito.' });
         }
         next(error);
-    } finally {
-        await conexion.end();
     }
 };
 
 /* ==================== Ver carrito ==================== */
 
 export const verCarrito = async (req, res, next) => {
-    const conexion = getDbClient();
     try {
-        await conexion.connect();
-
-        const resultado = await conexion.query(
+        const resultado = await pool.query(
             `SELECT ci.id, ci.producto_id, ci.cantidad,
                     p.nombre, p.descripcion_corta, p.imagen, p.precio
              FROM carrito_items ci
-             JOIN productos p ON p.id = ci.producto_id
+                      JOIN productos p ON p.id = ci.producto_id
              WHERE ci.cliente_id = $1
              ORDER BY ci.created_at DESC`,
             [req.session.usuario.id]
@@ -68,21 +60,17 @@ export const verCarrito = async (req, res, next) => {
     } catch (error) {
         registrarActividad(`❌ GET /carrito - ERROR: ${error.message}`);
         next(error);
-    } finally {
-        await conexion.end();
     }
 };
 
 /* ==================== Incrementar / decrementar / eliminar ítem ==================== */
 
 export const incrementar = async (req, res, next) => {
-    const conexion = getDbClient();
     try {
-        await conexion.connect();
-        const resultado = await conexion.query(
+        const resultado = await pool.query(
             `UPDATE carrito_items SET cantidad = cantidad + 1
              WHERE id = $1 AND cliente_id = $2
-             RETURNING cantidad`,
+                 RETURNING cantidad`,
             [req.params.id, req.session.usuario.id]
         );
         if (resultado.rows.length === 0) return next();
@@ -96,24 +84,19 @@ export const incrementar = async (req, res, next) => {
         registrarActividad(`🛒❌ POST /carrito/${req.params.id}/incrementar - ERROR: ${error.message}`);
         if (quiereJson(req)) return res.status(500).json({ ok: false });
         next(error);
-    } finally {
-        await conexion.end();
     }
 };
 
 export const decrementar = async (req, res, next) => {
-    const conexion = getDbClient();
     try {
-        await conexion.connect();
-
-        const actual = await conexion.query(
+        const actual = await pool.query(
             'SELECT cantidad FROM carrito_items WHERE id = $1 AND cliente_id = $2',
             [req.params.id, req.session.usuario.id]
         );
         if (actual.rows.length === 0) return next();
 
         if (actual.rows[0].cantidad <= 1) {
-            await conexion.query(
+            await pool.query(
                 'DELETE FROM carrito_items WHERE id = $1 AND cliente_id = $2',
                 [req.params.id, req.session.usuario.id]
             );
@@ -122,10 +105,10 @@ export const decrementar = async (req, res, next) => {
             return res.redirect('/carrito');
         }
 
-        const resultado = await conexion.query(
+        const resultado = await pool.query(
             `UPDATE carrito_items SET cantidad = cantidad - 1
              WHERE id = $1 AND cliente_id = $2
-             RETURNING cantidad`,
+                 RETURNING cantidad`,
             [req.params.id, req.session.usuario.id]
         );
 
@@ -136,16 +119,12 @@ export const decrementar = async (req, res, next) => {
         registrarActividad(`🛒❌ POST /carrito/${req.params.id}/decrementar - ERROR: ${error.message}`);
         if (quiereJson(req)) return res.status(500).json({ ok: false });
         next(error);
-    } finally {
-        await conexion.end();
     }
 };
 
 export const eliminarItem = async (req, res, next) => {
-    const conexion = getDbClient();
     try {
-        await conexion.connect();
-        const resultado = await conexion.query(
+        const resultado = await pool.query(
             'DELETE FROM carrito_items WHERE id = $1 AND cliente_id = $2 RETURNING id',
             [req.params.id, req.session.usuario.id]
         );
@@ -158,7 +137,5 @@ export const eliminarItem = async (req, res, next) => {
         registrarActividad(`🛒❌ POST /carrito/${req.params.id}/eliminar - ERROR: ${error.message}`);
         if (quiereJson(req)) return res.status(500).json({ ok: false });
         next(error);
-    } finally {
-        await conexion.end();
     }
 };

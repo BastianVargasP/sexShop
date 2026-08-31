@@ -1,4 +1,4 @@
-import { getDbClient } from '../helpers/database.js';
+import { pool, getDbClient } from '../helpers/database.js';
 import { registrarActividad } from '../helpers/logger.js';
 
 const ENVIO_EXPRESS = 5990;
@@ -9,15 +9,12 @@ const generarNumeroPedido = () =>
 /* ==================== Mostrar checkout ==================== */
 
 export const mostrarCheckout = async (req, res, next) => {
-    const conexion = getDbClient();
     try {
-        await conexion.connect();
-
-        const itemsResult = await conexion.query(
+        const itemsResult = await pool.query(
             `SELECT ci.id, ci.producto_id, ci.cantidad,
                     p.nombre, p.descripcion_corta, p.imagen, p.precio
              FROM carrito_items ci
-             JOIN productos p ON p.id = ci.producto_id
+                      JOIN productos p ON p.id = ci.producto_id
              WHERE ci.cliente_id = $1
              ORDER BY ci.created_at DESC`,
             [req.session.usuario.id]
@@ -27,12 +24,12 @@ export const mostrarCheckout = async (req, res, next) => {
             return res.redirect('/carrito');
         }
 
-        const direccionesResult = await conexion.query(
+        const direccionesResult = await pool.query(
             'SELECT * FROM direcciones WHERE cliente_id = $1 ORDER BY predeterminada DESC, created_at DESC',
             [req.session.usuario.id]
         );
 
-        const metodosPagoResult = await conexion.query(
+        const metodosPagoResult = await pool.query(
             'SELECT * FROM metodos_pago WHERE cliente_id = $1 ORDER BY predeterminada DESC, created_at DESC',
             [req.session.usuario.id]
         );
@@ -54,27 +51,25 @@ export const mostrarCheckout = async (req, res, next) => {
     } catch (error) {
         registrarActividad(`❌ GET /checkout - ERROR: ${error.message}`);
         next(error);
-    } finally {
-        await conexion.end();
     }
 };
 
 /* ==================== Procesar checkout (crear pedido) ==================== */
 
 export const procesarCheckout = async (req, res, next) => {
-    const conexion = getDbClient();
+    const { direccionId, metodoPagoId } = req.body;
+
+    if (!direccionId || !metodoPagoId) {
+        return res.status(400).render('error', {
+            ok: false,
+            mensaje: 'Debes seleccionar una dirección de envío y un método de pago.',
+            error: { status: 400, stack: 'Revisa el formulario e intenta nuevamente.' }
+        });
+    }
+
+    // Transacción real: necesitamos un mismo cliente físico para BEGIN/COMMIT/ROLLBACK
+    const conexion = await getDbClient();
     try {
-        const { direccionId, metodoPagoId } = req.body;
-
-        if (!direccionId || !metodoPagoId) {
-            return res.status(400).render('error', {
-                ok: false,
-                mensaje: 'Debes seleccionar una dirección de envío y un método de pago.',
-                error: { status: 400, stack: 'Revisa el formulario e intenta nuevamente.' }
-            });
-        }
-
-        await conexion.connect();
         await conexion.query('BEGIN');
 
         // Verificar que la dirección y el metodo de pago pertenecen al cliente
@@ -100,7 +95,7 @@ export const procesarCheckout = async (req, res, next) => {
         const itemsResult = await conexion.query(
             `SELECT ci.producto_id, ci.cantidad, p.nombre, p.descripcion_corta, p.imagen, p.precio
              FROM carrito_items ci
-             JOIN productos p ON p.id = ci.producto_id
+                      JOIN productos p ON p.id = ci.producto_id
              WHERE ci.cliente_id = $1`,
             [req.session.usuario.id]
         );
@@ -119,7 +114,7 @@ export const procesarCheckout = async (req, res, next) => {
         const pedidoResult = await conexion.query(
             `INSERT INTO pedidos (cliente_id, numero_pedido, estado, subtotal, envio, total, direccion_id, metodo_pago_id)
              VALUES ($1, $2, 'procesando', $3, $4, $5, $6, $7)
-             RETURNING id`,
+                 RETURNING id`,
             [req.session.usuario.id, numeroPedido, subtotal, envio, total, direccionId, metodoPagoId]
         );
         const pedidoId = pedidoResult.rows[0].id;
@@ -141,10 +136,10 @@ export const procesarCheckout = async (req, res, next) => {
     } catch (error) {
         try {
             await conexion.query('ROLLBACK');
-        } catch (_) { /* la conexión puede ya estar cerrada, se ignora */ }
+        } catch (_) { /* la conexión puede ya estar en mal estado, se ignora */ }
         registrarActividad(`💳❌ POST /checkout - ERROR: ${error.message}`);
         next(error);
     } finally {
-        await conexion.end();
+        conexion.release(); // <- release, NO end() (end() cerraría la conexión física)
     }
 };

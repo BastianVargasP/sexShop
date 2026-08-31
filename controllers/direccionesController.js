@@ -1,11 +1,9 @@
-import {getDbClient} from "../helpers/database.js";
-import {registrarActividad} from "../helpers/logger.js";
+import { pool } from "../helpers/database.js";
+import { registrarActividad } from "../helpers/logger.js";
 
 export const listarDirecciones = async (req, res, next) => {
-    const conexion = getDbClient();
     try {
-        await conexion.connect();
-        const resultado = await conexion.query(
+        const resultado = await pool.query(
             'SELECT * FROM direcciones WHERE cliente_id = $1 ORDER BY predeterminada DESC, created_at DESC',
             [req.session.usuario.id]
         );
@@ -14,8 +12,6 @@ export const listarDirecciones = async (req, res, next) => {
     } catch (error) {
         registrarActividad(`❌ GET /direcciones - ERROR: ${error.message}`);
         next(error);
-    } finally {
-        await conexion.end();
     }
 };
 
@@ -24,7 +20,6 @@ export const formularioNuevaDireccion = async (req, res, next) => {
 };
 
 export const nuevaDireccion = async (req, res, next) => {
-    const conexion = getDbClient();
     try {
         const { etiqueta, address, city, postalCode, province, country, phone, defaultAddress } = req.body;
 
@@ -36,16 +31,14 @@ export const nuevaDireccion = async (req, res, next) => {
             });
         }
 
-        await conexion.connect();
-
         if (defaultAddress) {
-            await conexion.query(
+            await pool.query(
                 'UPDATE direcciones SET predeterminada = FALSE WHERE cliente_id = $1',
                 [req.session.usuario.id]
             );
         }
 
-        await conexion.query(
+        await pool.query(
             `INSERT INTO direcciones (cliente_id, etiqueta, direccion, ciudad, codigo_postal, comuna, region, telefono, predeterminada)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
             [req.session.usuario.id, etiqueta || 'Dirección', address, city, postalCode, province, country, phone, !!defaultAddress]
@@ -56,16 +49,12 @@ export const nuevaDireccion = async (req, res, next) => {
     } catch (error) {
         registrarActividad(`📍❌ POST /nueva-direccion - ERROR: ${error.message}`);
         next(error);
-    } finally {
-        await conexion.end();
     }
 };
 
 export const formularioEditarDireccion = async (req, res, next) => {
-    const conexion = getDbClient();
     try {
-        await conexion.connect();
-        const resultado = await conexion.query(
+        const resultado = await pool.query(
             'SELECT * FROM direcciones WHERE id = $1 AND cliente_id = $2',
             [req.params.id, req.session.usuario.id]
         );
@@ -78,13 +67,10 @@ export const formularioEditarDireccion = async (req, res, next) => {
     } catch (error) {
         registrarActividad(`❌ GET /direcciones/${req.params.id}/editar - ERROR: ${error.message}`);
         next(error);
-    } finally {
-        await conexion.end();
     }
 }
 
 export const editarDireccion = async (req, res, next) => {
-    const conexion = getDbClient();
     try {
         const { etiqueta, address, city, postalCode, province, country, phone, defaultAddress } = req.body;
 
@@ -96,9 +82,7 @@ export const editarDireccion = async (req, res, next) => {
             });
         }
 
-        await conexion.connect();
-
-        const propietaria = await conexion.query(
+        const propietaria = await pool.query(
             'SELECT id FROM direcciones WHERE id = $1 AND cliente_id = $2',
             [req.params.id, req.session.usuario.id]
         );
@@ -107,16 +91,16 @@ export const editarDireccion = async (req, res, next) => {
         }
 
         if (defaultAddress) {
-            await conexion.query(
+            await pool.query(
                 'UPDATE direcciones SET predeterminada = FALSE WHERE cliente_id = $1',
                 [req.session.usuario.id]
             );
         }
 
-        await conexion.query(
+        await pool.query(
             `UPDATE direcciones
-       SET etiqueta = $1, direccion = $2, ciudad = $3, codigo_postal = $4, comuna = $5, region = $6, telefono = $7, predeterminada = $8
-       WHERE id = $9 AND cliente_id = $10`,
+             SET etiqueta = $1, direccion = $2, ciudad = $3, codigo_postal = $4, comuna = $5, region = $6, telefono = $7, predeterminada = $8
+             WHERE id = $9 AND cliente_id = $10`,
             [etiqueta || 'Dirección', address, city, postalCode, province, country, phone, !!defaultAddress, req.params.id, req.session.usuario.id]
         );
 
@@ -125,16 +109,12 @@ export const editarDireccion = async (req, res, next) => {
     } catch (error) {
         registrarActividad(`📍❌ POST /direcciones/${req.params.id}/editar - ERROR: ${error.message}`);
         next(error);
-    } finally {
-        await conexion.end();
     }
 };
 
 export const eliminarDireccion = async (req, res, next) => {
-    const conexion = getDbClient();
     try {
-        await conexion.connect();
-        const resultado = await conexion.query(
+        const resultado = await pool.query(
             'DELETE FROM direcciones WHERE id = $1 AND cliente_id = $2 RETURNING id',
             [req.params.id, req.session.usuario.id]
         );
@@ -148,17 +128,12 @@ export const eliminarDireccion = async (req, res, next) => {
     } catch (error) {
         registrarActividad(`📍❌ POST /direcciones/${req.params.id}/eliminar - ERROR: ${error.message}`);
         next(error);
-    } finally {
-        await conexion.end();
     }
 };
 
 export const marcarPredeterminada = async (req, res, next) => {
-    const conexion = getDbClient();
     try {
-        await conexion.connect();
-
-        const propietaria = await conexion.query(
+        const propietaria = await pool.query(
             'SELECT id FROM direcciones WHERE id = $1 AND cliente_id = $2',
             [req.params.id, req.session.usuario.id]
         );
@@ -166,15 +141,13 @@ export const marcarPredeterminada = async (req, res, next) => {
             return next();
         }
 
-        await conexion.query('UPDATE direcciones SET predeterminada = FALSE WHERE cliente_id = $1', [req.session.usuario.id]);
-        await conexion.query('UPDATE direcciones SET predeterminada = TRUE WHERE id = $1', [req.params.id]);
+        await pool.query('UPDATE direcciones SET predeterminada = FALSE WHERE cliente_id = $1', [req.session.usuario.id]);
+        await pool.query('UPDATE direcciones SET predeterminada = TRUE WHERE id = $1', [req.params.id]);
 
         registrarActividad(`📍 POST /direcciones/${req.params.id}/predeterminada - ÉXITO.`);
         res.redirect('/direcciones');
     } catch (error) {
         registrarActividad(`📍❌ POST /direcciones/${req.params.id}/predeterminada - ERROR: ${error.message}`);
         next(error);
-    } finally {
-        await conexion.end();
     }
 };

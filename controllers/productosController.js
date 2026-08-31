@@ -1,10 +1,10 @@
-import { getDbClient } from '../helpers/database.js';
+import { pool } from '../helpers/database.js';
 import { registrarActividad } from '../helpers/logger.js';
 import { quiereJson } from '../helpers/peticiones.js';
 
-const obtenerFavoritosIds = async (conexion, clienteId) => {
+const obtenerFavoritosIds = async (clienteId) => {
     if (!clienteId) return new Set();
-    const favResult = await conexion.query(
+    const favResult = await pool.query(
         'SELECT producto_id FROM favoritos WHERE cliente_id = $1',
         [clienteId]
     );
@@ -12,38 +12,32 @@ const obtenerFavoritosIds = async (conexion, clienteId) => {
 };
 
 export const listarProductos = async (req, res, next) => {
-    const conexion = getDbClient();
     try {
-        await conexion.connect();
-        const resultado = await conexion.query(
+        const resultado = await pool.query(
             'SELECT * FROM productos ORDER BY destacado DESC, created_at DESC'
         );
-        const favoritosIds = await obtenerFavoritosIds(conexion, req.session.usuario?.id);
+        const favoritosIds = await obtenerFavoritosIds(req.session.usuario?.id);
 
         res.render('productos', { title: 'Productos', productos: resultado.rows, favoritosIds });
     } catch (error) {
         registrarActividad(`❌ GET /productos - ERROR: ${error.message}`);
         next(error);
-    } finally {
-        await conexion.end();
     }
 };
 
 export const verProducto = async (req, res, next) => {
-    const conexion = getDbClient();
     try {
-        await conexion.connect();
-        const resultado = await conexion.query('SELECT * FROM productos WHERE id = $1', [req.params.id]);
+        const resultado = await pool.query('SELECT * FROM productos WHERE id = $1', [req.params.id]);
         if (resultado.rows.length === 0) return next();
 
         const producto = resultado.rows[0];
-        const relacionadosResult = await conexion.query(
+        const relacionadosResult = await pool.query(
             `SELECT * FROM productos WHERE categoria = $1 AND id != $2
              ORDER BY destacado DESC, created_at DESC LIMIT 3`,
             [producto.categoria, producto.id]
         );
 
-        const favoritosIds = await obtenerFavoritosIds(conexion, req.session.usuario?.id);
+        const favoritosIds = await obtenerFavoritosIds(req.session.usuario?.id);
 
         res.render('producto', {
             title: producto.nombre,
@@ -55,16 +49,12 @@ export const verProducto = async (req, res, next) => {
     } catch (error) {
         registrarActividad(`❌ GET /productos/${req.params.id} - ERROR: ${error.message}`);
         next(error);
-    } finally {
-        await conexion.end();
     }
 };
 
 export const agregarFavorito = async (req, res, next) => {
-    const conexion = getDbClient();
     try {
-        await conexion.connect();
-        await conexion.query(
+        await pool.query(
             `INSERT INTO favoritos (cliente_id, producto_id) VALUES ($1, $2)
                 ON CONFLICT (cliente_id, producto_id) DO NOTHING`,
             [req.session.usuario.id, req.params.id]
@@ -77,16 +67,12 @@ export const agregarFavorito = async (req, res, next) => {
         registrarActividad(`❤️❌ POST /productos/${req.params.id}/favorito - ERROR: ${error.message}`);
         if (quiereJson(req)) return res.status(500).json({ ok: false, error: 'No se pudo guardar el favorito.' });
         next(error);
-    } finally {
-        await conexion.end();
     }
 };
 
 export const quitarFavorito = async (req, res, next) => {
-    const conexion = getDbClient();
     try {
-        await conexion.connect();
-        await conexion.query(
+        await pool.query(
             'DELETE FROM favoritos WHERE cliente_id = $1 AND producto_id = $2',
             [req.session.usuario.id, req.params.id]
         );
@@ -98,7 +84,5 @@ export const quitarFavorito = async (req, res, next) => {
         registrarActividad(`❤️❌ POST /productos/${req.params.id}/quitar-favorito - ERROR: ${error.message}`);
         if (quiereJson(req)) return res.status(500).json({ ok: false, error: 'No se pudo quitar el favorito.' });
         next(error);
-    } finally {
-        await conexion.end();
     }
 };

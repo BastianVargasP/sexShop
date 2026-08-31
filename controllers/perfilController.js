@@ -1,11 +1,9 @@
-import { getDbClient } from '../helpers/database.js';
+import { pool } from '../helpers/database.js';
 import { registrarActividad } from '../helpers/logger.js';
 
 export const verPerfil = async (req, res, next) => {
-    const conexion = getDbClient();
     try {
-        await conexion.connect();
-        const resultado = await conexion.query(
+        const resultado = await pool.query(
             'SELECT id, nombre, apellido, email, telefono FROM clientes WHERE id = $1',
             [req.session.usuario.id]
         );
@@ -18,13 +16,10 @@ export const verPerfil = async (req, res, next) => {
     } catch (error) {
         registrarActividad(`❌ GET /perfil - ERROR: ${error.message}`);
         next(error);
-    } finally {
-        await conexion.end();
     }
 };
 
 export const actualizarPerfil = async (req, res, next) => {
-    const conexion = getDbClient();
     try {
         const { firstName, lastName, phone } = req.body;
 
@@ -36,8 +31,7 @@ export const actualizarPerfil = async (req, res, next) => {
             });
         }
 
-        await conexion.connect();
-        await conexion.query(
+        await pool.query(
             'UPDATE clientes SET nombre = $1, apellido = $2, telefono = $3 WHERE id = $4',
             [firstName, lastName, phone, req.session.usuario.id]
         );
@@ -50,7 +44,5 @@ export const actualizarPerfil = async (req, res, next) => {
     } catch (error) {
         registrarActividad(`👤❌ POST /perfil - ERROR: ${error.message}`);
         next(error);
-    } finally {
-        await conexion.end();
     }
 };
