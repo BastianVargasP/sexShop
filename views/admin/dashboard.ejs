@@ -1,245 +1,28 @@
 <!DOCTYPE html>
 <html class="dark" lang="es">
 <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Luxuria Admin Dashboard</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&amp;family=Playfair+Display:wght@500;600;700&amp;display=swap"
-          rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-          rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-          rel="stylesheet">
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary-container": "#4b0082",
-                        "inverse-primary": "#7b41b3",
-                        "on-tertiary-container": "#9b9998",
-                        "on-error": "#690005",
-                        "on-surface": "#e5e2e1",
-                        "outline": "#978d9d",
-                        "primary": "#ddb7ff",
-                        "on-primary": "#4a0080",
-                        "secondary-container": "#af8d11",
-                        "on-primary-fixed": "#2c0050",
-                        "surface-dim": "#131313",
-                        "error": "#ffb4ab",
-                        "secondary-fixed": "#ffe088",
-                        "outline-variant": "#4c4451",
-                        "tertiary-container": "#313131",
-                        "surface-tint": "#ddb7ff",
-                        "on-tertiary-fixed-variant": "#474746",
-                        "error-container": "#93000a",
-                        "surface-container-low": "#1c1b1b",
-                        "secondary": "#e9c349",
-                        "background": "#131313",
-                        "surface-container-lowest": "#0e0e0e",
-                        "surface-container-high": "#2a2a2a",
-                        "inverse-surface": "#e5e2e1",
-                        "on-surface-variant": "#cec3d3",
-                        "on-primary-container": "#ba7ef4",
-                        "on-secondary": "#3c2f00",
-                        "on-primary-fixed-variant": "#622599",
-                        "on-secondary-fixed": "#241a00",
-                        "surface-container": "#201f1f",
-                        "on-background": "#e5e2e1",
-                        "surface": "#131313",
-                        "surface-bright": "#3a3939",
-                        "primary-fixed": "#f0dbff",
-                        "surface-variant": "#353534",
-                        "tertiary-fixed-dim": "#c8c6c5",
-                        "on-secondary-fixed-variant": "#574500",
-                        "tertiary-fixed": "#e5e2e1",
-                        "secondary-fixed-dim": "#e9c349",
-                        "on-tertiary": "#313030",
-                        "surface-container-highest": "#353534",
-                        "on-tertiary-fixed": "#1c1b1b",
-                        "on-error-container": "#ffdad6",
-                        "inverse-on-surface": "#313030",
-                        "tertiary": "#c8c6c5",
-                        "on-secondary-container": "#342800",
-                        "primary-fixed-dim": "#ddb7ff"
-                    },
-                    borderRadius: {
-                        DEFAULT: "0.125rem",
-                        lg: "0.25rem",
-                        xl: "0.5rem",
-                        full: "0.75rem"
-                    },
-                    spacing: {
-                        unit: "8px",
-                        "margin-desktop": "64px",
-                        "container-max": "1280px",
-                        "gutter": "24px",
-                        "margin-mobile": "20px"
-                    },
-                    fontFamily: {
-                        "body-lg": ["Hanken Grotesk"],
-                        "headline-xl": ["Playfair Display"],
-                        "headline-md": ["Playfair Display"],
-                        "label-sm": ["Hanken Grotesk"],
-                        "headline-lg": ["Playfair Display"],
-                        "headline-lg-mobile": ["Playfair Display"],
-                        "label-md": ["Hanken Grotesk"],
-                        "body-md": ["Hanken Grotesk"]
-                    },
-                    fontSize: {
-                        "body-lg": ["18px", {lineHeight: "1.6", fontWeight: "400"}],
-                        "headline-xl": ["60px", {lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "700"}],
-                        "headline-md": ["32px", {lineHeight: "1.3", fontWeight: "500"}],
-                        "label-sm": ["12px", {lineHeight: "1.2", fontWeight: "500"}],
-                        "headline-lg": ["48px", {lineHeight: "1.2", fontWeight: "600"}],
-                        "headline-lg-mobile": ["32px", {lineHeight: "1.2", fontWeight: "600"}],
-                        "label-md": ["14px", {lineHeight: "1.2", letterSpacing: "0.1em", fontWeight: "600"}],
-                        "body-md": ["16px", {lineHeight: "1.6", fontWeight: "400"}]
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .glass-panel {
-            background: rgba(49, 49, 49, 0.4);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(233, 195, 73, 0.1);
-        }
-
-        .glow-hover:hover {
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
-            border-color: rgba(233, 195, 73, 0.4);
-        }
-    </style>
+    <%- include('../partials/admin/head', { titulo: 'Dashboard' }) %>
 </head>
 <body class="bg-background text-on-surface font-body-md antialiased overflow-x-hidden selection:bg-secondary selection:text-on-secondary">
-<!-- TopNavBar for Mobile -->
-<header class="md:hidden sticky top-0 z-50 flex items-center justify-between w-full px-margin-mobile py-4 bg-surface-dim/80 backdrop-blur-xl border-b border-secondary/20 shadow-sm">
-    <div class="font-headline-md text-headline-md text-secondary tracking-widest">Luxuria &amp; Sentido</div>
-    <div class="flex items-center gap-4 text-secondary">
-        <span class="material-symbols-outlined cursor-pointer active:scale-95">notifications</span>
-        <span class="material-symbols-outlined cursor-pointer active:scale-95">menu</span>
-    </div>
-</header>
+
+<%- include('../partials/admin/mobile-topbar') %>
+
 <div class="flex h-screen overflow-hidden">
-    <!-- SideNavBar Desktop -->
-    <nav class="hidden md:flex flex-col h-full py-8 px-4 w-64 fixed left-0 top-0 border-r border-secondary/20 bg-surface-container-low shadow-xl z-40">
-        <div class="mb-12 px-4">
-            <div class="font-headline-md text-headline-md text-secondary tracking-widest mb-1">Luxuria Admin</div>
-            <div class="font-label-sm text-label-sm text-on-surface-variant">Boutique Management</div>
-        </div>
-        <div class="flex-1 flex flex-col gap-2 overflow-y-auto pr-2 custom-scrollbar">
-            <a class="flex items-center gap-3 text-secondary bg-primary-container/20 rounded-lg px-4 py-3 border-l-2 border-secondary font-label-md text-label-md transition-all duration-200"
-               href="#">
-                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>Dashboard<br></a>
-            <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">
-                Catálogo
-            </div>
-            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
-               href="#">
-                <span class="material-symbols-outlined">diamond</span> Productos
-            </a>
-            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
-               href="#">
-                <span class="material-symbols-outlined">category</span> Categorias
-            </a>
-            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
-               href="#">
-                <span class="material-symbols-outlined">verified</span> Marcas
-            </a>
-            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
-               href="#">
-                <span class="material-symbols-outlined">reviews</span> Reseñas
-            </a>
-            <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">
-                Ventas
-            </div>
-            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
-               href="#">
-                <span class="material-symbols-outlined">shopping_cart</span> Pedidos
-            </a>
-            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
-               href="#">
-                <span class="material-symbols-outlined">payments</span> Pagos
-            </a>
-            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
-               href="#">
-                <span class="material-symbols-outlined">local_offer</span> Cupones
-            </a>
-            <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">
-                Inventario
-            </div>
-            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
-               href="#">
-                <span class="material-symbols-outlined">inventory_2</span> Inventario
-            </a>
-            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
-               href="#">
-                <span class="material-symbols-outlined">swap_horiz</span> Movimientos
-            </a>
-            <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">
-                Clientes
-            </div>
-            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
-               href="#">
-                <span class="material-symbols-outlined">group</span> Usuarios
-            </a>
-            <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">
-                Contenido
-            </div>
-            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
-               href="#">
-                <span class="material-symbols-outlined">view_quilt</span> Banners y contenido
-            </a>
-            <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">
-                Análisis
-            </div>
-            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
-               href="#">
-                <span class="material-symbols-outlined">assessment</span> Reportes
-            </a>
-            <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">
-                Sistema
-            </div>
-            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
-               href="#">
-                <span class="material-symbols-outlined">notifications</span> Notificaciones
-            </a>
-            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
-               href="#">
-                <span class="material-symbols-outlined">security</span> Auditoría
-            </a>
-            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
-               href="#">
-                <span class="material-symbols-outlined">settings</span> Configuración
-            </a>
-        </div>
-        <div class="mt-auto flex flex-col gap-2 pt-8 border-t border-secondary/10"><a
-                    class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-3 font-label-md text-label-md transition-all duration-200"
-                    href="#">
-                <span class="material-symbols-outlined">logout</span>
-                Cerrar sesión
-            </a></div>
-    </nav>
+    <%- include('../partials/admin/sidebar', { activo: 'dashboard', pedidosPendientes: typeof pedidosPendientes !== 'undefined' ? pedidosPendientes : 0 }) %>
+
     <!-- Main Content Area -->
     <main class="flex-1 flex flex-col h-full overflow-y-auto md:ml-64 bg-background">
-        <!-- Top Header Desktop -->
         <header class="hidden md:flex items-center justify-between px-margin-desktop py-6 sticky top-0 z-30 bg-background/90 backdrop-blur-md border-b border-surface-container-highest">
             <div class="flex items-center gap-4">
                 <h1 class="font-headline-md text-headline-md text-on-surface">General</h1>
             </div>
         </header>
         <div class="p-margin-mobile md:p-margin-desktop max-w-container-max mx-auto w-full flex flex-col gap-gutter">
-            <!-- Filters & Alerts -->
 
-            <!-- Category: Alertas -->
+            <!-- Alertas -->
             <div class="flex flex-col mb-8">
-                <div class="flex items-center justify-between mb-6 border-b border-surface-container-highest pb-3"><h2
-                            class="font-headline-md text-[28px] text-on-surface mb-0">Alertas</h2>
+                <div class="flex items-center justify-between mb-6 border-b border-surface-container-highest pb-3">
+                    <h2 class="font-headline-md text-[28px] text-on-surface mb-0">Alertas</h2>
                     <div class="flex gap-3">
                         <div class="flex items-center gap-2 bg-error-container/20 text-error px-3 py-1.5 rounded text-label-sm font-label-sm border border-error/20">
                             <span class="material-symbols-outlined text-[16px]">warning</span> Stock crítico
@@ -250,60 +33,46 @@
                     </div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <!-- Stock crítico -->
                     <div class="glass-panel p-6 rounded-xl flex items-center justify-between glow-hover transition-all border-l-2 border-l-error">
                         <div>
-                            <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-1">
-                                Stock crítico</h3>
+                            <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Stock crítico</h3>
                             <div class="font-headline-lg text-headline-lg text-error">5</div>
                         </div>
                         <span class="material-symbols-outlined text-error text-[32px]">warning</span>
                     </div>
-                    <!-- Pagos pendientes -->
                     <div class="glass-panel p-6 rounded-xl flex items-center justify-between glow-hover transition-all border-l-2 border-l-secondary">
                         <div>
-                            <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-1">
-                                Pagos pendientes</h3>
+                            <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Pagos pendientes</h3>
                             <div class="font-headline-lg text-headline-lg text-secondary">8</div>
                         </div>
                         <span class="material-symbols-outlined text-secondary text-[32px]">schedule</span>
                     </div>
-                    <!-- Pedidos sin procesar -->
                     <div class="glass-panel p-6 rounded-xl flex items-center justify-between glow-hover transition-all border-l-2 border-l-secondary">
                         <div>
-                            <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-1">
-                                Pedidos sin procesar</h3>
+                            <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Pedidos sin procesar</h3>
                             <div class="font-headline-lg text-headline-lg text-on-surface">12</div>
                         </div>
                         <span class="material-symbols-outlined text-on-surface-variant text-[32px]">package_2</span>
                     </div>
-                    <!-- Productos agotados -->
                     <div class="glass-panel p-6 rounded-xl flex items-center justify-between glow-hover transition-all border-l-2 border-l-error">
                         <div>
-                            <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-1">
-                                Productos agotados</h3>
+                            <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Productos agotados</h3>
                             <div class="font-headline-lg text-headline-lg text-error">3</div>
                         </div>
                         <span class="material-symbols-outlined text-error text-[32px]">cancel</span>
                     </div>
                 </div>
             </div>
+
+            <!-- Métricas -->
             <div class="flex flex-col mb-8">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 border-b border-surface-container-highest pb-3">
                     <h2 class="font-headline-md text-[28px] text-on-surface mb-0 pb-0 border-b-0">Métricas</h2>
                     <div class="flex flex-wrap items-center gap-2">
-                        <button class="px-4 py-2 rounded-full border border-secondary text-secondary font-label-md text-label-sm bg-secondary/10">
-                            Hoy
-                        </button>
-                        <button class="px-4 py-2 rounded-full border border-surface-container-highest text-on-surface-variant font-label-md text-label-sm hover:border-secondary/50 hover:text-on-surface transition-colors">
-                            Últimos 7 días
-                        </button>
-                        <button class="px-4 py-2 rounded-full border border-surface-container-highest text-on-surface-variant font-label-md text-label-sm hover:border-secondary/50 hover:text-on-surface transition-colors">
-                            Último mes
-                        </button>
-                        <button class="px-4 py-2 rounded-full border border-surface-container-highest text-on-surface-variant font-label-md text-label-sm hover:border-secondary/50 hover:text-on-surface transition-colors flex items-center gap-2">
-                            Rango personalizado <span
-                                    class="material-symbols-outlined text-[16px]">calendar_today</span></button>
+                        <button class="px-4 py-2 rounded-full border border-secondary text-secondary font-label-md text-label-sm bg-secondary/10">Hoy</button>
+                        <button class="px-4 py-2 rounded-full border border-surface-container-highest text-on-surface-variant font-label-md text-label-sm hover:border-secondary/50 hover:text-on-surface transition-colors">Últimos 7 días</button>
+                        <button class="px-4 py-2 rounded-full border border-surface-container-highest text-on-surface-variant font-label-md text-label-sm hover:border-secondary/50 hover:text-on-surface transition-colors">Último mes</button>
+                        <button class="px-4 py-2 rounded-full border border-surface-container-highest text-on-surface-variant font-label-md text-label-sm hover:border-secondary/50 hover:text-on-surface transition-colors flex items-center gap-2">Rango personalizado <span class="material-symbols-outlined text-[16px]">calendar_today</span></button>
                     </div>
                 </div>
                 <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 md:grid-cols-1 flex flex-col lg:grid">
@@ -311,15 +80,15 @@
                         <div class="glass-panel rounded-xl flex flex-col justify-between glow-hover transition-all relative overflow-hidden group px-6 py-4">
                             <div class="absolute -right-10 -top-10 w-40 h-40 bg-secondary/5 rounded-full blur-2xl group-hover:bg-secondary/10 transition-all"></div>
                             <div class="relative z-10 flex flex-col h-full">
-                                <div class="flex justify-between items-start mb-4"><h3
-                                            class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">
-                                        Ventas Totales</h3><span class="material-symbols-outlined text-secondary">monitoring</span>
+                                <div class="flex justify-between items-start mb-4">
+                                    <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Ventas Totales</h3>
+                                    <span class="material-symbols-outlined text-secondary">monitoring</span>
                                 </div>
                                 <div class="flex-1 flex flex-col justify-center">
                                     <div class="font-headline-xl text-headline-xl text-on-surface">$125.430</div>
-                                    <div class="flex items-center gap-2 mt-2 text-secondary text-label-sm"><span
-                                                class="material-symbols-outlined text-[16px]">trending_up</span><span
-                                                class="">+12.5% vs mes anterior</span></div>
+                                    <div class="flex items-center gap-2 mt-2 text-secondary text-label-sm">
+                                        <span class="material-symbols-outlined text-[16px]">trending_up</span><span>+12.5% vs mes anterior</span>
+                                    </div>
                                 </div>
                                 <div class="mt-auto pt-8 border-t border-white/5 flex flex-col lg:grid lg:grid-cols-3 gap-4">
                                     <div class="flex justify-between lg:block text-center border-b border-white/5 lg:border-b-0 pb-2 lg:pb-0 items-center">
@@ -338,20 +107,17 @@
                             </div>
                         </div>
                         <div class="glass-panel rounded-xl flex flex-col gap-4 glow-hover transition-all px-6 py-4">
-                            <div class="flex justify-between items-center w-full"><h3
-                                        class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">
-                                    Estado de Stock</h3><span class="material-symbols-outlined text-secondary">inventory_2</span>
+                            <div class="flex justify-between items-center w-full">
+                                <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Estado de Stock</h3>
+                                <span class="material-symbols-outlined text-secondary">inventory_2</span>
                             </div>
                             <div class="pt-4 border-t border-surface-container-highest flex flex-col gap-4 w-full">
                                 <div class="flex justify-between items-center w-full">
-                                    <div class="text-label-md text-on-surface-variant uppercase tracking-widest">Bajo
-                                    </div>
+                                    <div class="text-label-md text-on-surface-variant uppercase tracking-widest">Bajo</div>
                                     <div class="text-error font-headline-lg text-headline-lg">12</div>
                                 </div>
                                 <div class="flex justify-between items-center w-full">
-                                    <div class="text-label-md text-on-surface-variant uppercase tracking-widest">
-                                        Agotados
-                                    </div>
+                                    <div class="text-label-md text-on-surface-variant uppercase tracking-widest">Agotados</div>
                                     <div class="text-error font-headline-lg text-headline-lg">3</div>
                                 </div>
                             </div>
@@ -359,32 +125,29 @@
                     </div>
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:col-span-4 md:grid-cols-1">
                         <div class="glass-panel p-6 rounded-xl flex items-center justify-between glow-hover transition-all">
-                            <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">
-                                Cantidad de pedidos</h3>
+                            <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Cantidad de pedidos</h3>
                             <div class="font-headline-lg text-headline-lg text-on-surface">1,240</div>
                         </div>
                         <div class="glass-panel p-6 rounded-xl flex items-center justify-between glow-hover transition-all">
-                            <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">
-                                Clientes registrados</h3>
+                            <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Clientes registrados</h3>
                             <div class="font-headline-lg text-headline-lg text-on-surface">8,920</div>
                         </div>
                         <div class="glass-panel p-6 rounded-xl flex items-center justify-between glow-hover transition-all border-l-2 border-l-secondary">
-                            <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">
-                                Pedidos pendientes</h3>
+                            <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Pedidos pendientes</h3>
                             <div class="font-headline-lg text-headline-lg text-secondary">45</div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Actividad Reciente -->
             <div class="flex flex-col mb-8">
-                <div class="flex items-center justify-between mb-6 border-b border-surface-container-highest pb-3"><h2
-                            class="font-headline-md text-[28px] text-on-surface mb-0">Actividad Reciente</h2>
-                    <div class="flex gap-3"></div>
+                <div class="flex items-center justify-between mb-6 border-b border-surface-container-highest pb-3">
+                    <h2 class="font-headline-md text-[28px] text-on-surface mb-0">Actividad Reciente</h2>
                 </div>
                 <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6">
-                    <div class="glass-panel p-6 rounded-xl flex flex-col glow-hover transition-all"><h3
-                                class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-4 border-b border-surface-container-highest pb-2">
-                            Últimos pedidos</h3>
+                    <div class="glass-panel p-6 rounded-xl flex flex-col glow-hover transition-all">
+                        <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-4 border-b border-surface-container-highest pb-2">Últimos pedidos</h3>
                         <div class="flex flex-col gap-4">
                             <div class="flex justify-between items-center">
                                 <div>
@@ -409,236 +172,123 @@
                             </div>
                         </div>
                     </div>
-                    <div class="glass-panel p-6 rounded-xl flex flex-col glow-hover transition-all"><h3
-                                class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-4 border-b border-surface-container-highest pb-2">
-                            Últimos usuarios registrados</h3>
+                    <div class="glass-panel p-6 rounded-xl flex flex-col glow-hover transition-all">
+                        <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-4 border-b border-surface-container-highest pb-2">Últimos usuarios registrados</h3>
                         <div class="flex flex-col gap-4">
                             <div class="flex justify-between items-center">
                                 <div>
                                     <div class="font-label-md text-on-surface">Sofía Martínez</div>
                                     <div class="text-label-sm text-on-surface-variant">Hace 2 horas</div>
                                 </div>
-                                <span class="material-symbols-outlined text-on-surface-variant">person_add</span></div>
+                                <span class="material-symbols-outlined text-on-surface-variant">person_add</span>
+                            </div>
                             <div class="flex justify-between items-center">
                                 <div>
                                     <div class="font-label-md text-on-surface">Carlos G.</div>
                                     <div class="text-label-sm text-on-surface-variant">Hace 5 horas</div>
                                 </div>
-                                <span class="material-symbols-outlined text-on-surface-variant">person_add</span></div>
+                                <span class="material-symbols-outlined text-on-surface-variant">person_add</span>
+                            </div>
                             <div class="flex justify-between items-center">
                                 <div>
                                     <div class="font-label-md text-on-surface">Elena R.</div>
                                     <div class="text-label-sm text-on-surface-variant">Ayer</div>
                                 </div>
-                                <span class="material-symbols-outlined text-on-surface-variant">person_add</span></div>
+                                <span class="material-symbols-outlined text-on-surface-variant">person_add</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="glass-panel p-6 rounded-xl flex flex-col glow-hover transition-all"><h3
-                                class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-4 border-b border-surface-container-highest pb-2">
-                            Pagos recientes</h3>
+                    <div class="glass-panel p-6 rounded-xl flex flex-col glow-hover transition-all">
+                        <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-4 border-b border-surface-container-highest pb-2">Pagos recientes</h3>
                         <div class="flex flex-col gap-4">
                             <div class="flex justify-between items-center">
                                 <div>
                                     <div class="font-label-md text-on-surface">$145.000 CLP</div>
                                     <div class="text-label-sm text-on-surface-variant">Tarjeta de crédito</div>
                                 </div>
-                                <span class="material-symbols-outlined text-secondary">credit_card</span></div>
+                                <span class="material-symbols-outlined text-secondary">credit_card</span>
+                            </div>
                             <div class="flex justify-between items-center">
                                 <div>
                                     <div class="font-label-md text-on-surface">$32.500 CLP</div>
                                     <div class="text-label-sm text-on-surface-variant">Transferencia</div>
                                 </div>
-                                <span class="material-symbols-outlined text-secondary">account_balance</span></div>
+                                <span class="material-symbols-outlined text-secondary">account_balance</span>
+                            </div>
                             <div class="flex justify-between items-center">
                                 <div>
                                     <div class="font-label-md text-on-surface">$89.990 CLP</div>
                                     <div class="text-label-sm text-on-surface-variant">Débito</div>
                                 </div>
-                                <span class="material-symbols-outlined text-secondary">credit_score</span></div>
+                                <span class="material-symbols-outlined text-secondary">credit_score</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="glass-panel p-6 rounded-xl flex flex-col glow-hover transition-all"><h3
-                                class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-4 border-b border-surface-container-highest pb-2">
-                            Pedidos cancelados</h3>
+                    <div class="glass-panel p-6 rounded-xl flex flex-col glow-hover transition-all">
+                        <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-4 border-b border-surface-container-highest pb-2">Pedidos cancelados</h3>
                         <div class="flex flex-col gap-4">
                             <div class="flex justify-between items-center">
                                 <div>
                                     <div class="font-label-md text-on-surface">#10238</div>
                                     <div class="text-label-sm text-on-surface-variant">Pago rechazado</div>
                                 </div>
-                                <span class="material-symbols-outlined text-error">cancel</span></div>
+                                <span class="material-symbols-outlined text-error">cancel</span>
+                            </div>
                             <div class="flex justify-between items-center">
                                 <div>
                                     <div class="font-label-md text-on-surface">#10221</div>
                                     <div class="text-label-sm text-on-surface-variant">A petición del cliente</div>
                                 </div>
-                                <span class="material-symbols-outlined text-error">cancel</span></div>
+                                <span class="material-symbols-outlined text-error">cancel</span>
+                            </div>
                             <div class="flex justify-between items-center">
                                 <div>
                                     <div class="font-label-md text-on-surface">#10210</div>
                                     <div class="text-label-sm text-on-surface-variant">Falta de stock</div>
                                 </div>
-                                <span class="material-symbols-outlined text-error">cancel</span></div>
+                                <span class="material-symbols-outlined text-error">cancel</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Category: Actividad reciente -->
 
-            <!-- Category: Métricas -->
-
-            <!-- Category: Gráficos -->
+            <!-- Gráficos -->
             <div class="flex flex-col">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 border-b border-surface-container-highest pb-3">
                     <h2 class="font-headline-md text-[28px] text-on-surface mb-0 pb-0 border-b-0">Gráficos</h2>
                     <div class="flex flex-wrap items-center gap-2">
-                        <button class="px-4 py-2 rounded-full border border-secondary text-secondary font-label-md text-label-sm bg-secondary/10">
-                            Hoy
-                        </button>
-                        <button class="px-4 py-2 rounded-full border border-surface-container-highest text-on-surface-variant font-label-md text-label-sm hover:border-secondary/50 hover:text-on-surface transition-colors">
-                            Últimos 7 días
-                        </button>
-                        <button class="px-4 py-2 rounded-full border border-surface-container-highest text-on-surface-variant font-label-md text-label-sm hover:border-secondary/50 hover:text-on-surface transition-colors">
-                            Último mes
-                        </button>
-                        <button class="px-4 py-2 rounded-full border border-surface-container-highest text-on-surface-variant font-label-md text-label-sm hover:border-secondary/50 hover:text-on-surface transition-colors flex items-center gap-2">
-                            Rango personalizado <span
-                                    class="material-symbols-outlined text-[16px]">calendar_today</span></button>
+                        <button class="px-4 py-2 rounded-full border border-secondary text-secondary font-label-md text-label-sm bg-secondary/10">Hoy</button>
+                        <button class="px-4 py-2 rounded-full border border-surface-container-highest text-on-surface-variant font-label-md text-label-sm hover:border-secondary/50 hover:text-on-surface transition-colors">Últimos 7 días</button>
+                        <button class="px-4 py-2 rounded-full border border-surface-container-highest text-on-surface-variant font-label-md text-label-sm hover:border-secondary/50 hover:text-on-surface transition-colors">Último mes</button>
+                        <button class="px-4 py-2 rounded-full border border-surface-container-highest text-on-surface-variant font-label-md text-label-sm hover:border-secondary/50 hover:text-on-surface transition-colors flex items-center gap-2">Rango personalizado <span class="material-symbols-outlined text-[16px]">calendar_today</span></button>
                     </div>
                 </div>
-                <!-- Charts & Lists Area -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <!-- Chart Placeholder -->
                     <div class="glass-panel p-6 rounded-xl flex flex-col glow-hover transition-all min-h-[400px]">
                         <div class="flex justify-between items-center mb-6">
                             <h2 class="font-headline-md text-headline-md text-on-surface">Ventas</h2>
                         </div>
-                        <!-- Abstract Representation of a Chart using gradients -->
-                        <div class="flex-1 w-full bg-gradient-to-t from-secondary/5 to-transparent border-b border-l border-surface-container-highest relative flex items-end ml-8 mb-6">
-                            <div class="absolute bottom-0 left-0 w-full h-[60%] border-t border-secondary/40"
-                                 style="clip-path: polygon(0 80%, 20% 60%, 40% 70%, 60% 40%, 80% 50%, 100% 10%);">
-                                <div class="w-full h-full bg-gradient-to-t from-secondary/20 to-transparent">
-                                    <!-- Perfumes Bar -->
-                                    <div class="flex flex-col items-center justify-end gap-3 h-full flex-1">
-                                        <span class="text-label-md text-secondary font-bold">45%</span>
-                                        <div class="w-full bg-secondary rounded-t-lg shadow-[0_0_15px_rgba(233,195,73,0.3)] transition-all duration-500"
-                                             style="height: 45%"></div>
-                                        <span class="text-[10px] text-on-surface-variant uppercase tracking-widest text-center">Perfumes</span>
-                                    </div>
-                                    <!-- Joyería Bar -->
-                                    <div class="flex flex-col items-center justify-end gap-3 h-full flex-1">
-                                        <span class="text-label-md text-primary-container font-bold">35%</span>
-                                        <div class="w-full bg-primary-container rounded-t-lg shadow-[0_0_15px_rgba(75,0,130,0.3)] transition-all duration-500"
-                                             style="height: 35%"></div>
-                                        <span class="text-[10px] text-on-surface-variant uppercase tracking-widest text-center">Joyería</span>
-                                    </div>
-                                    <!-- Lencería Bar -->
-                                    <div class="flex flex-col items-center justify-end gap-3 h-full flex-1">
-                                        <span class="text-label-md text-tertiary font-bold">20%</span>
-                                        <div class="w-full bg-tertiary rounded-t-lg shadow-[0_0_15px_rgba(200,198,197,0.3)] transition-all duration-500"
-                                             style="height: 20%"></div>
-                                        <span class="text-[10px] text-on-surface-variant uppercase tracking-widest text-center">Lencería</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none"
-                                 viewBox="0 0 100 100">
-                                <path d="M0,80 L20,60 L40,70 L60,40 L80,50 L100,10" fill="none" stroke="#D4AF37"
-                                      stroke-width="0.5" vector-effect="non-scaling-stroke"></path>
-                                <circle cx="20" cy="60" fill="#131313" r="1.5" stroke="#D4AF37" stroke-width="0.5"
-                                        vector-effect="non-scaling-stroke"></circle>
-                                <circle cx="60" cy="40" fill="#131313" r="1.5" stroke="#D4AF37" stroke-width="0.5"
-                                        vector-effect="non-scaling-stroke"></circle>
-                                <circle cx="100" cy="10" fill="#D4AF37" r="2"></circle>
-                            </svg>
-                            <!-- Y-Axis Labels -->
-                            <div class="absolute -left-8 top-0 bottom-0 flex flex-col justify-between text-[10px] text-on-surface-variant font-label-sm py-1">
-                                <span class="">$40k</span>
-                                <span class="">$30k</span>
-                                <span class="">$20k</span>
-                                <span class="">$10k</span>
-                                <span class="">$0</span>
-                            </div>
-                            <!-- X-Axis Labels -->
-                            <div class="absolute -bottom-6 left-0 right-0 flex justify-between text-[10px] text-on-surface-variant font-label-sm px-1">
-                                <span class="">01/10</span>
-                                <span class="">05/10</span>
-                                <span class="">10/10</span>
-                                <span class="">15/10</span>
-                                <span class="">20/10</span>
-                                <span class="">25/10</span>
-                                <span class="">30/10</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Cantidad de Pedidos Chart -->
-                    <div class="glass-panel p-6 rounded-xl flex flex-col glow-hover transition-all min-h-[400px]">
-                        <div class="flex justify-between items-center mb-6">
-                            <h2 class="font-headline-md text-headline-md text-on-surface">Cantidad de pedidos</h2>
-                        </div>
-                        <div class="flex-1 w-full bg-gradient-to-t from-secondary/5 to-transparent border-b border-l border-surface-container-highest relative flex items-end ml-8 mb-6">
-                            <div class="absolute bottom-0 left-0 w-full h-[50%] border-t border-secondary/40"
-                                 style="clip-path: polygon(0 90%, 15% 70%, 30% 85%, 45% 40%, 60% 60%, 75% 20%, 90% 30%, 100% 5%);">
-                                <div class="w-full h-full bg-gradient-to-t from-secondary/20 to-transparent"></div>
-                            </div>
-                            <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none"
-                                 viewBox="0 0 100 100">
-                                <path d="M0,90 L15,70 L30,85 L45,40 L60,60 L75,20 L90,30 L100,5" fill="none"
-                                      stroke="#e9c349" stroke-width="0.5" vector-effect="non-scaling-stroke"></path>
-                                <circle cx="15" cy="70" fill="#131313" r="1.5" stroke="#e9c349" stroke-width="0.5"
-                                        vector-effect="non-scaling-stroke"></circle>
-                                <circle cx="45" cy="40" fill="#131313" r="1.5" stroke="#e9c349" stroke-width="0.5"
-                                        vector-effect="non-scaling-stroke"></circle>
-                                <circle cx="75" cy="20" fill="#131313" r="1.5" stroke="#e9c349" stroke-width="0.5"
-                                        vector-effect="non-scaling-stroke"></circle>
-                                <circle cx="100" cy="5" fill="#e9c349" r="2"></circle>
-                            </svg>
-                            <!-- Y-Axis Labels -->
-                            <div class="absolute -left-8 top-0 bottom-0 flex flex-col justify-between text-[10px] text-on-surface-variant font-label-sm py-1">
-                                <span class="">200</span><span class="">150</span><span class="">100</span><span
-                                        class="">50</span><span class="">0</span></div><!-- X-Axis Labels -->
-                            <div class="absolute -bottom-6 left-0 right-0 flex justify-between text-[10px] text-on-surface-variant font-label-sm px-1">
-                                <span class="">01/10</span><span class="">05/10</span><span class="">10/10</span><span
-                                        class="">15/10</span><span class="">20/10</span><span class="">25/10</span><span
-                                        class="">30/10</span></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
-                    <!-- Ventas por categoría Chart -->
-                    <div class="glass-panel p-6 rounded-xl flex flex-col glow-hover transition-all min-h-[400px]">
-                        <div class="flex justify-between items-center mb-6">
-                            <h2 class="font-headline-md text-headline-md text-on-surface">Ventas por categoría</h2>
-                        </div>
                         <div class="flex-1 w-full flex flex-col gap-6 justify-center pt-4">
-                            <div class="flex-1 w-full flex flex-col justify-between pt-4 h-full">
-                                <div class="flex items-end justify-around w-full gap-4 mb-8 h-full">
-                                    <!-- Perfumes Bar -->
-                                    <div class="flex flex-col items-center justify-end gap-3 h-full flex-1">
-                                        <span class="text-label-md text-secondary font-bold">45%</span>
-                                        <div class="w-full bg-secondary rounded-t-lg shadow-[0_0_15px_rgba(233,195,73,0.3)] transition-all duration-500"
-                                             style="height: 45%"></div>
-                                        <span class="text-[10px] text-on-surface-variant uppercase tracking-widest text-center">Perfumes</span>
-                                    </div>
-                                    <!-- Joyería Bar -->
-                                    <div class="flex flex-col items-center justify-end gap-3 h-full flex-1">
-                                        <span class="text-label-md text-primary-container font-bold">35%</span>
-                                        <div class="w-full bg-primary-container rounded-t-lg shadow-[0_0_15px_rgba(75,0,130,0.3)] transition-all duration-500"
-                                             style="height: 35%"></div>
-                                        <span class="text-[10px] text-on-surface-variant uppercase tracking-widest text-center">Joyería</span>
-                                    </div>
-                                    <!-- Lencería Bar -->
-                                    <div class="flex flex-col items-center justify-end gap-3 h-full flex-1">
-                                        <span class="text-label-md text-tertiary font-bold">20%</span>
-                                        <div class="w-full bg-tertiary rounded-t-lg shadow-[0_0_15px_rgba(200,198,197,0.3)] transition-all duration-500"
-                                             style="height: 20%"></div>
-                                        <span class="text-[10px] text-on-surface-variant uppercase tracking-widest text-center">Lencería</span>
-                                    </div>
+                            <div class="flex items-end justify-around w-full gap-4 mb-8 h-full">
+                                <div class="flex flex-col items-center justify-end gap-3 h-full flex-1">
+                                    <span class="text-label-md text-secondary font-bold">45%</span>
+                                    <div class="w-full bg-secondary rounded-t-lg shadow-[0_0_15px_rgba(233,195,73,0.3)] transition-all duration-500" style="height: 45%"></div>
+                                    <span class="text-[10px] text-on-surface-variant uppercase tracking-widest text-center">Perfumes</span>
+                                </div>
+                                <div class="flex flex-col items-center justify-end gap-3 h-full flex-1">
+                                    <span class="text-label-md text-primary-container font-bold">35%</span>
+                                    <div class="w-full bg-primary-container rounded-t-lg shadow-[0_0_15px_rgba(75,0,130,0.3)] transition-all duration-500" style="height: 35%"></div>
+                                    <span class="text-[10px] text-on-surface-variant uppercase tracking-widest text-center">Joyería</span>
+                                </div>
+                                <div class="flex flex-col items-center justify-end gap-3 h-full flex-1">
+                                    <span class="text-label-md text-tertiary font-bold">20%</span>
+                                    <div class="w-full bg-tertiary rounded-t-lg shadow-[0_0_15px_rgba(200,198,197,0.3)] transition-all duration-500" style="height: 20%"></div>
+                                    <span class="text-[10px] text-on-surface-variant uppercase tracking-widest text-center">Lencería</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Top Products Bar Chart -->
                     <div class="glass-panel p-6 rounded-xl flex flex-col glow-hover transition-all min-h-[400px]">
                         <div class="flex justify-between items-center mb-6">
                             <h2 class="font-headline-md text-headline-md text-on-surface">Productos más vendidos</h2>
@@ -646,8 +296,7 @@
                         <div class="flex-1 w-full flex flex-col gap-4 justify-center pt-4">
                             <div class="flex flex-col gap-1 w-full">
                                 <div class="flex justify-between text-label-sm text-on-surface-variant">
-                                    <span class="">Élixir de Nuit</span>
-                                    <span class="">$4.200</span>
+                                    <span>Élixir de Nuit</span><span>$4.200</span>
                                 </div>
                                 <div class="w-full bg-surface-container-high rounded-full h-3 overflow-hidden">
                                     <div class="bg-secondary h-full rounded-full" style="width: 85%"></div>
@@ -655,8 +304,7 @@
                             </div>
                             <div class="flex flex-col gap-1 w-full mt-2">
                                 <div class="flex justify-between text-label-sm text-on-surface-variant">
-                                    <span class="">Colgante Áureo</span>
-                                    <span class="">$8.075</span>
+                                    <span>Colgante Áureo</span><span>$8.075</span>
                                 </div>
                                 <div class="w-full bg-surface-container-high rounded-full h-3 overflow-hidden">
                                     <div class="bg-secondary/80 h-full rounded-full" style="width: 65%"></div>
@@ -664,29 +312,10 @@
                             </div>
                             <div class="flex flex-col gap-1 w-full mt-2">
                                 <div class="flex justify-between text-label-sm text-on-surface-variant">
-                                    <span class="">Bolso Sentido</span>
-                                    <span class="">$14.700</span>
+                                    <span>Bolso Sentido</span><span>$14.700</span>
                                 </div>
                                 <div class="w-full bg-surface-container-high rounded-full h-3 overflow-hidden">
                                     <div class="bg-secondary/60 h-full rounded-full" style="width: 45%"></div>
-                                </div>
-                            </div>
-                            <div class="flex flex-col gap-1 w-full mt-2">
-                                <div class="flex justify-between text-label-sm text-on-surface-variant">
-                                    <span class="">Set Cuidado Facial</span>
-                                    <span class="">$2.500</span>
-                                </div>
-                                <div class="w-full bg-surface-container-high rounded-full h-3 overflow-hidden">
-                                    <div class="bg-secondary/40 h-full rounded-full" style="width: 30%"></div>
-                                </div>
-                            </div>
-                            <div class="flex flex-col gap-1 w-full mt-2">
-                                <div class="flex justify-between text-label-sm text-on-surface-variant">
-                                    <span class="">Reloj Clásico</span>
-                                    <span class="">$5.100</span>
-                                </div>
-                                <div class="w-full bg-surface-container-high rounded-full h-3 overflow-hidden">
-                                    <div class="bg-secondary/30 h-full rounded-full" style="width: 25%"></div>
                                 </div>
                             </div>
                         </div>
@@ -696,5 +325,7 @@
         </div>
     </main>
 </div>
+
+<script src="/javascripts/admin/sidebar-toggle.js"></script>
 </body>
 </html>

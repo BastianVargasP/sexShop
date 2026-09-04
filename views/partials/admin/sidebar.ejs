@@ -1,0 +1,94 @@
+<%
+/**
+ * Sidebar de administración reutilizable.
+ * Uso: <%- include('../partials/admin/sidebar', { activo: 'pedidos' }) %>
+ *
+ * `activo` debe coincidir con uno de los data-path listados abajo.
+ * Opcional: `pedidosPendientes` (número) muestra el badge sobre "Pedidos".
+ */
+const claseActiva = "flex items-center gap-3 text-secondary bg-primary-container/20 rounded-lg px-4 py-2.5 border-l-2 border-secondary font-label-md text-label-md transition-all duration-200";
+const claseInactiva = "flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300";
+const clase = (path) => (path === activo ? claseActiva : claseInactiva);
+const relleno = (path) => (path === activo ? " style=\"font-variation-settings: 'FILL' 1;\"" : "");
+%>
+<nav class="hidden md:flex flex-col h-full py-8 px-4 w-64 fixed left-0 top-0 border-r border-secondary/20 bg-surface-container-low shadow-xl z-40">
+    <div class="mb-12 px-4">
+        <div class="font-headline-md text-headline-md text-secondary tracking-widest mb-1">Luxuria Admin</div>
+        <div class="font-label-sm text-label-sm text-on-surface-variant">Boutique Management</div>
+    </div>
+    <div class="flex-1 flex flex-col gap-2 overflow-y-auto pr-2 custom-scrollbar">
+        <a class="<%= clase('dashboard') %>" data-path="dashboard" href="/admin">
+            <span class="material-symbols-outlined"<%- relleno('dashboard') %>>dashboard</span>Dashboard
+        </a>
+
+        <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">Catálogo</div>
+        <a class="<%= clase('productos') %>" data-path="productos" href="/admin/productos">
+            <span class="material-symbols-outlined"<%- relleno('productos') %>>diamond</span> Productos
+        </a>
+        <a class="<%= clase('categorias') %>" data-path="categorias" href="/admin/categorias">
+            <span class="material-symbols-outlined"<%- relleno('categorias') %>>category</span> Categorías
+        </a>
+        <a class="<%= clase('marcas') %>" data-path="marcas" href="/admin/marcas">
+            <span class="material-symbols-outlined"<%- relleno('marcas') %>>verified</span> Marcas
+        </a>
+        <a class="<%= clase('resenas') %>" data-path="resenas" href="/admin/resenas">
+            <span class="material-symbols-outlined"<%- relleno('resenas') %>>reviews</span> Reseñas
+        </a>
+
+        <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">Ventas</div>
+        <a class="<%= clase('pedidos') %> justify-between" data-path="pedidos" href="/admin/pedidos">
+            <span class="flex items-center gap-3">
+                <span class="material-symbols-outlined"<%- relleno('pedidos') %>>shopping_cart</span> Pedidos
+            </span>
+            <% if (typeof pedidosPendientes !== 'undefined' && pedidosPendientes) { %>
+                <span class="text-[11px] bg-secondary text-on-secondary px-1.5 py-0.5 rounded-full font-bold min-w-[20px] text-center"><%= pedidosPendientes %></span>
+            <% } %>
+        </a>
+        <a class="<%= clase('pagos') %>" data-path="pagos" href="/admin/pagos">
+            <span class="material-symbols-outlined"<%- relleno('pagos') %>>payments</span> Pagos
+        </a>
+        <a class="<%= clase('cupones') %>" data-path="cupones" href="/admin/cupones">
+            <span class="material-symbols-outlined"<%- relleno('cupones') %>>local_offer</span> Cupones
+        </a>
+
+        <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">Inventario</div>
+        <a class="<%= clase('inventario') %>" data-path="inventario" href="/admin/inventario">
+            <span class="material-symbols-outlined"<%- relleno('inventario') %>>inventory_2</span> Inventario
+        </a>
+        <a class="<%= clase('movimientos') %>" data-path="movimientos" href="/admin/movimientos">
+            <span class="material-symbols-outlined"<%- relleno('movimientos') %>>swap_horiz</span> Movimientos
+        </a>
+
+        <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">Clientes</div>
+        <a class="<%= clase('usuarios') %>" data-path="usuarios" href="/admin/usuarios">
+            <span class="material-symbols-outlined"<%- relleno('usuarios') %>>group</span> Usuarios
+        </a>
+
+        <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">Contenido</div>
+        <a class="<%= clase('banners') %>" data-path="banners" href="/admin/banners">
+            <span class="material-symbols-outlined"<%- relleno('banners') %>>view_quilt</span> Banners y contenido
+        </a>
+
+        <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">Análisis</div>
+        <a class="<%= clase('reportes') %>" data-path="reportes" href="/admin/reportes">
+            <span class="material-symbols-outlined"<%- relleno('reportes') %>>assessment</span> Reportes
+        </a>
+
+        <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">Sistema</div>
+        <a class="<%= clase('notificaciones') %>" data-path="notificaciones" href="/admin/notificaciones">
+            <span class="material-symbols-outlined"<%- relleno('notificaciones') %>>notifications</span> Notificaciones
+        </a>
+        <a class="<%= clase('auditoria') %>" data-path="auditoria" href="/admin/auditoria">
+            <span class="material-symbols-outlined"<%- relleno('auditoria') %>>security</span> Auditoría
+        </a>
+        <a class="<%= clase('configuracion') %>" data-path="configuracion" href="/admin/configuracion">
+            <span class="material-symbols-outlined"<%- relleno('configuracion') %>>settings</span> Configuración
+        </a>
+    </div>
+    <div class="mt-auto flex flex-col gap-2 pt-8 border-t border-secondary/10">
+        <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-3 font-label-md text-label-md transition-all duration-200" href="/auth/logout">
+            <span class="material-symbols-outlined">logout</span>
+            Cerrar sesión
+        </a>
+    </div>
+</nav>

@@ -1,280 +1,28 @@
-<!DOCTYPE html><html class="dark" lang="es" style=""><head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Boutique Luxe Admin - Gestión de Categorías</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&amp;family=Playfair+Display:wght@500;600;700&amp;display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "primary-container": "#4b0082",
-                        "on-background": "#e5e2e1",
-                        "surface-bright": "#3a3939",
-                        "secondary-fixed-dim": "#e9c349",
-                        "on-tertiary-fixed-variant": "#474746",
-                        "outline-variant": "#4c4451",
-                        "on-tertiary-container": "#9b9998",
-                        "on-error-container": "#ffdad6",
-                        "tertiary-fixed-dim": "#c8c6c5",
-                        "tertiary-container": "#313131",
-                        "error-container": "#93000a",
-                        "surface-variant": "#353534",
-                        "secondary-container": "#af8d11",
-                        "surface-tint": "#ddb7ff",
-                        "on-primary-fixed-variant": "#622599",
-                        "on-primary": "#4a0080",
-                        "inverse-on-surface": "#313030",
-                        "on-tertiary": "#313030",
-                        "tertiary": "#c8c6c5",
-                        "surface": "#131313",
-                        "secondary-fixed": "#ffe088",
-                        "primary-fixed": "#f0dbff",
-                        "inverse-primary": "#7b41b3",
-                        "primary-fixed-dim": "#ddb7ff",
-                        "on-secondary-fixed-variant": "#574500",
-                        "secondary": "#e9c349",
-                        "background": "#131313",
-                        "inverse-surface": "#e5e2e1",
-                        "surface-container": "#201f1f",
-                        "on-error": "#690005",
-                        "on-tertiary-fixed": "#1c1b1b",
-                        "on-secondary": "#3c2f00",
-                        "tertiary-fixed": "#e5e2e1",
-                        "on-secondary-container": "#342800",
-                        "primary": "#ddb7ff",
-                        "on-surface-variant": "#cec3d3",
-                        "on-surface": "#e5e2e1",
-                        "on-primary-fixed": "#2c0050",
-                        "outline": "#978d9d",
-                        "surface-container-low": "#1c1b1b",
-                        "surface-dim": "#131313",
-                        "error": "#ffb4ab",
-                        "on-secondary-fixed": "#241a00",
-                        "surface-container-high": "#2a2a2a",
-                        "surface-container-highest": "#353534",
-                        "on-primary-container": "#ba7ef4",
-                        "surface-container-lowest": "#0e0e0e"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.125rem",
-                        "lg": "0.25rem",
-                        "xl": "0.5rem",
-                        "full": "0.75rem"
-                    },
-                    "spacing": {
-                        "margin-mobile": "20px",
-                        "unit": "8px",
-                        "gutter": "24px",
-                        "margin-desktop": "64px",
-                        "container-max": "1280px"
-                    },
-                    "fontFamily": {
-                        "label-md": [
-                            "Hanken Grotesk"
-                        ],
-                        "headline-md": [
-                            "Playfair Display"
-                        ],
-                        "body-lg": [
-                            "Hanken Grotesk"
-                        ],
-                        "headline-xl": [
-                            "Playfair Display"
-                        ],
-                        "headline-lg-mobile": [
-                            "Playfair Display"
-                        ],
-                        "label-sm": [
-                            "Hanken Grotesk"
-                        ],
-                        "headline-lg": [
-                            "Playfair Display"
-                        ],
-                        "body-md": [
-                            "Hanken Grotesk"
-                        ]
-                    },
-                    "fontSize": {
-                        "label-md": [
-                            "14px",
-                            {
-                                "lineHeight": "1.2",
-                                "letterSpacing": "0.1em",
-                                "fontWeight": "600"
-                            }
-                        ],
-                        "headline-md": [
-                            "32px",
-                            {
-                                "lineHeight": "1.3",
-                                "fontWeight": "500"
-                            }
-                        ],
-                        "body-lg": [
-                            "18px",
-                            {
-                                "lineHeight": "1.6",
-                                "fontWeight": "400"
-                            }
-                        ],
-                        "headline-xl": [
-                            "60px",
-                            {
-                                "lineHeight": "1.1",
-                                "letterSpacing": "-0.02em",
-                                "fontWeight": "700"
-                            }
-                        ],
-                        "headline-lg-mobile": [
-                            "32px",
-                            {
-                                "lineHeight": "1.2",
-                                "fontWeight": "600"
-                            }
-                        ],
-                        "label-sm": [
-                            "12px",
-                            {
-                                "lineHeight": "1.2",
-                                "fontWeight": "500"
-                            }
-                        ],
-                        "headline-lg": [
-                            "48px",
-                            {
-                                "lineHeight": "1.2",
-                                "fontWeight": "600"
-                            }
-                        ],
-                        "body-md": [
-                            "16px",
-                            {
-                                "lineHeight": "1.6",
-                                "fontWeight": "400"
-                            }
-                        ]
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
-        }
-        .icon-filled {
-            font-variation-settings: 'FILL' 1;
-        }
-
-        /* Glassmorphism effects */
-        .glass-panel {
-            background: rgba(28, 27, 27, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(233, 195, 73, 0.1);
-        }
-
-        .glow-hover:hover {
-            box-shadow: 0 0 15px rgba(233, 195, 73, 0.15);
-        }
-
-        /* Custom scrollbar for data tables */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #131313;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #353534;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #474746;
-        }
-
-        /* Drag and Drop Styles */
-        .dragging {
-            opacity: 0.5;
-            background: rgba(53, 53, 52, 0.8) !important;
-            border: 1px dashed #e9c349;
-        }
-        .drag-over {
-            border-top: 2px solid #e9c349;
-        }
-        .drag-handle {
-            cursor: grab;
-        }
-        .drag-handle:active {
-            cursor: grabbing;
-        }
-    </style>
+<!DOCTYPE html>
+<html class="dark" lang="es" style="">
+<head>
+    <%- include('../partials/admin/head', { titulo: 'Categorias' }) %>
 </head>
 <body class="bg-background text-on-background font-body-md min-h-screen flex overflow-x-hidden">
-<!-- SideNavBar (from JSON) -->
-<nav class="hidden md:flex flex-col h-full py-8 px-4 w-64 fixed left-0 top-0 border-r border-secondary/20 bg-surface-container-low shadow-xl z-40">
-    <div class="mb-12 px-4">
-        <div class="font-headline-md text-headline-md text-secondary tracking-widest mb-1">Luxuria Admin</div>
-        <div class="font-label-sm text-label-sm text-on-surface-variant">Boutique Management</div>
-    </div>
-    <div class="flex-1 flex flex-col gap-2 overflow-y-auto pr-2 custom-scrollbar">
-        <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300" href="#">
-            <span class="material-symbols-outlined">dashboard</span>Dashboard</a>
-        <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">Catálogo</div>
-        <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300" href="#">
-            <span class="material-symbols-outlined">diamond</span> Productos
-        </a>
-        <a class="flex items-center gap-3 text-secondary bg-primary-container/20 rounded-lg px-4 py-3 border-l-2 border-secondary font-label-md text-label-md transition-all duration-200" href="#">
-            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">category</span> Categorias
-        </a>
-        <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300" href="#">
-            <span class="material-symbols-outlined">verified</span> Marcas
-        </a>
-        <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300" href="#">
-            <span class="material-symbols-outlined">reviews</span> Reseñas
-        </a>
-        <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">Ventas</div>
-        <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300" href="#">
-            <span class="material-symbols-outlined">shopping_cart</span> Pedidos
-        </a>
-        <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300" href="#">
-            <span class="material-symbols-outlined">payments</span> Pagos
-        </a>
-        <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300" href="#">
-            <span class="material-symbols-outlined">local_offer</span> Cupones
-        </a>
-        <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">Inventario</div>
-        <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300" href="#">
-            <span class="material-symbols-outlined">inventory_2</span> Inventario
-        </a>
-        <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300" href="#">
-            <span class="material-symbols-outlined">swap_horiz</span> Movimientos
-        </a>
-        <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">Clientes</div>
-        <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300" href="#">
-            <span class="material-symbols-outlined">group</span> Usuarios
-        </a>
-    </div>
-    <div class="mt-auto flex flex-col gap-2 pt-8 border-t border-secondary/10"><a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-3 font-label-md text-label-md transition-all duration-200" href="#">
-            <span class="material-symbols-outlined">logout</span>
-            Cerrar sesión
-        </a></div>
-</nav>
+
+<!-- Topbar móvil -->
+<%- include('../partials/admin/mobile-topbar') %>
+
+<!-- Sidebar -->
+<%- include('../partials/admin/sidebar', { activo: 'categorias', pedidosPendientes: typeof pedidosPendientes !== 'undefined' ? pedidosPendientes : 0 }) %>
+
 <!-- Main Content Wrapper -->
 <div class="flex-1 ml-0 md:ml-64 flex flex-col min-h-screen">
-    <!-- TopAppBar (from JSON) -->
     <!-- Main Canvas -->
     <main class="flex-1 p-4 md:p-gutter xl:px-margin-desktop py-8 max-w-container-max mx-auto w-full">
         <!-- Page Header Section -->
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-10 gap-6">
             <div>
-                <h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2">Estructura del Catálogo</h1>
-                <p class="font-body-md text-body-md text-on-surface-variant max-w-xl">Administra la jerarquía de productos de la boutique. Mantén las colecciones organizadas para una experiencia de descubrimiento refinada.</p>
+                <h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2">
+                    Estructura del Catálogo</h1>
+                <p class="font-body-md text-body-md text-on-surface-variant max-w-xl">Administra la jerarquía de
+                    productos de la boutique. Mantén las colecciones organizadas para una experiencia de descubrimiento
+                    refinada.</p>
             </div>
             <button class="bg-secondary text-on-secondary font-label-md text-label-md px-6 py-3 rounded-DEFAULT uppercase tracking-widest flex items-center gap-2 hover:bg-secondary-fixed-dim transition-all duration-300 shadow-[0_0_15px_rgba(233,195,73,0.15)] active:scale-95 shrink-0">
                 <span class="material-symbols-outlined text-[18px]">add</span>
@@ -283,10 +31,12 @@
         </div>
         <!-- Tabs / Segmented Control -->
         <div class="flex border-b border-secondary/20 mb-8 overflow-x-auto no-scrollbar" id="category-tabs">
-            <button class="font-label-md text-label-md pb-3 px-6 whitespace-nowrap uppercase tracking-widest transition-colors text-on-surface-variant hover:text-on-surface" id="tab-main">
+            <button class="font-label-md text-label-md pb-3 px-6 whitespace-nowrap uppercase tracking-widest transition-colors text-on-surface-variant hover:text-on-surface"
+                    id="tab-main">
                 Categorías Principales
             </button>
-            <button class="font-label-md text-label-md pb-3 px-6 whitespace-nowrap uppercase tracking-widest transition-colors text-secondary border-b-2 border-secondary" id="tab-sub">
+            <button class="font-label-md text-label-md pb-3 px-6 whitespace-nowrap uppercase tracking-widest transition-colors text-secondary border-b-2 border-secondary"
+                    id="tab-sub">
                 Subcategorías
             </button>
         </div>
@@ -297,12 +47,24 @@
                     <thead>
                     <tr class="bg-surface-container-high/50 border-b border-secondary/10">
                         <th class="py-4 px-4 w-12 text-center text-on-surface-variant"></th>
-                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest w-24">Imagen</th>
-                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest max-w-xs">Nombre &amp; Info</th>
-                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-center w-32">Estado</th>
-                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-center w-24">Orden</th>
-                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-center w-32">Productos</th>
-                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-right w-40">Acciones</th>
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest w-24">
+                            Imagen
+                        </th>
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest max-w-xs">
+                            Nombre &amp; Info
+                        </th>
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-center w-32">
+                            Estado
+                        </th>
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-center w-24">
+                            Orden
+                        </th>
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-center w-32">
+                            Productos
+                        </th>
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-right w-40">
+                            Acciones
+                        </th>
                     </tr>
                     </thead>
                     <tbody class="divide-y divide-secondary/10" id="sortable-tbody-main">
@@ -313,12 +75,15 @@
                         </td>
                         <td class="py-4 px-6">
                             <div class="w-12 h-12 rounded bg-surface-container-highest border border-secondary/20 overflow-hidden">
-                                <img alt="Lencería Íntima thumbnail" class="w-full h-full object-cover" data-alt="A macro shot of luxurious silk lingerie fabric in deep emerald green, softly lit to highlight the texture. A subtle gold trim is visible. The lighting is moody and intimate, classic high-end boutique product photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFsZKXTh_3kOiwy7WVyQ3gSHwaEVKVGUUAuM5eDnljK68Dz4bnkY3Rq_FQIDDRn8ae2CTmMV245NMhWEXXwGJjmg0NqrJxhDOO2QASa1_Bz0ZnfdXnOTe80heNrhmF-hMS22av7Hr9lIo1IOj0HQA0yl2cjid0LH-wiXXjg-vmVDJTGgYiU4w5YrXySOEMigG1L6es_HvObIESoGVesxlirvRiHUGXGc1bqfG3zm1gLhefp0mIhr4">
+                                <img alt="Lencería Íntima thumbnail" class="w-full h-full object-cover"
+                                     data-alt="A macro shot of luxurious silk lingerie fabric in deep emerald green, softly lit to highlight the texture. A subtle gold trim is visible. The lighting is moody and intimate, classic high-end boutique product photography."
+                                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFsZKXTh_3kOiwy7WVyQ3gSHwaEVKVGUUAuM5eDnljK68Dz4bnkY3Rq_FQIDDRn8ae2CTmMV245NMhWEXXwGJjmg0NqrJxhDOO2QASa1_Bz0ZnfdXnOTe80heNrhmF-hMS22av7Hr9lIo1IOj0HQA0yl2cjid0LH-wiXXjg-vmVDJTGgYiU4w5YrXySOEMigG1L6es_HvObIESoGVesxlirvRiHUGXGc1bqfG3zm1gLhefp0mIhr4">
                             </div>
                         </td>
                         <td class="py-4 px-6 max-w-xs">
                             <p class="font-label-md text-label-md text-on-surface mb-1">Lencería Íntima</p>
-                            <p class="font-body-md text-[13px] text-on-surface-variant max-w-xs">Colecciones exclusivas de seda y encaje francés.</p>
+                            <p class="font-body-md text-[13px] text-on-surface-variant max-w-xs">Colecciones exclusivas
+                                de seda y encaje francés.</p>
                         </td>
                         <td class="py-4 px-6 text-center">
 <span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-secondary-container/20 border border-secondary/30 text-secondary font-label-sm text-[10px] uppercase tracking-widest">
@@ -334,13 +99,16 @@
                         </td>
                         <td class="py-4 px-6 text-right">
                             <div class="flex justify-end gap-2 opacity-100 group-hover:opacity-100 transition-opacity">
-                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors" title="Editar">
+                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"
+                                        title="Editar">
                                     <span class="material-symbols-outlined text-[20px]">edit</span>
                                 </button>
-                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors" title="Desactivar">
+                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"
+                                        title="Desactivar">
                                     <span class="material-symbols-outlined text-[20px]">visibility_off</span>
                                 </button>
-                                <button class="p-2 text-on-surface-variant hover:text-error transition-colors" title="Eliminar">
+                                <button class="p-2 text-on-surface-variant hover:text-error transition-colors"
+                                        title="Eliminar">
                                     <span class="material-symbols-outlined text-[20px]">delete</span>
                                 </button>
                             </div>
@@ -353,12 +121,15 @@
                         </td>
                         <td class="py-4 px-6">
                             <div class="w-12 h-12 rounded bg-surface-container-highest border border-secondary/20 overflow-hidden">
-                                <img alt="Esencias &amp; Perfumes thumbnail" class="w-full h-full object-cover" data-alt="A minimalist composition featuring a sleek, dark glass perfume bottle resting on a black marble surface. Subtle reflections and a single soft spotlight create an aura of mystery and premium quality. Luxury fragrance photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBo-yZAUIrk6dSBVEbUtE_E_zm7bWSiPpGi4lstmuMfGJwMYJdJWUV6eBNurPSWzy7vXpSpfLxtrl9f58y9w44iCOUzkhvVtWlwvbDGQC0j_mRPzW9bV4GzKlJ2I12UfCyole84D_WJ28VqYEIEGXjfs9ugsozTE9NBI0yPh-dhPB4M1UZ8EWaeg3z_jEh26FEUYjkxjzvi1t8WQGwvZTkvJifq6dFBGZIZx5ru_JBQO7dqIVHo-Wg">
+                                <img alt="Esencias &amp; Perfumes thumbnail" class="w-full h-full object-cover"
+                                     data-alt="A minimalist composition featuring a sleek, dark glass perfume bottle resting on a black marble surface. Subtle reflections and a single soft spotlight create an aura of mystery and premium quality. Luxury fragrance photography."
+                                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuBo-yZAUIrk6dSBVEbUtE_E_zm7bWSiPpGi4lstmuMfGJwMYJdJWUV6eBNurPSWzy7vXpSpfLxtrl9f58y9w44iCOUzkhvVtWlwvbDGQC0j_mRPzW9bV4GzKlJ2I12UfCyole84D_WJ28VqYEIEGXjfs9ugsozTE9NBI0yPh-dhPB4M1UZ8EWaeg3z_jEh26FEUYjkxjzvi1t8WQGwvZTkvJifq6dFBGZIZx5ru_JBQO7dqIVHo-Wg">
                             </div>
                         </td>
                         <td class="py-4 px-6 max-w-xs">
                             <p class="font-label-md text-label-md text-on-surface mb-1">Esencias &amp; Perfumes</p>
-                            <p class="font-body-md text-[13px] text-on-surface-variant max-w-xs">Aromaterapia de nicho y perfumería botánica.</p>
+                            <p class="font-body-md text-[13px] text-on-surface-variant max-w-xs">Aromaterapia de nicho y
+                                perfumería botánica.</p>
                         </td>
                         <td class="py-4 px-6 text-center">
 <span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-secondary-container/20 border border-secondary/30 text-secondary font-label-sm text-[10px] uppercase tracking-widest">
@@ -374,13 +145,16 @@
                         </td>
                         <td class="py-4 px-6 text-right">
                             <div class="flex justify-end gap-2 opacity-100 group-hover:opacity-100 transition-opacity">
-                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors" title="Editar">
+                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"
+                                        title="Editar">
                                     <span class="material-symbols-outlined text-[20px]">edit</span>
                                 </button>
-                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors" title="Desactivar">
+                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"
+                                        title="Desactivar">
                                     <span class="material-symbols-outlined text-[20px]">visibility_off</span>
                                 </button>
-                                <button class="p-2 text-on-surface-variant hover:text-error transition-colors" title="Eliminar">
+                                <button class="p-2 text-on-surface-variant hover:text-error transition-colors"
+                                        title="Eliminar">
                                     <span class="material-symbols-outlined text-[20px]">delete</span>
                                 </button>
                             </div>
@@ -393,12 +167,15 @@
                         </td>
                         <td class="py-4 px-6">
                             <div class="w-12 h-12 rounded bg-surface-container-highest border border-outline-variant overflow-hidden grayscale">
-                                <img alt="Aceites &amp; Masajes thumbnail" class="w-full h-full object-cover" data-alt="A collection of massage oils in elegant, dark amber glass bottles with gold dropper caps, arranged on a black velvet background. The lighting is very soft and moody, emphasizing relaxation and luxury spa treatments." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEmNqiq4q5Ilme9FhcPlc_T-jBEWNZGK4hm28IjDOPQBt7hfmcWFW4Cc_7wrfvT8aPGCZucJMwz_geE2IKlz4ZSwHIDmywBWufdGEbIbAxTF6u4y7Kvao8TBdMWJ20hifIQ92NxBB_E7T3w1yn7WsQi18P-rat-daQXNhvROOChYObDxZtTmOxKFO1xBNy6vKd73-4ajg3HO0MsBWqXTDmWA3pZOGyyJujKwJ7EkEbM_dGcP1_ql0">
+                                <img alt="Aceites &amp; Masajes thumbnail" class="w-full h-full object-cover"
+                                     data-alt="A collection of massage oils in elegant, dark amber glass bottles with gold dropper caps, arranged on a black velvet background. The lighting is very soft and moody, emphasizing relaxation and luxury spa treatments."
+                                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEmNqiq4q5Ilme9FhcPlc_T-jBEWNZGK4hm28IjDOPQBt7hfmcWFW4Cc_7wrfvT8aPGCZucJMwz_geE2IKlz4ZSwHIDmywBWufdGEbIbAxTF6u4y7Kvao8TBdMWJ20hifIQ92NxBB_E7T3w1yn7WsQi18P-rat-daQXNhvROOChYObDxZtTmOxKFO1xBNy6vKd73-4ajg3HO0MsBWqXTDmWA3pZOGyyJujKwJ7EkEbM_dGcP1_ql0">
                             </div>
                         </td>
                         <td class="py-4 px-6 max-w-xs">
                             <p class="font-label-md text-label-md text-on-surface mb-1">Aceites &amp; Masajes</p>
-                            <p class="font-body-md text-[13px] text-on-surface-variant max-w-xs">Rituales de cuidado corporal e hidratación profunda.</p>
+                            <p class="font-body-md text-[13px] text-on-surface-variant max-w-xs">Rituales de cuidado
+                                corporal e hidratación profunda.</p>
                         </td>
                         <td class="py-4 px-6 text-center">
 <span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-surface-variant border border-outline-variant text-on-surface-variant font-label-sm text-[10px] uppercase tracking-widest">
@@ -414,13 +191,16 @@
                         </td>
                         <td class="py-4 px-6 text-right">
                             <div class="flex justify-end gap-2 opacity-100 group-hover:opacity-100 transition-opacity">
-                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors" title="Editar">
+                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"
+                                        title="Editar">
                                     <span class="material-symbols-outlined text-[20px]">edit</span>
                                 </button>
-                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors" title="Activar">
+                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"
+                                        title="Activar">
                                     <span class="material-symbols-outlined text-[20px]">visibility</span>
                                 </button>
-                                <button class="p-2 text-on-surface-variant hover:text-error transition-colors" title="Eliminar">
+                                <button class="p-2 text-on-surface-variant hover:text-error transition-colors"
+                                        title="Eliminar">
                                     <span class="material-symbols-outlined text-[20px]">delete</span>
                                 </button>
                             </div>
@@ -435,12 +215,24 @@
                     <thead>
                     <tr class="bg-surface-container-high/50 border-b border-secondary/10">
                         <th class="py-4 px-4 w-12 text-center text-on-surface-variant"></th>
-                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest w-24">Imagen</th>
-                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest max-w-xs">Nombre &amp; Padre</th>
-                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-center w-32">Estado</th>
-                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-center w-24">Orden</th>
-                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-center w-32">Productos</th>
-                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-right w-40">Acciones</th>
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest w-24">
+                            Imagen
+                        </th>
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest max-w-xs">
+                            Nombre &amp; Padre
+                        </th>
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-center w-32">
+                            Estado
+                        </th>
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-center w-24">
+                            Orden
+                        </th>
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-center w-32">
+                            Productos
+                        </th>
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-right w-40">
+                            Acciones
+                        </th>
                     </tr>
                     </thead>
                     <tbody class="divide-y divide-secondary/10" id="sortable-tbody-sub">
@@ -472,13 +264,16 @@
                         </td>
                         <td class="py-4 px-6 text-right">
                             <div class="flex justify-end gap-2 opacity-100 group-hover:opacity-100 transition-opacity">
-                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors" title="Editar">
+                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"
+                                        title="Editar">
                                     <span class="material-symbols-outlined text-[20px]">edit</span>
                                 </button>
-                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors" title="Desactivar">
+                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"
+                                        title="Desactivar">
                                     <span class="material-symbols-outlined text-[20px]">visibility_off</span>
                                 </button>
-                                <button class="p-2 text-on-surface-variant hover:text-error transition-colors" title="Eliminar">
+                                <button class="p-2 text-on-surface-variant hover:text-error transition-colors"
+                                        title="Eliminar">
                                     <span class="material-symbols-outlined text-[20px]">delete</span>
                                 </button>
                             </div>
@@ -512,13 +307,16 @@
                         </td>
                         <td class="py-4 px-6 text-right">
                             <div class="flex justify-end gap-2 opacity-100 group-hover:opacity-100 transition-opacity">
-                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors" title="Editar">
+                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"
+                                        title="Editar">
                                     <span class="material-symbols-outlined text-[20px]">edit</span>
                                 </button>
-                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors" title="Desactivar">
+                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"
+                                        title="Desactivar">
                                     <span class="material-symbols-outlined text-[20px]">visibility_off</span>
                                 </button>
-                                <button class="p-2 text-on-surface-variant hover:text-error transition-colors" title="Eliminar">
+                                <button class="p-2 text-on-surface-variant hover:text-error transition-colors"
+                                        title="Eliminar">
                                     <span class="material-symbols-outlined text-[20px]">delete</span>
                                 </button>
                             </div>
@@ -536,7 +334,8 @@
                         </td>
                         <td class="py-4 px-6 max-w-xs">
                             <p class="font-label-md text-label-md text-on-surface mb-1">Velas Aromáticas</p>
-                            <p class="font-body-md text-[13px] text-on-surface-variant max-w-xs">Esencias &amp; Perfumes</p>
+                            <p class="font-body-md text-[13px] text-on-surface-variant max-w-xs">Esencias &amp;
+                                Perfumes</p>
                         </td>
                         <td class="py-4 px-6 text-center">
 <span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-secondary-container/20 border border-secondary/30 text-secondary font-label-sm text-[10px] uppercase tracking-widest">
@@ -552,13 +351,16 @@
                         </td>
                         <td class="py-4 px-6 text-right">
                             <div class="flex justify-end gap-2 opacity-100 group-hover:opacity-100 transition-opacity">
-                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors" title="Editar">
+                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"
+                                        title="Editar">
                                     <span class="material-symbols-outlined text-[20px]">edit</span>
                                 </button>
-                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors" title="Desactivar">
+                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"
+                                        title="Desactivar">
                                     <span class="material-symbols-outlined text-[20px]">visibility_off</span>
                                 </button>
-                                <button class="p-2 text-on-surface-variant hover:text-error transition-colors" title="Eliminar">
+                                <button class="p-2 text-on-surface-variant hover:text-error transition-colors"
+                                        title="Eliminar">
                                     <span class="material-symbols-outlined text-[20px]">delete</span>
                                 </button>
                             </div>
@@ -592,13 +394,16 @@
                         </td>
                         <td class="py-4 px-6 text-right">
                             <div class="flex justify-end gap-2 opacity-100 group-hover:opacity-100 transition-opacity">
-                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors" title="Editar">
+                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"
+                                        title="Editar">
                                     <span class="material-symbols-outlined text-[20px]">edit</span>
                                 </button>
-                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors" title="Activar">
+                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"
+                                        title="Activar">
                                     <span class="material-symbols-outlined text-[20px]">visibility</span>
                                 </button>
-                                <button class="p-2 text-on-surface-variant hover:text-error transition-colors" title="Eliminar">
+                                <button class="p-2 text-on-surface-variant hover:text-error transition-colors"
+                                        title="Eliminar">
                                     <span class="material-symbols-outlined text-[20px]">delete</span>
                                 </button>
                             </div>
@@ -611,11 +416,16 @@
             <div class="bg-surface-container-low border-t border-secondary/10 px-6 py-4 flex items-center justify-between">
                 <p class="font-label-sm text-label-sm text-on-surface-variant">Mostrando resultados</p>
                 <div class="flex gap-2">
-                    <button class="w-8 h-8 rounded border border-secondary/20 flex items-center justify-center text-on-surface-variant hover:border-secondary hover:text-secondary transition-colors disabled:opacity-50" disabled="">
+                    <button class="w-8 h-8 rounded border border-secondary/20 flex items-center justify-center text-on-surface-variant hover:border-secondary hover:text-secondary transition-colors disabled:opacity-50"
+                            disabled="">
                         <span class="material-symbols-outlined text-[18px]">chevron_left</span>
                     </button>
-                    <button class="w-8 h-8 rounded bg-secondary/10 border border-secondary flex items-center justify-center text-secondary font-label-sm">1</button>
-                    <button class="w-8 h-8 rounded border border-secondary/20 flex items-center justify-center text-on-surface-variant hover:border-secondary hover:text-secondary transition-colors font-label-sm">2</button>
+                    <button class="w-8 h-8 rounded bg-secondary/10 border border-secondary flex items-center justify-center text-secondary font-label-sm">
+                        1
+                    </button>
+                    <button class="w-8 h-8 rounded border border-secondary/20 flex items-center justify-center text-on-surface-variant hover:border-secondary hover:text-secondary transition-colors font-label-sm">
+                        2
+                    </button>
                     <button class="w-8 h-8 rounded border border-secondary/20 flex items-center justify-center text-on-surface-variant hover:border-secondary hover:text-secondary transition-colors">
                         <span class="material-symbols-outlined text-[18px]">chevron_right</span>
                     </button>
@@ -624,97 +434,9 @@
         </div>
     </main>
 </div>
-<script class="">
-    (function() {
-        const tabMain = document.getElementById('tab-main');
-        const tabSub = document.getElementById('tab-sub');
-        const wrapperMain = document.getElementById('table-main-wrapper');
-        const wrapperSub = document.getElementById('table-sub-wrapper');
 
-        function setActive(activeTab, inactiveTab, isMain) {
-            activeTab.classList.add('text-secondary', 'border-b-2', 'border-secondary');
-            activeTab.classList.remove('text-on-surface-variant', 'hover:text-on-surface');
-            inactiveTab.classList.remove('text-secondary', 'border-b-2', 'border-secondary');
-            inactiveTab.classList.add('text-on-surface-variant', 'hover:text-on-surface');
+<script src="/javascripts/admin/sidebar-toggle.js"></script>
+<script src="/javascripts/admin/categorias.js"></script>
 
-            if (isMain) {
-                wrapperMain.classList.remove('hidden');
-                wrapperSub.classList.add('hidden');
-            } else {
-                wrapperMain.classList.add('hidden');
-                wrapperSub.classList.remove('hidden');
-            }
-        }
-
-        tabMain.addEventListener('click', () => setActive(tabMain, tabSub, true));
-        tabSub.addEventListener('click', () => setActive(tabSub, tabMain, false));
-
-        function initDragAndDrop(tbodyId) {
-            const tbody = document.getElementById(tbodyId);
-            if (!tbody) return;
-
-            let draggedRow = null;
-
-            tbody.querySelectorAll('tr').forEach(row => {
-                row.addEventListener('dragstart', function(e) {
-                    draggedRow = this;
-                    setTimeout(() => this.classList.add('dragging'), 0);
-                    e.dataTransfer.effectAllowed = 'move';
-                });
-
-                row.addEventListener('dragend', function() {
-                    this.classList.remove('dragging');
-                    draggedRow = null;
-                    updateOrderNumbers(tbodyId);
-                    tbody.querySelectorAll('tr').forEach(r => r.classList.remove('drag-over'));
-                });
-
-                row.addEventListener('dragover', function(e) {
-                    e.preventDefault();
-                    if (this !== draggedRow) {
-                        this.classList.add('drag-over');
-                    }
-                    e.dataTransfer.dropEffect = 'move';
-                });
-
-                row.addEventListener('dragleave', function() {
-                    this.classList.remove('drag-over');
-                });
-
-                row.addEventListener('drop', function(e) {
-                    e.preventDefault();
-                    this.classList.remove('drag-over');
-                    if (this !== draggedRow) {
-                        const allRows = Array.from(tbody.querySelectorAll('tr'));
-                        const draggedIndex = allRows.indexOf(draggedRow);
-                        const droppedIndex = allRows.indexOf(this);
-
-                        if (draggedIndex < droppedIndex) {
-                            this.parentNode.insertBefore(draggedRow, this.nextSibling);
-                        } else {
-                            this.parentNode.insertBefore(draggedRow, this);
-                        }
-                    }
-                });
-            });
-        }
-
-        function updateOrderNumbers(tbodyId) {
-            const tbody = document.getElementById(tbodyId);
-            if (!tbody) return;
-            const rows = tbody.querySelectorAll('tr');
-            rows.forEach((row, index) => {
-                const orderCell = row.querySelector('.order-cell');
-                if (orderCell) {
-                    orderCell.textContent = String(index + 1).padStart(2, '0');
-                }
-            });
-        }
-
-        // Initialize on load for both tables
-        initDragAndDrop('sortable-tbody-main');
-        initDragAndDrop('sortable-tbody-sub');
-    })();
-</script>
-
-</body></html>
+</body>
+</html>
