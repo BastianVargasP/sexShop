@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html class="dark" lang="es" style="width: 1280px; height: 1024px; overflow: hidden; position: relative;">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Configuración del Sistema | Luxuria &amp; Sentido Boutique</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&amp;family=Playfair+Display:wght@500;600;700&amp;display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+          rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-container": "#4b0082",
+                        "inverse-primary": "#7b41b3",
+                        "on-tertiary-container": "#9b9998",
+                        "on-error": "#690005",
+                        "on-surface": "#e5e2e1",
+                        "outline": "#978d9d",
+                        "primary": "#ddb7ff",
+                        "on-primary": "#4a0080",
+                        "secondary-container": "#af8d11",
+                        "on-primary-fixed": "#2c0050",
+                        "surface-dim": "#131313",
+                        "error": "#ffb4ab",
+                        "secondary-fixed": "#ffe088",
+                        "outline-variant": "#4c4451",
+                        "tertiary-container": "#313131",
+                        "surface-tint": "#ddb7ff",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "error-container": "#93000a",
+                        "surface-container-low": "#1c1b1b",
+                        "secondary": "#e9c349",
+                        "background": "#131313",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-container-high": "#2a2a2a",
+                        "inverse-surface": "#e5e2e1",
+                        "on-surface-variant": "#cec3d3",
+                        "on-primary-container": "#ba7ef4",
+                        "on-secondary": "#3c2f00",
+                        "on-primary-fixed-variant": "#622599",
+                        "on-secondary-fixed": "#241a00",
+                        "surface-container": "#201f1f",
+                        "on-background": "#e5e2e1",
+                        "surface": "#131313",
+                        "surface-bright": "#3a3939",
+                        "primary-fixed": "#f0dbff",
+                        "surface-variant": "#353534",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "on-secondary-fixed-variant": "#574500",
+                        "tertiary-fixed": "#e5e2e1",
+                        "secondary-fixed-dim": "#e9c349",
+                        "on-tertiary": "#313030",
+                        "surface-container-highest": "#353534",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "on-error-container": "#ffdad6",
+                        "inverse-on-surface": "#313030",
+                        "tertiary": "#c8c6c5",
+                        "on-secondary-container": "#342800",
+                        "primary-fixed-dim": "#ddb7ff"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.125rem",
+                        lg: "0.25rem",
+                        xl: "0.5rem",
+                        full: "0.75rem"
+                    },
+                    spacing: {
+                        unit: "8px",
+                        "margin-desktop": "64px",
+                        "container-max": "1280px",
+                        "gutter": "24px",
+                        "margin-mobile": "20px"
+                    },
+                    fontFamily: {
+                        "body-lg": ["Hanken Grotesk"],
+                        "headline-xl": ["Playfair Display"],
+                        "headline-md": ["Playfair Display"],
+                        "label-sm": ["Hanken Grotesk"],
+                        "headline-lg": ["Playfair Display"],
+                        "headline-lg-mobile": ["Playfair Display"],
+                        "label-md": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"]
+                    },
+                    fontSize: {
+                        "body-lg": ["18px", {lineHeight: "1.6", fontWeight: "400"}],
+                        "headline-xl": ["60px", {lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "700"}],
+                        "headline-md": ["32px", {lineHeight: "1.3", fontWeight: "500"}],
+                        "label-sm": ["12px", {lineHeight: "1.2", fontWeight: "500"}],
+                        "headline-lg": ["48px", {lineHeight: "1.2", fontWeight: "600"}],
+                        "headline-lg-mobile": ["32px", {lineHeight: "1.2", fontWeight: "600"}],
+                        "label-md": ["14px", {lineHeight: "1.2", letterSpacing: "0.1em", fontWeight: "600"}],
+                        "body-md": ["16px", {lineHeight: "1.6", fontWeight: "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-panel {
+            background: rgba(49, 49, 49, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(233, 195, 73, 0.1);
+        }
+
+        .glow-hover:hover {
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+            border-color: rgba(233, 195, 73, 0.4);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased overflow-x-hidden selection:bg-secondary selection:text-on-secondary">
+<!-- TopNavBar for Mobile -->
+<header class="md:hidden sticky top-0 z-50 flex items-center justify-between w-full px-margin-mobile py-4 bg-surface-dim/80 backdrop-blur-xl border-b border-secondary/20 shadow-sm">
+    <div class="font-headline-md text-headline-md text-secondary tracking-widest">Luxuria &amp; Sentido</div>
+    <div class="flex items-center gap-4 text-secondary">
+        <span class="material-symbols-outlined cursor-pointer active:scale-95">notifications</span>
+        <span class="material-symbols-outlined cursor-pointer active:scale-95">menu</span>
+    </div>
+</header>
+<div class="flex h-screen overflow-hidden">
+    <!-- SideNavBar Desktop -->
+    <nav class="hidden md:flex flex-col h-full py-8 px-4 w-64 fixed left-0 top-0 border-r border-secondary/20 bg-surface-container-low shadow-xl z-40">
+        <div class="mb-12 px-4">
+            <div class="font-headline-md text-headline-md text-secondary tracking-widest mb-1">Luxuria Admin</div>
+            <div class="font-label-sm text-label-sm text-on-surface-variant">Boutique Management</div>
+        </div>
+        <div class="flex-1 flex flex-col gap-2 overflow-y-auto pr-2 custom-scrollbar"><a
+                    class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2.5 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
+                    href="#"><span class="material-symbols-outlined">dashboard</span>Dashboard</a>
+            <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">
+                Catálogo
+            </div>
+            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
+               href="#"><span class="material-symbols-outlined">diamond</span> Productos</a><a
+                    class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
+                    href="#"><span class="material-symbols-outlined">category</span> Categorías</a><a
+                    class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
+                    href="#"><span class="material-symbols-outlined">verified</span> Marcas</a><a
+                    class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
+                    href="#"><span class="material-symbols-outlined">reviews</span> Reseñas</a>
+            <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">
+                Ventas
+            </div>
+            <a class="flex items-center justify-between text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
+               href="#">
+                <div class="flex items-center gap-3"><span class="material-symbols-outlined">shopping_cart</span>
+                    Pedidos
+                </div>
+                <span class="text-[11px] bg-secondary/20 text-secondary px-1.5 py-0.5 rounded-full font-bold">12</span></a><a
+                    class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
+                    href="#"><span class="material-symbols-outlined">payments</span> Pagos</a><a
+                    class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
+                    href="#"><span class="material-symbols-outlined">local_offer</span> Cupones</a>
+            <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">
+                Inventario
+            </div>
+            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
+               href="#"><span class="material-symbols-outlined">inventory_2</span> Inventario</a><a
+                    class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
+                    href="#"><span class="material-symbols-outlined">swap_horiz</span> Movimientos</a>
+            <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">
+                Clientes
+            </div>
+            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
+               href="#"><span class="material-symbols-outlined">group</span> Usuarios</a>
+            <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">
+                Contenido
+            </div>
+            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
+               href="#"><span class="material-symbols-outlined">view_quilt</span> Banners y contenido</a>
+            <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">
+                Análisis
+            </div>
+            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
+               href="#"><span class="material-symbols-outlined">assessment</span> Reportes</a>
+            <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">
+                Sistema
+            </div>
+            <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
+               href="#"><span class="material-symbols-outlined">notifications</span> Notificaciones</a><a
+                    class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300"
+                    href="#"><span class="material-symbols-outlined">security</span> Auditoría</a><a
+                    class="flex items-center gap-3 text-secondary bg-primary-container/20 rounded-lg px-4 py-2.5 border-l-2 border-secondary font-label-md text-label-md transition-all duration-200"
+                    href="#"><span class="material-symbols-outlined"
+                                   style="font-variation-settings: 'FILL' 1;">settings</span> Configuración</a></div>
+        <div class="mt-auto flex flex-col gap-2 pt-8 border-t border-secondary/10"><a
+                    class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-3 font-label-md text-label-md transition-all duration-200"
+                    href="#">
+                <span class="material-symbols-outlined">logout</span>
+                Cerrar sesión
+            </a></div>
+    </nav>
+    <!-- Main Content Area -->
+    <main class="flex-1 flex flex-col h-full overflow-y-auto md:ml-64 bg-background">
+        <!-- Top Header Desktop -->
+        <header class="hidden md:flex items-center justify-between px-margin-desktop py-6 sticky top-0 z-30 bg-background/90 backdrop-blur-md border-b border-surface-container-highest">
+            <div class="flex flex-col gap-1"><h1 class="font-headline-md text-headline-md text-on-surface">Configuración
+                    del Sistema</h1></div>
+            <div class="flex items-center gap-3">
+                <button class="px-4 py-2 rounded-lg border border-surface-container-highest text-on-surface-variant hover:border-secondary/40 hover:text-on-surface transition-all text-label-sm font-label-md flex items-center gap-2 cursor-pointer"
+                        onclick="discardChanges()">Descartar
+                </button>
+                <button class="px-5 py-2 rounded-lg bg-secondary text-on-secondary hover:bg-secondary-fixed transition-all text-label-sm font-bold flex items-center gap-2 cursor-pointer shadow-[0_0_15px_rgba(233,195,73,0.3)] active:scale-95"
+                        onclick="saveAllConfig()"><span class="material-symbols-outlined text-[18px]">save</span>Guardar
+                    cambios
+                </button>
+            </div>
+        </header>
+        <div class="p-margin-mobile md:p-margin-desktop max-w-container-max mx-auto w-full flex flex-col gap-gutter">
+            <!-- Banner Header Subtitle & Quick Status -->
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-surface-container-low p-6 rounded-xl border border-secondary/20 relative overflow-hidden">
+                <div class="relative z-10">
+                    <div class="flex items-center gap-2 text-secondary text-label-sm font-semibold tracking-widest uppercase mb-1">
+                        <span class="material-symbols-outlined text-[18px]">tune</span> Parámetros de Plataforma
+                    </div>
+                    <p class="text-on-surface-variant text-body-md max-w-2xl">
+                        Gestiona la identidad corporativa de la boutique, reglas impositivas, integración con la
+                        pasarela de pagos Flow Chile, logística de despachos y normativas de seguridad.
+                    </p>
+                </div>
+                <div class="relative z-10 flex items-center gap-3 bg-surface-container px-4 py-2 rounded-lg border border-surface-container-highest">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="text-label-sm text-on-surface font-medium">Plataforma en línea • Producción</span>
+                </div>
+            </div>
+            <!-- Modular Tab Navigation -->
+            <div class="flex items-center gap-2 border-b border-surface-container-highest overflow-x-auto custom-scrollbar pb-px">
+                <button class="tab-btn flex items-center gap-2 px-5 py-3 border-b-2 font-label-md text-label-md transition-all cursor-pointer whitespace-nowrap rounded-t-lg border-transparent text-on-surface-variant"
+                        id="btn-tab-general" onclick="switchTab('tab-general')">
+                    <span class="material-symbols-outlined text-[18px]">store</span> General
+                </button>
+                <button class="tab-btn flex items-center gap-2 px-5 py-3 border-b-2 hover:text-on-surface font-label-md text-label-md transition-all cursor-pointer whitespace-nowrap rounded-t-lg border-transparent text-on-surface-variant"
+                        id="btn-tab-comercial" onclick="switchTab('tab-comercial')">
+                    <span class="material-symbols-outlined text-[18px]">point_of_sale</span> Configuración Comercial
+                </button>
+                <button class="tab-btn flex items-center gap-2 px-5 py-3 border-b-2 hover:text-on-surface font-label-md text-label-md transition-all cursor-pointer whitespace-nowrap rounded-t-lg border-transparent text-on-surface-variant"
+                        id="btn-tab-pagos" onclick="switchTab('tab-pagos')">
+                    <span class="material-symbols-outlined text-[18px]">credit_card</span> Pagos &amp; Flow
+                </button>
+                <button class="tab-btn flex items-center gap-2 px-5 py-3 border-b-2 hover:text-on-surface font-label-md text-label-md transition-all cursor-pointer whitespace-nowrap rounded-t-lg border-transparent text-on-surface-variant"
+                        id="btn-tab-envios" onclick="switchTab('tab-envios')">
+                    <span class="material-symbols-outlined text-[18px]">local_shipping</span> Envíos &amp; Despacho
+                </button>
+                <button class="tab-btn flex items-center gap-2 px-5 py-3 border-b-2 hover:text-on-surface font-label-md text-label-md transition-all cursor-pointer whitespace-nowrap rounded-t-lg border-secondary text-secondary bg-secondary/10"
+                        id="btn-tab-seguridad" onclick="switchTab('tab-seguridad')">
+                    <span class="material-symbols-outlined text-[18px]">shield</span> Seguridad &amp; Accesos
+                </button>
+            </div>
+            <!-- ==================== TAB 1: GENERAL ==================== -->
+            <div class="tab-content flex flex-col gap-6 hidden" id="tab-general">
+                <!-- Identidad de la Tienda -->
+                <div class="glass-panel p-6 rounded-xl border border-secondary/10 flex flex-col gap-6">
+                    <div class="flex items-center justify-between border-b border-surface-container-highest pb-4">
+                        <div>
+                            <h2 class="font-headline-md text-[22px] text-on-surface">Identidad &amp; Marca</h2>
+                            <p class="text-on-surface-variant text-label-sm mt-0.5">Configura el nombre público y
+                                elementos visuales de la tienda.</p>
+                        </div>
+                        <span class="material-symbols-outlined text-secondary text-[24px]">verified</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="flex flex-col gap-2 md:col-span-2">
+                            <label class="font-label-md text-label-sm text-on-surface-variant uppercase tracking-wider">Nombre
+                                de la Tienda</label>
+                            <input class="w-full bg-surface-container-high border border-surface-container-highest rounded-lg px-4 py-2.5 text-on-surface focus:border-secondary focus:outline-none transition-colors"
+                                   type="text" value="Luxuria &amp; Sentido - Boutique Sensual &amp; Lingerie">
+                        </div>
+                        <div class="flex flex-col gap-3">
+                            <label class="font-label-md text-label-sm text-on-surface-variant uppercase tracking-wider">Logo
+                                de la Boutique (PNG / SVG)</label>
+                            <div class="flex items-center gap-4 p-4 bg-surface-container-lowest rounded-xl border border-surface-container-highest">
+                                <div class="w-24 h-16 rounded-lg bg-surface-container-high flex flex-col items-center justify-center text-secondary border border-secondary/30 text-center px-2">
+                                    <span class="font-headline-md text-[13px] font-bold tracking-widest">LUXURIA</span>
+                                    <span class="text-[9px] text-on-surface-variant tracking-wider uppercase">&amp; Sentido</span>
+                                </div>
+                                <div class="flex flex-col gap-2">
+                                    <span class="text-label-sm text-on-surface">Formato recomendado: 320x80px SVG o PNG transparente</span>
+                                    <button class="px-3 py-1.5 rounded bg-surface-container-high hover:bg-tertiary-container/40 border border-secondary/30 text-secondary text-label-sm font-label-md transition-colors w-fit flex items-center gap-1.5 cursor-pointer">
+                                        <span class="material-symbols-outlined text-[16px]">upload</span> Cambiar logo
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-3">
+                            <label class="font-label-md text-label-sm text-on-surface-variant uppercase tracking-wider">Favicon
+                                del Sitio</label>
+                            <div class="flex items-center gap-4 p-4 bg-surface-container-lowest rounded-xl border border-surface-container-highest">
+                                <div class="w-16 h-16 rounded-lg bg-surface-container-high flex items-center justify-center text-secondary border border-secondary/30 font-headline-md font-bold text-xl shadow-[0_0_15px_rgba(233,195,73,0.2)]">
+                                    LS
+                                </div>
+                                <div class="flex flex-col gap-2">
+                                    <span class="text-label-sm text-on-surface">Icono para pestañas del navegador (32x32px o 64x64px)</span>
+                                    <button class="px-3 py-1.5 rounded bg-surface-container-high hover:bg-tertiary-container/40 border border-secondary/30 text-secondary text-label-sm font-label-md transition-colors w-fit flex items-center gap-1.5 cursor-pointer">
+                                        <span class="material-symbols-outlined text-[16px]">image</span> Subir Favicon
+                                        (.ico, .png)
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Contacto & Showroom -->
+                <div class="glass-panel p-6 rounded-xl border border-secondary/10 flex flex-col gap-6">
+                    <div class="flex items-center justify-between border-b border-surface-container-highest pb-4">
+                        <div>
+                            <h2 class="font-headline-md text-[22px] text-on-surface">Canales de Contacto &amp;
+                                Showroom</h2>
+                            <p class="text-on-surface-variant text-label-sm mt-0.5">Información visible en pie de página
+                                y comprobantes de compra.</p>
+                        </div>
+                        <span class="material-symbols-outlined text-secondary text-[24px]">contact_mail</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="flex flex-col gap-2">
+                            <label class="font-label-md text-label-sm text-on-surface-variant uppercase tracking-wider">Email
+                                de Concierge / Atención</label>
+                            <div class="relative">
+                                <span class="material-symbols-outlined absolute left-3 top-2.5 text-on-surface-variant text-[18px]">mail</span>
+                                <input class="w-full bg-surface-container-high border border-surface-container-highest rounded-lg pl-10 pr-4 py-2.5 text-on-surface focus:border-secondary focus:outline-none transition-colors"
+                                       type="email" value="concierge@luxuriaysentido.cl">
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="font-label-md text-label-sm text-on-surface-variant uppercase tracking-wider">Teléfono
+                                de Contacto</label>
+                            <div class="relative">
+                                <span class="material-symbols-outlined absolute left-3 top-2.5 text-on-surface-variant text-[18px]">call</span>
+                                <input class="w-full bg-surface-container-high border border-surface-container-highest rounded-lg pl-10 pr-4 py-2.5 text-on-surface focus:border-secondary focus:outline-none transition-colors"
+                                       type="tel" value="+56 9 8456 1234">
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-2 md:col-span-2">
+                            <label class="font-label-md text-label-sm text-on-surface-variant uppercase tracking-wider">Dirección
+                                Showroom Privado</label>
+                            <div class="relative">
+                                <span class="material-symbols-outlined absolute left-3 top-2.5 text-on-surface-variant text-[18px]">pin_drop</span>
+                                <input class="w-full bg-surface-container-high border border-surface-container-highest rounded-lg pl-10 pr-4 py-2.5 text-on-surface focus:border-secondary focus:outline-none transition-colors"
+                                       type="text"
+                                       value="Av. Monseñor Escrivá de Balaguer 6420, Of. 802, Vitacura, Santiago, Chile">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Redes Sociales -->
+                <div class="glass-panel p-6 rounded-xl border border-secondary/10 flex flex-col gap-6">
+                    <div class="flex items-center justify-between border-b border-surface-container-highest pb-4">
+                        <div>
+                            <h2 class="font-headline-md text-[22px] text-on-surface">Redes Sociales Oficiales</h2>
+                            <p class="text-on-surface-variant text-label-sm mt-0.5">Enlaces vinculados en el footer de
+                                la tienda online.</p>
+                        </div>
+                        <span class="material-symbols-outlined text-secondary text-[24px]">share</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="flex flex-col gap-2">
+                            <label class="font-label-md text-label-sm text-on-surface-variant uppercase tracking-wider">Instagram</label>
+                            <input class="w-full bg-surface-container-high border border-surface-container-highest rounded-lg px-4 py-2.5 text-on-surface focus:border-secondary focus:outline-none transition-colors"
+                                   type="text" value="@luxuria.sentido">
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="font-label-md text-label-sm text-on-surface-variant uppercase tracking-wider">TikTok
+                                Boutique</label>
+                            <input class="w-full bg-surface-container-high border border-surface-container-highest rounded-lg px-4 py-2.5 text-on-surface focus:border-secondary focus:outline-none transition-colors"
+                                   type="text" value="@luxuria_boutique">
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="font-label-md text-label-sm text-on-surface-variant uppercase tracking-wider">WhatsApp
+                                Concierge</label>
+                            <input class="w-full bg-surface-container-high border border-surface-container-highest rounded-lg px-4 py-2.5 text-on-surface focus:border-secondary focus:outline-none transition-colors"
+                                   type="text" value="+56 9 8456 1234">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ==================== TAB 2: CONFIGURACIÓN COMERCIAL ==================== -->
+            <div class="tab-content flex flex-col gap-6 hidden" id="tab-comercial">
+                <div class="glass-panel p-6 rounded-xl border border-secondary/10 flex flex-col gap-6">
+                    <div class="flex items-center justify-between border-b border-surface-container-highest pb-4">
+                        <div>
+                            <h2 class="font-headline-md text-[22px] text-on-surface">Moneda &amp; Formato de
+                                Precios</h2>
+                            <p class="text-on-surface-variant text-label-sm mt-0.5">Parámetros de facturación y
+                                despliegue numérico en el catálogo.</p>
+                        </div>
+                        <span class="material-symbols-outlined text-secondary text-[24px]">payments</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="flex flex-col gap-2">
+                            <label class="font-label-md text-label-sm text-on-surface-variant uppercase tracking-wider">Moneda
+                                Principal</label>
+                            <select class="w-full bg-surface-container-high border border-surface-container-highest rounded-lg px-4 py-2.5 text-on-surface focus:border-secondary focus:outline-none transition-colors">
+                                <option selected="">Pesos Chilenos - CLP ($)</option>
+                                <option>Dólares Americanos - USD ($)</option>
+                                <option>Euros - EUR (€)</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="font-label-md text-label-sm text-on-surface-variant uppercase tracking-wider">Formato
+                                de Separador</label>
+                            <select class="w-full bg-surface-container-high border border-surface-container-highest rounded-lg px-4 py-2.5 text-on-surface focus:border-secondary focus:outline-none transition-colors">
+                                <option selected="">$125.430 (Separador de miles por punto)</option>
+                                <option>$125,430 (Separador por coma)</option>
+                                <option>125 430 CLP (Espacio regular)</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="font-label-md text-label-sm text-on-surface-variant uppercase tracking-wider">Impuesto
+                                al Valor Agregado (IVA)</label>
+                            <div class="relative">
+                                <input class="w-full bg-surface-container-high border border-surface-container-highest rounded-lg px-4 py-2.5 text-on-surface focus:border-secondary focus:outline-none transition-colors"
+                                       type="number" value="19">
+                                <span class="absolute right-3 top-2.5 text-on-surface-variant text-label-sm">% Chile</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl border border-surface-container-highest mt-2">
+                        <div class="flex flex-col gap-1">
+                            <span class="font-label-md text-on-surface">Precios con IVA Incluido</span>
+                            <span class="text-label-sm text-on-surface-variant">Mostrar los precios finales al consumidor con impuestos ya calculados en vitrina.</span>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input checked="" class="sr-only peer" type="checkbox">
+                            <div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+                        </label>
+                    </div>
+                </div>
+                <!-- Compra Mínima & Reglas de Pedido -->
+                <div class="glass-panel p-6 rounded-xl border border-secondary/10 flex flex-col gap-6">
+                    <div class="flex items-center justify-between border-b border-surface-container-highest pb-4">
+                        <div>
+                            <h2 class="font-headline-md text-[22px] text-on-surface">Políticas de Pedido &amp;
+                                Cobertura</h2>
+                            <p class="text-on-surface-variant text-label-sm mt-0.5">Límites de compra mínima y zonas
+                                habilitadas para órdenes online.</p>
+                        </div>
+                        <span class="material-symbols-outlined text-secondary text-[24px]">shopping_bag</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="flex flex-col gap-3 p-4 bg-surface-container-lowest rounded-xl border border-surface-container-highest">
+                            <div class="flex items-center justify-between">
+                                <span class="font-label-md text-on-surface">Exigir compra mínima</span>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input checked="" class="sr-only peer" type="checkbox">
+                                    <div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+                                </label>
+                            </div>
+                            <div class="flex flex-col gap-1 mt-2">
+                                <label class="text-label-sm text-on-surface-variant uppercase tracking-wider">Monto
+                                    mínimo de orden (CLP)</label>
+                                <input class="w-full bg-surface-container-high border border-surface-container-highest rounded-lg px-4 py-2.5 text-on-surface focus:border-secondary focus:outline-none"
+                                       type="text" value="$15.000 CLP">
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-3 p-4 bg-surface-container-lowest rounded-xl border border-surface-container-highest">
+                            <span class="font-label-md text-on-surface">Cobertura Geográfica Disponible</span>
+                            <span class="text-label-sm text-on-surface-variant mb-2">Selecciona las zonas del país con despacho autorizado:</span>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-secondary/20 text-secondary border border-secondary/40 rounded-full text-label-sm flex items-center gap-1.5 font-medium">Despacho Nacional Chile <span
+                                            class="material-symbols-outlined text-[14px]">check</span></span>
+                                <span class="px-3 py-1 bg-surface-container-high text-on-surface border border-surface-container-highest rounded-full text-label-sm font-medium">Región Metropolitana</span>
+                                <span class="px-3 py-1 bg-surface-container-high text-on-surface border border-surface-container-highest rounded-full text-label-sm font-medium">Valparaíso</span>
+                                <span class="px-3 py-1 bg-surface-container-high text-on-surface border border-surface-container-highest rounded-full text-label-sm font-medium">Biobío</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ==================== TAB 3: PAGOS & FLOW ==================== -->
+            <div class="tab-content flex flex-col gap-6 hidden" id="tab-pagos">
+                <div class="glass-panel p-6 rounded-xl border border-secondary/20 flex flex-col gap-6 relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 w-48 h-48 bg-secondary/5 rounded-full blur-2xl"></div>
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-surface-container-highest pb-4 relative z-10">
+                        <div class="flex items-center gap-3">
+                            <div class="px-3 py-1.5 rounded bg-primary-container/30 border border-primary-container text-secondary font-headline-md font-bold tracking-wider text-[18px]">
+                                FLOW
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <h2 class="font-headline-md text-[22px] text-on-surface">Flow Pagos Chile</h2>
+                                    <span class="px-2 py-0.5 rounded text-[11px] bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30">CONECTADO</span>
+                                </div>
+                                <p class="text-on-surface-variant text-label-sm mt-0.5">Pasarela de pago principal:
+                                    Webpay Plus, Redcompra, Transferencias y Mach.</p>
+                            </div>
+                        </div>
+                        <!-- Environment selector -->
+                        <div class="flex items-center bg-surface-container-lowest p-1 rounded-lg border border-surface-container-highest">
+                            <button class="px-3 py-1 text-label-sm rounded text-on-surface-variant hover:text-on-surface transition-colors">
+                                Sandbox (Pruebas)
+                            </button>
+                            <button class="px-3 py-1 text-label-sm rounded bg-secondary text-on-secondary font-bold shadow-sm">
+                                Producción (Live)
+                            </button>
+                        </div>
+                    </div>
+                    <!-- API Credentials -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
+                        <div class="flex flex-col gap-2">
+                            <div class="flex justify-between items-center">
+                                <label class="font-label-md text-label-sm text-on-surface-variant uppercase tracking-wider">ApiKey
+                                    (Identificador de Comercio)</label>
+                                <span class="text-[11px] text-emerald-400 flex items-center gap-1"><span
+                                            class="material-symbols-outlined text-[14px]">verified</span> Válida</span>
+                            </div>
+                            <div class="relative flex items-center">
+                                <input class="w-full bg-surface-container-high border border-surface-container-highest rounded-lg pl-4 pr-10 py-2.5 font-mono text-label-sm text-on-surface focus:border-secondary focus:outline-none"
+                                       id="apiKeyInput" type="text" value="flw_live_89f41a0e9140bc7542d99c42">
+                                <button class="absolute right-3 text-on-surface-variant hover:text-secondary cursor-pointer"
+                                        onclick="toggleVisibility('apiKeyInput')" type="button">
+                                    <span class="material-symbols-outlined text-[18px]">visibility</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <div class="flex justify-between items-center">
+                                <label class="font-label-md text-label-sm text-on-surface-variant uppercase tracking-wider">SecretKey
+                                    (Llave Secreta de Cifrado)</label>
+                                <span class="text-[11px] text-emerald-400 flex items-center gap-1"><span
+                                            class="material-symbols-outlined text-[14px]">lock</span> Cifrada</span>
+                            </div>
+                            <div class="relative flex items-center">
+                                <input class="w-full bg-surface-container-high border border-surface-container-highest rounded-lg pl-4 pr-10 py-2.5 font-mono text-label-sm text-on-surface focus:border-secondary focus:outline-none"
+                                       id="secretKeyInput" type="text" value="sec_4780ffb088e847c1a2f96614bb5339d">
+                                <button class="absolute right-3 text-on-surface-variant hover:text-secondary cursor-pointer"
+                                        onclick="toggleVisibility('secretKeyInput')" type="button">
+                                    <span class="material-symbols-outlined text-[18px]">visibility</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- URLs & Webhooks -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
+                        <div class="flex flex-col gap-2">
+                            <label class="font-label-md text-label-sm text-on-surface-variant uppercase tracking-wider">URL
+                                de Retorno de Éxito</label>
+                            <input class="w-full bg-surface-container-high border border-surface-container-highest rounded-lg px-4 py-2.5 font-mono text-label-sm text-on-surface focus:border-secondary focus:outline-none"
+                                   type="url" value="https://luxuriaysentido.cl/checkout/flow/success">
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="font-label-md text-label-sm text-on-surface-variant uppercase tracking-wider">URL
+                                de Retorno de Rechazo / Fracaso</label>
+                            <input class="w-full bg-surface-container-high border border-surface-container-highest rounded-lg px-4 py-2.5 font-mono text-label-sm text-on-surface focus:border-secondary focus:outline-none"
+                                   type="url" value="https://luxuriaysentido.cl/checkout/flow/failure">
+                        </div>
+                        <div class="flex flex-col gap-2 md:col-span-2">
+                            <label class="font-label-md text-label-sm text-on-surface-variant uppercase tracking-wider">Webhook
+                                de Notificación Inmediata (Server-to-Server)</label>
+                            <div class="flex items-center gap-2">
+                                <input class="flex-1 bg-surface-container-high border border-surface-container-highest rounded-lg px-4 py-2.5 font-mono text-label-sm text-on-surface focus:border-secondary focus:outline-none"
+                                       type="url" value="https://api.luxuriaysentido.cl/v1/payments/flow/webhook">
+                                <button class="px-4 py-2.5 bg-surface-container-high border border-secondary/30 text-secondary hover:bg-secondary hover:text-on-secondary text-label-sm font-label-md rounded-lg transition-all flex items-center gap-2 cursor-pointer">
+                                    <span class="material-symbols-outlined text-[16px]">sync</span> Probar Endpoint
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Métodos permitidos vía Flow -->
+                    <div class="flex flex-col gap-3 relative z-10 pt-4 border-t border-surface-container-highest">
+                        <label class="font-label-md text-label-sm text-on-surface-variant uppercase tracking-wider">Medios
+                            de Pago Habilitados en Pasarela</label>
+                        <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+                            <label class="flex items-center gap-2 p-3 bg-surface-container-lowest rounded-lg border border-secondary/30 text-on-surface cursor-pointer">
+                                <input checked="" class="accent-secondary w-4 h-4" type="checkbox">
+                                <span class="text-label-sm font-medium">Webpay Plus</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 bg-surface-container-lowest rounded-lg border border-secondary/30 text-on-surface cursor-pointer">
+                                <input checked="" class="accent-secondary w-4 h-4" type="checkbox">
+                                <span class="text-label-sm font-medium">Servipag</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 bg-surface-container-lowest rounded-lg border border-secondary/30 text-on-surface cursor-pointer">
+                                <input checked="" class="accent-secondary w-4 h-4" type="checkbox">
+                                <span class="text-label-sm font-medium">Multicaja</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 bg-surface-container-lowest rounded-lg border border-secondary/30 text-on-surface cursor-pointer">
+                                <input checked="" class="accent-secondary w-4 h-4" type="checkbox">
+                                <span class="text-label-sm font-medium">Mach Pay</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 bg-surface-container-lowest rounded-lg border border-surface-container-highest text-on-surface-variant cursor-pointer opacity-70">
+                                <input class="accent-secondary w-4 h-4" type="checkbox">
+                                <span class="text-label-sm font-medium">Crypto (BTC/ETH)</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ==================== TAB 4: ENVÍOS ==================== -->
+            <div class="tab-content flex flex-col gap-6 hidden" id="tab-envios">
+                <!-- Operadores & Métodos -->
+                <div class="glass-panel p-6 rounded-xl border border-secondary/10 flex flex-col gap-6">
+                    <div class="flex items-center justify-between border-b border-surface-container-highest pb-4">
+                        <div>
+                            <h2 class="font-headline-md text-[22px] text-on-surface">Operadores Logísticos
+                                Integrados</h2>
+                            <p class="text-on-surface-variant text-label-sm mt-0.5">Alianzas y couriers para envíos
+                                estándar y prioritarios discretos.</p>
+                        </div>
+                        <span class="material-symbols-outlined text-secondary text-[24px]">local_shipping</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div class="p-4 bg-surface-container-lowest rounded-xl border border-secondary/30 flex flex-col justify-between gap-3">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <span class="font-headline-md text-[16px] text-on-surface block">Chilexpress</span>
+                                    <span class="text-[11px] text-secondary font-semibold">Discreto • Prioritario</span>
+                                </div>
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                            </div>
+                            <span class="text-label-sm text-on-surface-variant">Sincronización de etiquetas activa</span>
+                        </div>
+                        <div class="p-4 bg-surface-container-lowest rounded-xl border border-secondary/30 flex flex-col justify-between gap-3">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <span class="font-headline-md text-[16px] text-on-surface block">Starken</span>
+                                    <span class="text-[11px] text-secondary font-semibold">Nacional • Regiones</span>
+                                </div>
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                            </div>
+                            <span class="text-label-sm text-on-surface-variant">Retiro en sucursal disponible</span>
+                        </div>
+                        <div class="p-4 bg-surface-container-lowest rounded-xl border border-secondary/30 flex flex-col justify-between gap-3">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <span class="font-headline-md text-[16px] text-on-surface block">Blue Express</span>
+                                    <span class="text-[11px] text-secondary font-semibold">Lockers • Domicilio</span>
+                                </div>
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                            </div>
+                            <span class="text-label-sm text-on-surface-variant">Puntos Blue habilitados</span>
+                        </div>
+                        <div class="p-4 bg-surface-container-lowest rounded-xl border border-secondary/30 flex flex-col justify-between gap-3">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <span class="font-headline-md text-[16px] text-on-surface block">Express Mismo Día</span>
+                                    <span class="text-[11px] text-secondary font-semibold">Santiago Urbano</span>
+                                </div>
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                            </div>
+                            <span class="text-label-sm text-on-surface-variant">Entregas en 3 a 6 horas</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tarifas Zonales -->
+                <div class="glass-panel p-6 rounded-xl border border-secondary/10 flex flex-col gap-6">
+                    <div class="flex items-center justify-between border-b border-surface-container-highest pb-4">
+                        <div>
+                            <h2 class="font-headline-md text-[22px] text-on-surface">Tarifas por Zonas de Chile</h2>
+                            <p class="text-on-surface-variant text-label-sm mt-0.5">Costos fijos aplicados
+                                automáticamente en el checkout del cliente.</p>
+                        </div>
+                        <span class="material-symbols-outlined text-secondary text-[24px]">distance</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="flex flex-col gap-2 p-4 bg-surface-container-lowest rounded-xl border border-surface-container-highest">
+                            <span class="font-label-md text-on-surface">Santiago Urbano / RM</span>
+                            <span class="text-label-sm text-on-surface-variant">Plazo estimado: 24 a 48 hrs hábiles</span>
+                            <div class="mt-2">
+                                <label class="text-[11px] text-on-surface-variant uppercase tracking-wider">Tarifa Fija
+                                    (CLP)</label>
+                                <input class="w-full bg-surface-container-high border border-surface-container-highest rounded-lg px-3 py-2 text-on-surface focus:border-secondary focus:outline-none font-medium mt-1"
+                                       type="text" value="$3.990 CLP">
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-2 p-4 bg-surface-container-lowest rounded-xl border border-surface-container-highest">
+                            <span class="font-label-md text-on-surface">Regiones Centro y Norte</span>
+                            <span class="text-label-sm text-on-surface-variant">Plazo estimado: 2 a 4 días hábiles</span>
+                            <div class="mt-2">
+                                <label class="text-[11px] text-on-surface-variant uppercase tracking-wider">Tarifa Fija
+                                    (CLP)</label>
+                                <input class="w-full bg-surface-container-high border border-surface-container-highest rounded-lg px-3 py-2 text-on-surface focus:border-secondary focus:outline-none font-medium mt-1"
+                                       type="text" value="$5.990 CLP">
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-2 p-4 bg-surface-container-lowest rounded-xl border border-surface-container-highest">
+                            <span class="font-label-md text-on-surface">Zonas Extremas (Aysén / Magallanes)</span>
+                            <span class="text-label-sm text-on-surface-variant">Plazo estimado: 4 a 7 días hábiles</span>
+                            <div class="mt-2">
+                                <label class="text-[11px] text-on-surface-variant uppercase tracking-wider">Tarifa Fija
+                                    (CLP)</label>
+                                <input class="w-full bg-surface-container-high border border-surface-container-highest rounded-lg px-3 py-2 text-on-surface focus:border-secondary focus:outline-none font-medium mt-1"
+                                       type="text" value="$8.990 CLP">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Política de Envío Gratuito -->
+                    <div class="p-5 bg-surface-container-lowest rounded-xl border border-secondary/30 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mt-2">
+                        <div class="flex flex-col gap-1">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-secondary text-[20px]">redeem</span>
+                                <span class="font-label-md text-on-surface font-semibold">Habilitar Política de Envío Gratuito</span>
+                            </div>
+                            <span class="text-label-sm text-on-surface-variant">Aplica en compras mayores al umbral establecido para Santiago y capitales regionales.</span>
+                        </div>
+                        <div class="flex items-center gap-4 w-full md:w-auto">
+                            <div class="flex flex-col gap-1 w-full md:w-48">
+                                <span class="text-[11px] text-on-surface-variant uppercase tracking-wider">Monto mínimo orden</span>
+                                <input class="bg-surface-container-high border border-surface-container-highest rounded-lg px-3 py-1.5 text-on-surface text-label-sm font-semibold focus:border-secondary focus:outline-none"
+                                       type="text" value="$50.000 CLP">
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer pt-4">
+                                <input checked="" class="sr-only peer" type="checkbox">
+                                <div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ==================== TAB 5: SEGURIDAD ==================== -->
+            <div class="tab-content flex flex-col gap-6" id="tab-seguridad">
+                <!-- Sesiones & Autenticación -->
+                <div class="glass-panel p-6 rounded-xl border border-secondary/10 flex flex-col gap-6">
+                    <div class="flex items-center justify-between border-b border-surface-container-highest pb-4">
+                        <div>
+                            <h2 class="font-headline-md text-[22px] text-on-surface">Políticas de Sesión &amp;
+                                Accesos</h2>
+                            <p class="text-on-surface-variant text-label-sm mt-0.5">Control de inactividad y
+                                restricciones de sesión del personal administrativo.</p>
+                        </div>
+                        <span class="material-symbols-outlined text-secondary text-[24px]">lock_clock</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="flex flex-col gap-2">
+                            <label class="font-label-md text-label-sm text-on-surface-variant uppercase tracking-wider">Expiración
+                                de Sesión Inactiva</label>
+                            <select class="w-full bg-surface-container-high border border-surface-container-highest rounded-lg px-4 py-2.5 text-on-surface focus:border-secondary focus:outline-none transition-colors">
+                                <option selected="">30 minutos (Recomendado)</option>
+                                <option>1 hora</option>
+                                <option>4 horas</option>
+                                <option>24 horas</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl border border-surface-container-highest">
+                            <div class="flex flex-col gap-1">
+                                <span class="font-label-md text-on-surface">Cierre automático en dispositivos compartidos</span>
+                                <span class="text-label-sm text-on-surface-variant">Invalida cookies al cerrar navegador</span>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input checked="" class="sr-only peer" type="checkbox">
+                                <div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Reglas de Contraseñas & 2FA -->
+                <div class="glass-panel p-6 rounded-xl border border-secondary/10 flex flex-col gap-6">
+                    <div class="flex items-center justify-between border-b border-surface-container-highest pb-4">
+                        <div>
+                            <h2 class="font-headline-md text-[22px] text-on-surface">Fortaleza de Contraseñas &amp;
+                                2FA</h2>
+                            <p class="text-on-surface-variant text-label-sm mt-0.5">Parámetros de seguridad exigidos
+                                para operadores y administradores.</p>
+                        </div>
+                        <span class="material-symbols-outlined text-secondary text-[24px]">security</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl border border-secondary/20">
+                            <div class="flex flex-col gap-1">
+                                <span class="font-label-md text-on-surface font-semibold">Autenticación en Dos Pasos (2FA)</span>
+                                <span class="text-label-sm text-on-surface-variant">Obligatorio vía Google Authenticator para roles Admin</span>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input checked="" class="sr-only peer" type="checkbox">
+                                <div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl border border-surface-container-highest">
+                            <div class="flex flex-col gap-1">
+                                <span class="font-label-md text-on-surface font-semibold">Exigir caracteres especiales y números</span>
+                                <span class="text-label-sm text-on-surface-variant">Mínimo 8 caracteres, mayúsculas y símbolos</span>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input checked="" class="sr-only peer" type="checkbox">
+                                <div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl border border-surface-container-highest md:col-span-2">
+                            <div class="flex flex-col gap-1">
+                                <span class="font-label-md text-on-surface font-semibold">Rotación periódica de credenciales</span>
+                                <span class="text-label-sm text-on-surface-variant">Solicitar renovación obligatoria de contraseña cada 90 días</span>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input checked="" class="sr-only peer" type="checkbox">
+                                <div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Floating Toast Notification Container -->
+            <div class="fixed bottom-8 right-8 z-50 transform transition-all duration-300 bg-surface-container-high border border-secondary text-on-surface px-5 py-3.5 rounded-xl shadow-2xl flex items-center gap-3 translate-y-24 opacity-0"
+                 id="save-toast">
+                <span class="material-symbols-outlined text-secondary">check_circle</span>
+                <div>
+                    <div class="font-label-md text-on-surface font-bold">Configuración guardada</div>
+                    <div class="text-label-sm text-on-surface-variant">Los parámetros han sido sincronizados en
+                        producción.
+                    </div>
+                </div>
+            </div>
+            <!-- Tab Switching Script -->
+            <script>
+                function switchTab(tabId) {
+                    document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+                    document.querySelectorAll('.tab-btn').forEach(el => {
+                        el.classList.remove('border-secondary', 'text-secondary', 'bg-secondary/10');
+                        el.classList.add('border-transparent', 'text-on-surface-variant');
+                    });
+                    const activeTab = document.getElementById(tabId);
+                    if (activeTab) activeTab.classList.remove('hidden');
+                    const activeBtn = document.getElementById('btn-' + tabId);
+                    if (activeBtn) {
+                        activeBtn.classList.remove('border-transparent', 'text-on-surface-variant');
+                        activeBtn.classList.add('border-secondary', 'text-secondary', 'bg-secondary/10');
+                    }
+                }
+
+                function toggleVisibility(inputId) {
+                    const el = document.getElementById(inputId);
+                    if (el) {
+                        el.type = el.type === 'password' ? 'text' : 'password';
+                    }
+                }
+
+                function saveAllConfig() {
+                    const toast = document.getElementById('save-toast');
+                    if (toast) {
+                        toast.classList.remove('translate-y-24', 'opacity-0');
+                        setTimeout(() => {
+                            toast.classList.add('translate-y-24', 'opacity-0');
+                        }, 3500);
+                    }
+                }
+
+                function discardChanges() {
+                    alert('Cambios descartados. Se han restaurado los valores anteriores.');
+                }
+            </script>
+        </div>
+    </main>
+</div>
+
+
+<div id="snapdom-sandbox" data-snapdom-sandbox="true" aria-hidden="true"
+     style="position: absolute; left: -9999px; top: -9999px; width: 0px; height: 0px; overflow: hidden;"></div>
+</body>
+</html>

@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html class="dark" lang="es" style="">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&amp;family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+          rel="stylesheet">
+    <style>@layer base {
+            html, body {
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                overscroll-behavior: none;
+            }
+
+            main > :first-child {
+                margin-top: 0 !important;
+            }
+
+            main > :last-child {
+                margin-bottom: 0 !important;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }</style>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">tailwind.config = {
+            "darkMode": "class", "theme": {
+                "extend": {
+                    "colors": {
+                        "primary-container": "#4b0082",
+                        "background": "#131313",
+                        "on-background": "#e5e2e1",
+                        "on-surface-variant": "#cec3d3",
+                        "secondary-fixed": "#ffe088",
+                        "on-secondary-fixed-variant": "#574500",
+                        "on-secondary": "#3c2f00",
+                        "outline-variant": "#4c4451",
+                        "on-error-container": "#ffdad6",
+                        "inverse-primary": "#7b41b3",
+                        "secondary-container": "#af8d11",
+                        "primary-fixed": "#f0dbff",
+                        "on-primary-fixed": "#2c0050",
+                        "surface": "#131313",
+                        "primary-fixed-dim": "#ddb7ff",
+                        "on-tertiary-container": "#9b9998",
+                        "on-primary-fixed-variant": "#622599",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "on-primary-container": "#ba7ef4",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "inverse-surface": "#e5e2e1",
+                        "surface-bright": "#3a3939",
+                        "surface-container": "#201f1f",
+                        "on-tertiary": "#313030",
+                        "surface-dim": "#131313",
+                        "on-secondary-fixed": "#241a00",
+                        "tertiary": "#c8c6c5",
+                        "primary": "#ddb7ff",
+                        "surface-container-highest": "#353534",
+                        "surface-container-lowest": "#0e0e0e",
+                        "secondary": "#e9c349",
+                        "tertiary-container": "#313131",
+                        "on-primary": "#4a0080",
+                        "on-surface": "#e5e2e1",
+                        "error": "#ffb4ab",
+                        "outline": "#978d9d",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "surface-container-high": "#2a2a2a",
+                        "on-secondary-container": "#342800",
+                        "tertiary-fixed": "#e5e2e1",
+                        "surface-container-low": "#1c1b1b",
+                        "inverse-on-surface": "#313030",
+                        "surface-tint": "#ddb7ff",
+                        "surface-variant": "#353534",
+                        "secondary-fixed-dim": "#e9c349",
+                        "error-container": "#93000a",
+                        "on-error": "#690005"
+                    },
+                    "borderRadius": {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                    "spacing": {
+                        "container-max": "1280px",
+                        "margin-mobile": "20px",
+                        "unit": "8px",
+                        "margin-desktop": "64px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Playfair Display"],
+                        "label-sm": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Playfair Display"],
+                        "headline-lg": ["Playfair Display"],
+                        "label-md": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-md": ["Playfair Display"]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["60px", {
+                            "lineHeight": "1.1",
+                            "letterSpacing": "-0.02em",
+                            "fontWeight": "700"
+                        }],
+                        "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                        "headline-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "headline-lg": ["48px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "500"}]
+                    }
+                }
+            }
+        };</script>
+</head>
+<body class="bg-surface font-body-md text-on-surface selection:bg-secondary selection:text-on-secondary">
+<aside class="fixed left-0 top-0 h-full w-64 bg-[#0e0e0e] border-r border-[#262626] z-30 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)] overflow-y-auto">
+    <div class="flex flex-col">
+        <div class="px-6 py-6 flex flex-col border-b border-[#262626]">
+            <div class="flex items-baseline gap-2"><span
+                        class="font-headline-md text-2xl font-bold text-[#e9c349] tracking-tight">Luxuria</span><span
+                        class="font-body-md text-sm text-[#c8c6c5]/80 font-medium tracking-wide">Admin</span></div>
+            <span class="font-label-sm text-[11px] uppercase tracking-widest text-[#978d9d] mt-1">Boutique Management</span>
+        </div>
+        <nav class="flex flex-col gap-0.5 px-3 mt-3 pb-6">
+            <div class="px-3 pt-3 pb-1 font-label-sm text-[11px] font-semibold text-[#978d9d] uppercase tracking-wider">
+                Dashboard
+            </div>
+            <a class="flex items-center gap-3 px-3 py-2 rounded text-[#cec3d3] hover:bg-[#201f1f] hover:text-[#e5e2e1] transition-colors"
+               data-path="dashboard" href="#"><span class="material-symbols-outlined text-[19px]">grid_view</span><span
+                        class="font-body-md text-sm">Dashboard</span></a>
+            <div class="px-3 pt-4 pb-1 font-label-sm text-[11px] font-semibold text-[#978d9d] uppercase tracking-wider">
+                Catálogo
+            </div>
+            <a class="flex items-center gap-3 px-3 py-2 rounded text-[#cec3d3] hover:bg-[#201f1f] hover:text-[#e5e2e1] transition-colors"
+               data-path="productos" href="#"><span class="material-symbols-outlined text-[19px]">diamond</span><span
+                        class="font-body-md text-sm">Productos</span></a><a
+                    class="flex items-center gap-3 px-3 py-2 rounded text-[#cec3d3] hover:bg-[#201f1f] hover:text-[#e5e2e1] transition-colors"
+                    data-path="categorias" href="#"><span
+                        class="material-symbols-outlined text-[19px]">category</span><span class="font-body-md text-sm">Categorías</span></a><a
+                    class="flex items-center gap-3 px-3 py-2 rounded text-[#cec3d3] hover:bg-[#201f1f] hover:text-[#e5e2e1] transition-colors"
+                    data-path="marcas" href="#"><span class="material-symbols-outlined text-[19px]">verified</span><span
+                        class="font-body-md text-sm">Marcas</span></a><a
+                    class="flex items-center gap-3 px-3 py-2 rounded text-[#cec3d3] hover:bg-[#201f1f] hover:text-[#e5e2e1] transition-colors"
+                    data-path="reseñas" href="#"><span
+                        class="material-symbols-outlined text-[19px]">hotel_class</span><span
+                        class="font-body-md text-sm">Reseñas</span></a>
+            <div class="px-3 pt-4 pb-1 font-label-sm text-[11px] font-semibold text-[#978d9d] uppercase tracking-wider">
+                Ventas
+            </div>
+            <a class="flex items-center justify-between px-3 py-2 rounded text-[#cec3d3] hover:bg-[#201f1f] hover:text-[#e5e2e1] transition-colors"
+               data-path="pedidos" href="#">
+                <div class="flex items-center gap-3"><span
+                            class="material-symbols-outlined text-[19px]">shopping_bag</span><span
+                            class="font-body-md text-sm">Pedidos</span></div>
+                <span class="px-2 py-0.5 rounded-full bg-secondary text-on-secondary font-semibold text-[11px]">12</span></a><a
+                    class="flex items-center gap-3 px-3 py-2 rounded text-[#cec3d3] hover:bg-[#201f1f] hover:text-[#e5e2e1] transition-colors"
+                    data-path="pagos" href="#"><span class="material-symbols-outlined text-[19px]">payments</span><span
+                        class="font-body-md text-sm">Pagos</span></a><a
+                    class="flex items-center gap-3 px-3 py-2 rounded text-[#cec3d3] hover:bg-[#201f1f] hover:text-[#e5e2e1] transition-colors"
+                    data-path="cupones" href="#"><span class="material-symbols-outlined text-[19px]">loyalty</span><span
+                        class="font-body-md text-sm">Cupones</span></a>
+            <div class="px-3 pt-4 pb-1 font-label-sm text-[11px] font-semibold text-[#978d9d] uppercase tracking-wider">
+                Inventario
+            </div>
+            <a class="flex items-center gap-3 px-3 py-2 rounded text-[#cec3d3] hover:bg-[#201f1f] hover:text-[#e5e2e1] transition-colors"
+               data-path="inventario" href="#"><span
+                        class="material-symbols-outlined text-[19px]">inventory_2</span><span
+                        class="font-body-md text-sm">Inventario</span></a><a
+                    class="flex items-center gap-3 px-3 py-2 rounded text-[#cec3d3] hover:bg-[#201f1f] hover:text-[#e5e2e1] transition-colors"
+                    data-path="movimientos" href="#"><span
+                        class="material-symbols-outlined text-[19px]">swap_vert</span><span
+                        class="font-body-md text-sm">Movimientos</span></a>
+            <div class="px-3 pt-4 pb-1 font-label-sm text-[11px] font-semibold text-[#978d9d] uppercase tracking-wider">
+                Clientes
+            </div>
+            <a aria-current="page"
+               class="flex items-center gap-3 px-3 py-2 rounded bg-primary-container/40 text-primary font-medium border border-primary-container/50"
+               data-path="usuarios" href="#"><span
+                        class="material-symbols-outlined text-[19px] text-primary">group</span><span
+                        class="font-body-md text-sm">Usuarios</span></a>
+            <div class="px-3 pt-4 pb-1 font-label-sm text-[11px] font-semibold text-[#978d9d] uppercase tracking-wider">
+                Contenido
+            </div>
+            <a class="flex items-center gap-3 px-3 py-2 rounded text-[#cec3d3] hover:bg-[#201f1f] hover:text-[#e5e2e1] transition-colors"
+               data-path="banners" href="#"><span
+                        class="material-symbols-outlined text-[19px]">view_carousel</span><span
+                        class="font-body-md text-sm">Banners y contenido</span></a>
+            <div class="px-3 pt-4 pb-1 font-label-sm text-[11px] font-semibold text-[#978d9d] uppercase tracking-wider">
+                Análisis
+            </div>
+            <a class="flex items-center gap-3 px-3 py-2 rounded text-[#cec3d3] hover:bg-[#201f1f] hover:text-[#e5e2e1] transition-colors"
+               data-path="reportes" href="#"><span class="material-symbols-outlined text-[19px]">bar_chart</span><span
+                        class="font-body-md text-sm">Reportes</span></a>
+            <div class="px-3 pt-4 pb-1 font-label-sm text-[11px] font-semibold text-[#978d9d] uppercase tracking-wider">
+                Sistema
+            </div>
+            <a class="flex items-center gap-3 px-3 py-2 rounded text-[#cec3d3] hover:bg-[#201f1f] hover:text-[#e5e2e1] transition-colors"
+               data-path="notificaciones" href="#"><span
+                        class="material-symbols-outlined text-[19px]">notifications</span><span
+                        class="font-body-md text-sm">Notificaciones</span></a><a
+                    class="flex items-center gap-3 px-3 py-2 rounded text-[#cec3d3] hover:bg-[#201f1f] hover:text-[#e5e2e1] transition-colors"
+                    data-path="auditoria" href="#"><span
+                        class="material-symbols-outlined text-[19px]">verified_user</span><span
+                        class="font-body-md text-sm">Auditoría</span></a><a
+                    class="flex items-center gap-3 px-3 py-2 rounded text-[#cec3d3] hover:bg-[#201f1f] hover:text-[#e5e2e1] transition-colors"
+                    data-path="configuracion" href="#"><span
+                        class="material-symbols-outlined text-[19px]">settings</span><span class="font-body-md text-sm">Configuración</span></a>
+        </nav>
+    </div>
+    <div class="p-3 flex flex-col border-t border-[#262626] bg-[#0e0e0e]"><a
+                class="flex items-center gap-3 px-3 py-2 rounded text-[#cec3d3] hover:bg-error-container/30 hover:text-error transition-colors"
+                data-path="cerrar-sesion" href="#"><span
+                    class="material-symbols-outlined text-[19px]">logout</span><span class="font-body-md text-sm">Cerrar sesión</span></a>
+    </div>
+</aside>
+<div class="pl-72">
+    <main class="w-full bg-surface min-h-screen">
+        <div class="flex flex-col w-full">
+            <!-- Dynamic Glow Scrim Background -->
+            <div class="relative w-full overflow-hidden px-8 py-8 lg:px-12">
+                <!-- 1. Encabezado Principal -->
+                <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8">
+                    <div class="flex flex-col gap-2 max-w-2xl">
+                        <div class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+                            <span class="font-label-sm text-label-sm uppercase tracking-widest text-outline">Módulo de Clientes de Élite</span>
+                        </div>
+                        <h1 class="font-headline-lg text-headline-lg tracking-tight text-on-surface">Gestión de
+                            Clientes</h1>
+                        <p class="font-body-md text-body-md text-on-surface-variant">Control integral de la base de
+                            clientes exclusivos, historial de compras y actividad de boutique.</p>
+                    </div>
+                    <!-- Acciones de Cabecera -->
+                    <div class="flex flex-wrap items-center gap-3">
+                    </div>
+                </div>
+                <!-- 2. Barra de Filtros Multifuncional -->
+                <section class="bg-surface-container-low rounded-xl p-6 mb-8 shadow-xl relative backdrop-blur-md">
+                    <div class="flex items-center justify-between pb-4 mb-5 border-b border-surface-container-high/40">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-secondary text-[20px]">filter_alt</span>
+                            <span class="font-label-md text-label-md uppercase tracking-wider text-on-surface">Criterios de Selección Refinada</span>
+                        </div>
+                        <span class="font-label-sm text-label-sm text-outline">5,842 Clientes Registrados</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                        <!-- Búsqueda Nombre o ID -->
+                        <div class="flex flex-col gap-1.5">
+                            <label class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Nombre</label>
+                            <div class="relative flex items-center">
+                                <span class="material-symbols-outlined absolute left-3 text-outline text-[18px]">search</span>
+                                <input class="w-full bg-surface-container-high text-on-surface placeholder:text-outline/70 pl-9 pr-3 py-2.5 rounded-lg text-body-md font-body-md focus:outline-none focus:bg-surface-container-highest transition-colors"
+                                       placeholder="Buscar por nombre..." type="text">
+                            </div>
+                        </div>
+                        <!-- Búsqueda Correo -->
+                        <div class="flex flex-col gap-1.5">
+                            <label class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Correo
+                                Electrónico</label>
+                            <div class="relative flex items-center">
+                                <span class="material-symbols-outlined absolute left-3 text-outline text-[18px]">mail</span>
+                                <input class="w-full bg-surface-container-high text-on-surface placeholder:text-outline/70 pl-9 pr-3 py-2.5 rounded-lg text-body-md font-body-md focus:outline-none focus:bg-surface-container-highest transition-colors"
+                                       placeholder="Buscar por email..." type="email">
+                            </div>
+                        </div>
+                        <!-- Selector de Estado -->
+                        <div class="flex flex-col gap-1.5">
+                            <label class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Estado
+                                de Cuenta</label>
+                            <div class="relative flex items-center">
+                                <select class="w-full appearance-none bg-surface-container-high text-on-surface pl-3 pr-8 py-2.5 rounded-lg text-body-md font-body-md focus:outline-none focus:bg-surface-container-highest transition-colors cursor-pointer">
+                                    <option value="todos">Todos los estados</option>
+                                    <option value="activo">Activo</option>
+                                    <option value="bloqueado">Bloqueado</option>
+                                    <option value="inactivo">Inactivo</option>
+                                </select>
+                                <span class="material-symbols-outlined pointer-events-none absolute right-2.5 text-outline text-[18px]">expand_more</span>
+                            </div>
+                        </div>
+                        <!-- Filtro Fecha Registro -->
+                        <div class="flex flex-col gap-1.5">
+                            <label class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Fecha
+                                Registro</label>
+                            <div class="relative flex items-center">
+                                <select class="w-full appearance-none bg-surface-container-high text-on-surface pl-3 pr-8 py-2.5 rounded-lg text-body-md font-body-md focus:outline-none focus:bg-surface-container-highest transition-colors cursor-pointer">
+                                    <option value="cualquiera">Cualquier fecha</option>
+                                    <option value="30dias">Últimos 30 días</option>
+                                    <option value="anio">Este año</option>
+                                </select>
+                                <span class="material-symbols-outlined pointer-events-none absolute right-2.5 text-outline text-[18px]">calendar_today</span>
+                            </div>
+                        </div>
+                        <!-- Selector Pedidos -->
+                        <div class="flex flex-col gap-1.5">
+                            <label class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Volumen
+                                de Pedidos</label>
+                            <div class="relative flex items-center">
+                                <select class="w-full appearance-none bg-surface-container-high text-on-surface pl-3 pr-8 py-2.5 rounded-lg text-body-md font-body-md focus:outline-none focus:bg-surface-container-highest transition-colors cursor-pointer">
+                                    <option value="todos">Todos los clientes</option>
+                                    <option value="con-pedidos">Clientes con pedidos</option>
+                                    <option value="sin-pedidos">Clientes sin pedidos</option>
+                                </select>
+                                <span class="material-symbols-outlined pointer-events-none absolute right-2.5 text-outline text-[18px]">shopping_bag</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-end gap-3 mt-5 pt-4">
+                        <button class="flex items-center gap-1.5 px-4 py-2 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors font-label-md text-label-md uppercase tracking-wider"
+                                type="button">
+                            <span class="material-symbols-outlined text-[17px]">restart_alt</span>
+                            <span class="">Limpiar filtros</span>
+                        </button>
+                        <button class="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-surface-container-highest hover:bg-surface-bright text-secondary font-label-md text-label-md uppercase tracking-widest transition-all"
+                                type="button">
+                            <span class="material-symbols-outlined text-[18px]">search_check</span>
+                            <span class="">Filtrar</span>
+                        </button>
+                    </div>
+                </section>
+                <!-- 3. Tabla de Clientes con Estilo Dark Luxury -->
+                <div class="w-full bg-surface-container-lowest rounded-xl border border-[#262626] overflow-hidden shadow-2xl">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                            <tr class="bg-surface-container-low text-outline font-label-sm text-label-sm uppercase tracking-wider select-none">
+                                <th class="py-4 px-6">Cliente</th>
+                                <th class="py-4 px-6 text-center">Estado</th>
+                                <th class="py-4 px-6 text-right">Pedidos</th>
+                                <th class="py-4 px-6 text-right">Total Comprado</th>
+                                <th class="py-4 px-6 text-center">Acciones</th>
+                            </tr>
+                            </thead>
+                            <tbody class="divide-y-0 text-on-surface font-body-md text-body-md">
+                            <!-- Fila 1 (Seleccionada / Abierta) -->
+                            <tr class="bg-surface-container-low/60 hover:bg-surface-container-high/40 transition-colors group">
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-full bg-primary-container text-secondary flex items-center justify-center font-headline-md text-label-md font-bold shadow-sm">
+                                            VM
+                                        </div>
+                                        <div class="flex flex-col min-w-0 gap-1"><span
+                                                    class="font-semibold text-on-surface group-hover:text-secondary transition-colors truncate">Valentina Morales Castillo</span><span
+                                                    class="text-label-sm text-on-surface-variant truncate">valentina.morales@boutique.cl</span><span
+                                                    class="text-label-sm text-outline flex items-center gap-1"><span
+                                                        class="material-symbols-outlined text-[14px]">call</span>+56 9 8456 1234</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6 text-center"><span
+                                            class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/70 text-emerald-300 text-label-sm font-label-sm tracking-wide"><span
+                                                class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Activo</span>
+                                </td>
+                                <td class="py-4 px-6 text-right font-label-md text-label-md text-on-surface">12
+                                    pedidos
+                                </td>
+                                <td class="py-4 px-6 text-right font-semibold text-secondary">$349.990</td>
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center justify-center gap-1">
+                                        <button class="p-2 rounded hover:bg-surface-container-highest text-secondary hover:text-secondary-fixed transition-colors"
+                                                onclick="openClientDrawer('Valentina Morales Castillo', 'valentina.morales@boutique.cl', '+56 9 8456 1234', 'Activo')"
+                                                title="Ver perfil"><span class="material-symbols-outlined text-[20px]">visibility</span>
+                                        </button>
+                                        <button class="p-2 rounded hover:bg-surface-container-highest text-on-surface-variant hover:text-error transition-colors"
+                                                title="Bloquear"><span class="material-symbols-outlined text-[20px]">lock</span>
+                                        </button>
+                                        <button class="p-2 rounded hover:bg-surface-container-highest text-outline hover:text-on-surface transition-colors"
+                                                title="Opciones"><span class="material-symbols-outlined text-[20px]">more_vert</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Fila 2 -->
+                            <tr class="hover:bg-surface-container-high/40 transition-colors group">
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-headline-md text-label-md font-bold">
+                                            IV
+                                        </div>
+                                        <div class="flex flex-col min-w-0 gap-1"><span
+                                                    class="font-semibold text-on-surface group-hover:text-secondary transition-colors truncate">Ignacio Valenzuela</span><span
+                                                    class="text-label-sm text-on-surface-variant truncate">i.valenzuela@santiago.cl</span><span
+                                                    class="text-label-sm text-outline flex items-center gap-1"><span
+                                                        class="material-symbols-outlined text-[14px]">call</span>+56 9 7123 4567</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6 text-center"><span
+                                            class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/70 text-emerald-300 text-label-sm font-label-sm tracking-wide"><span
+                                                class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Activo</span>
+                                </td>
+                                <td class="py-4 px-6 text-right font-label-md text-label-md text-on-surface">5 pedidos
+                                </td>
+                                <td class="py-4 px-6 text-right font-semibold text-on-surface">$128.400</td>
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center justify-center gap-1">
+                                        <button class="p-2 rounded hover:bg-surface-container-highest text-on-surface-variant hover:text-secondary transition-colors"
+                                                onclick="openClientDrawer('Ignacio Valenzuela', 'i.valenzuela@santiago.cl', '+56 9 7123 4567', 'Activo')"
+                                                title="Ver perfil"><span class="material-symbols-outlined text-[20px]">visibility</span>
+                                        </button>
+                                        <button class="p-2 rounded hover:bg-surface-container-highest text-on-surface-variant hover:text-error transition-colors"
+                                                title="Bloquear"><span class="material-symbols-outlined text-[20px]">lock</span>
+                                        </button>
+                                        <button class="p-2 rounded hover:bg-surface-container-highest text-outline hover:text-on-surface transition-colors"
+                                                title="Opciones"><span class="material-symbols-outlined text-[20px]">more_vert</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Fila 3 -->
+                            <tr class="bg-surface-container-low/20 hover:bg-surface-container-high/40 transition-colors group">
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-headline-md text-label-md font-bold">
+                                            CS
+                                        </div>
+                                        <div class="flex flex-col min-w-0 gap-1"><span
+                                                    class="font-semibold text-on-surface group-hover:text-secondary transition-colors truncate">Camila Sepúlveda</span><span
+                                                    class="text-label-sm text-on-surface-variant truncate">camila.sepulveda@gmail.com</span><span
+                                                    class="text-label-sm text-outline flex items-center gap-1"><span
+                                                        class="material-symbols-outlined text-[14px]">call</span>+56 9 6345 8890</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6 text-center"><span
+                                            class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-highest text-outline text-label-sm font-label-sm tracking-wide"><span
+                                                class="w-1.5 h-1.5 rounded-full bg-outline"></span> Inactivo</span></td>
+                                <td class="py-4 px-6 text-right font-label-md text-label-md text-outline">0 pedidos</td>
+                                <td class="py-4 px-6 text-right font-semibold text-outline">$0</td>
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center justify-center gap-1">
+                                        <button class="p-2 rounded hover:bg-surface-container-highest text-on-surface-variant hover:text-secondary transition-colors"
+                                                onclick="openClientDrawer('Camila Sepúlveda', 'camila.sepulveda@gmail.com', '+56 9 6345 8890', 'Inactivo')"
+                                                title="Ver perfil"><span class="material-symbols-outlined text-[20px]">visibility</span>
+                                        </button>
+                                        <button class="p-2 rounded hover:bg-surface-container-highest text-on-surface-variant hover:text-error transition-colors"
+                                                title="Bloquear"><span class="material-symbols-outlined text-[20px]">lock</span>
+                                        </button>
+                                        <button class="p-2 rounded hover:bg-surface-container-highest text-outline hover:text-on-surface transition-colors"
+                                                title="Opciones"><span class="material-symbols-outlined text-[20px]">more_vert</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Fila 4 -->
+                            <tr class="hover:bg-surface-container-high/40 transition-colors group">
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-full bg-secondary-container/40 text-secondary flex items-center justify-center font-headline-md text-label-md font-bold">
+                                            RN
+                                        </div>
+                                        <div class="flex flex-col min-w-0 gap-1"><span
+                                                    class="font-semibold text-on-surface group-hover:text-secondary transition-colors truncate">Rodrigo Navarrete</span><span
+                                                    class="text-label-sm text-on-surface-variant truncate">rodrigo.navarrete@inversiones.cl</span><span
+                                                    class="text-label-sm text-outline flex items-center gap-1"><span
+                                                        class="material-symbols-outlined text-[14px]">call</span>+56 9 9988 2311</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6 text-center"><span
+                                            class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/70 text-emerald-300 text-label-sm font-label-sm tracking-wide"><span
+                                                class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Activo</span>
+                                </td>
+                                <td class="py-4 px-6 text-right font-label-md text-label-md text-on-surface">18
+                                    pedidos
+                                </td>
+                                <td class="py-4 px-6 text-right font-semibold text-secondary">$620.000</td>
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center justify-center gap-1">
+                                        <button class="p-2 rounded hover:bg-surface-container-highest text-on-surface-variant hover:text-secondary transition-colors"
+                                                onclick="openClientDrawer('Rodrigo Navarrete', 'rodrigo.navarrete@inversiones.cl', '+56 9 9988 2311', 'Activo')"
+                                                title="Ver perfil"><span class="material-symbols-outlined text-[20px]">visibility</span>
+                                        </button>
+                                        <button class="p-2 rounded hover:bg-surface-container-highest text-on-surface-variant hover:text-error transition-colors"
+                                                title="Bloquear"><span class="material-symbols-outlined text-[20px]">lock</span>
+                                        </button>
+                                        <button class="p-2 rounded hover:bg-surface-container-highest text-outline hover:text-on-surface transition-colors"
+                                                title="Opciones"><span class="material-symbols-outlined text-[20px]">more_vert</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Fila 5 -->
+                            <tr class="bg-surface-container-low/20 hover:bg-surface-container-high/40 transition-colors group">
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-full bg-error-container/40 text-error flex items-center justify-center font-headline-md text-label-md font-bold">
+                                            FA
+                                        </div>
+                                        <div class="flex flex-col min-w-0 gap-1"><span
+                                                    class="font-semibold text-on-surface group-hover:text-secondary transition-colors truncate">Florencia Aldunate</span><span
+                                                    class="text-label-sm text-on-surface-variant truncate">florencia.aldunate@vip.cl</span><span
+                                                    class="text-label-sm text-outline flex items-center gap-1"><span
+                                                        class="material-symbols-outlined text-[14px]">call</span>+56 9 5544 3322</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6 text-center"><span
+                                            class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-error-container/80 text-on-error-container text-label-sm font-label-sm tracking-wide"><span
+                                                class="w-1.5 h-1.5 rounded-full bg-error"></span> Bloqueado</span></td>
+                                <td class="py-4 px-6 text-right font-label-md text-label-md text-on-surface">2 pedidos
+                                </td>
+                                <td class="py-4 px-6 text-right font-semibold text-on-surface">$54.200</td>
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center justify-center gap-1">
+                                        <button class="p-2 rounded hover:bg-surface-container-highest text-on-surface-variant hover:text-secondary transition-colors"
+                                                onclick="openClientDrawer('Florencia Aldunate', 'florencia.aldunate@vip.cl', '+56 9 5544 3322', 'Bloqueado')"
+                                                title="Ver perfil"><span class="material-symbols-outlined text-[20px]">visibility</span>
+                                        </button>
+                                        <button class="p-2 rounded hover:bg-surface-container-highest text-error hover:text-on-error-container transition-colors"
+                                                title="Desbloquear"><span class="material-symbols-outlined text-[20px]">lock_open</span>
+                                        </button>
+                                        <button class="p-2 rounded hover:bg-surface-container-highest text-outline hover:text-on-surface transition-colors"
+                                                title="Opciones"><span class="material-symbols-outlined text-[20px]">more_vert</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Paginación de Tabla -->
+                    <div class="flex flex-col sm:flex-row items-center justify-between px-6 py-4 bg-surface-container-low/50 gap-4 border-t border-[#262626]">
+                        <span class="font-label-sm text-label-sm text-on-surface-variant">Mostrando 1-5 de 5,842 clientes exclusivos</span>
+                        <div class="flex items-center gap-2">
+                            <button class="px-3 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface-variant disabled:opacity-30 text-label-sm font-label-sm">
+                                Anterior
+                            </button>
+                            <button class="w-8 h-8 rounded-lg bg-secondary text-on-secondary font-semibold text-label-sm font-label-sm">
+                                1
+                            </button>
+                            <button class="w-8 h-8 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface text-label-sm font-label-sm">
+                                2
+                            </button>
+                            <button class="w-8 h-8 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface text-label-sm font-label-sm">
+                                3
+                            </button>
+                            <span class="text-outline text-label-sm">...</span>
+                            <button class="w-8 h-8 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface text-label-sm font-label-sm">
+                                116
+                            </button>
+                            <button class="px-3 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface-variant text-label-sm font-label-sm">
+                                Siguiente
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 4. Panel Lateral / Drawer: Detalle Completo de Cliente -->
+            <aside class="fixed right-0 top-0 h-full w-full sm:w-[640px] max-w-2xl bg-surface-container-lowest border-l border-secondary/20 shadow-[-12px_0_40px_rgba(0,0,0,0.85)] z-50 flex flex-col justify-between transition-transform duration-300 ease-in-out overflow-hidden translate-x-full"
+                   id="client-drawer">
+                <!-- Drawer Header -->
+                <div class="px-6 sm:px-8 py-5 border-b border-[#262626] bg-[#0e0e0e]/95 backdrop-blur-md flex items-center justify-between sticky top-0 z-10">
+                    <div class="flex items-center gap-3">
+                        <div class="w-11 h-11 rounded-full bg-primary-container/80 border border-secondary/40 text-secondary flex items-center justify-center font-headline-md text-base font-bold shadow-inner">
+                            <span id="drawer-avatar" class="">VM</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <div class="flex items-center gap-2">
+                                <h2 class="font-headline-md text-xl sm:text-2xl text-on-surface font-semibold tracking-tight"
+                                    id="drawer-client-name">Valentina Morales Castillo</h2>
+                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-950/80 text-emerald-300 text-[11px] font-medium border border-emerald-500/30"
+                                      id="drawer-status-badge"><span
+                                            class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Activo</span>
+                            </div>
+                            <span class="font-label-sm text-[12px] text-outline tracking-wider uppercase">Ficha de Cliente VIP • ID: CLI-89412</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <button class="p-2 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors"
+                                onclick="closeClientDrawer()" title="Cerrar panel">
+                            <span class="material-symbols-outlined text-[22px]">close</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Drawer Scrollable Content -->
+                <div class="flex-1 overflow-y-auto px-6 sm:px-8 py-6 space-y-7 text-on-surface">
+                    <!-- 1. Información Personal -->
+                    <section class="space-y-3">
+                        <div class="flex items-center justify-between pb-1 border-b border-[#262626]">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-secondary text-[20px]">person</span>
+                                <h3 class="font-headline-md text-base font-semibold text-secondary tracking-wide uppercase text-sm">
+                                    1. Información Personal</h3>
+                            </div>
+                            <span class="font-label-sm text-[11px] text-outline uppercase tracking-wider">Verificado</span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 bg-surface-container-low/70 border border-[#2a2a2a] p-4 rounded-xl">
+                            <div class="flex flex-col gap-0.5">
+                                <span class="font-label-sm text-[11px] text-outline uppercase tracking-wider">Nombre y Apellidos</span>
+                                <span class="font-body-md text-sm font-semibold text-on-surface" id="drawer-info-name">Valentina Morales Castillo</span>
+                            </div>
+                            <div class="flex flex-col gap-0.5">
+                                <span class="font-label-sm text-[11px] text-outline uppercase tracking-wider">Correo Electrónico</span>
+                                <span class="font-body-md text-sm text-on-surface truncate flex items-center gap-1.5"
+                                      id="drawer-info-email"><span
+                                            class="material-symbols-outlined text-outline text-[16px]">mail</span>valentina.morales@boutique.cl</span>
+                            </div>
+                            <div class="flex flex-col gap-0.5">
+                                <span class="font-label-sm text-[11px] text-outline uppercase tracking-wider">Teléfono de Contacto</span>
+                                <span class="font-body-md text-sm text-on-surface flex items-center gap-1.5"
+                                      id="drawer-info-phone"><span
+                                            class="material-symbols-outlined text-outline text-[16px]">call</span>+56 9 8456 1234</span>
+                            </div>
+                            <div class="flex flex-col gap-0.5">
+                                <span class="font-label-sm text-[11px] text-outline uppercase tracking-wider">Estado de Cuenta</span>
+                                <div class="flex items-center gap-1.5 pt-0.5">
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-950/70 text-emerald-300 text-[12px] font-medium border border-emerald-500/20"
+                                          id="drawer-info-status"><span
+                                                class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Activo</span>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-0.5 pt-1 border-t border-[#262626]/80">
+                                <span class="font-label-sm text-[11px] text-outline uppercase tracking-wider">Fecha de Registro</span>
+                                <span class="font-body-md text-sm text-on-surface flex items-center gap-1.5">
+<span class="material-symbols-outlined text-secondary text-[16px]">calendar_month</span>
+            14 de Marzo, 2023
+          </span>
+                            </div>
+                            <div class="flex flex-col gap-0.5 pt-1 border-t border-[#262626]/80">
+                                <span class="font-label-sm text-[11px] text-outline uppercase tracking-wider">Último Acceso</span>
+                                <span class="font-body-md text-sm text-on-surface flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[16px]">schedule</span>
+            Hoy, 11:42 hrs
+          </span>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- 2. Direcciones -->
+                    <section class="space-y-3">
+                        <div class="flex items-center justify-between pb-1 border-b border-[#262626]">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-secondary text-[20px]">pin_drop</span>
+                                <h3 class="font-headline-md text-base font-semibold text-secondary tracking-wide uppercase text-sm">
+                                    2. Dirección de Despacho</h3>
+                            </div>
+                            <span class="px-2 py-0.5 rounded bg-secondary-container/30 text-secondary text-[11px] font-label-sm uppercase tracking-wider font-semibold border border-secondary/30">Predeterminada</span>
+                        </div>
+                        <div class="bg-surface-container-low/70 border border-[#2a2a2a] p-4 rounded-xl space-y-3 relative overflow-hidden">
+                            <div class="flex items-start justify-between gap-3">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center text-secondary shrink-0 mt-0.5">
+                                        <span class="material-symbols-outlined text-[19px]">home_pin</span>
+                                    </div>
+                                    <div>
+                                        <span class="font-label-sm text-[11px] text-outline uppercase tracking-wider">Dirección Principal</span>
+                                        <p class="font-body-md text-base font-semibold text-on-surface">Av. Vitacura
+                                            3565, Depto 802</p>
+                                    </div>
+                                </div>
+                                <button class="p-1.5 text-outline hover:text-secondary hover:bg-surface-container-high rounded transition-colors"
+                                        title="Copiar dirección">
+                                    <span class="material-symbols-outlined text-[18px]">content_copy</span>
+                                </button>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 pt-2 border-t border-[#262626]">
+                                <div class="flex flex-col">
+                                    <span class="font-label-sm text-[10px] text-outline uppercase tracking-wider">Región</span>
+                                    <span class="font-body-md text-xs sm:text-sm font-medium text-on-surface-variant">Región Metropolitana</span>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="font-label-sm text-[10px] text-outline uppercase tracking-wider">Ciudad / Comuna</span>
+                                    <span class="font-body-md text-xs sm:text-sm font-medium text-on-surface-variant">Santiago / Las Condes</span>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="font-label-sm text-[10px] text-outline uppercase tracking-wider">Código Postal</span>
+                                    <span class="font-body-md text-xs sm:text-sm font-medium text-secondary">7550000</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- 3. Resumen del Cliente -->
+                    <section class="space-y-3">
+                        <div class="flex items-center justify-between pb-1 border-b border-[#262626]">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-secondary text-[20px]">analytics</span>
+                                <h3 class="font-headline-md text-base font-semibold text-secondary tracking-wide uppercase text-sm">
+                                    3. Resumen del Cliente</h3>
+                            </div>
+                            <span class="font-label-sm text-[11px] text-outline uppercase tracking-wider">Métricas Clave</span>
+                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                            <!-- Tarjeta: Pedidos Realizados -->
+                            <div class="bg-surface-container-low/70 border border-[#2a2a2a] p-3.5 rounded-xl flex flex-col justify-between">
+                                <div class="flex items-center justify-between text-outline mb-1">
+                                    <span class="font-label-sm text-[11px] uppercase tracking-wider">Realizados</span>
+                                    <span class="material-symbols-outlined text-[17px] text-primary">shopping_bag</span>
+                                </div>
+                                <div>
+                                    <div class="font-headline-md text-2xl font-bold text-on-surface">12</div>
+                                    <span class="text-[11px] text-outline">Pedidos totales</span>
+                                </div>
+                            </div>
+                            <!-- Tarjeta: Total Gastado -->
+                            <div class="bg-surface-container-low/70 border border-secondary/30 p-3.5 rounded-xl flex flex-col justify-between shadow-[0_0_15px_rgba(233,195,73,0.06)]">
+                                <div class="flex items-center justify-between text-outline mb-1">
+                                    <span class="font-label-sm text-[11px] uppercase tracking-wider text-secondary">Total Gastado</span>
+                                    <span class="material-symbols-outlined text-[17px] text-secondary">payments</span>
+                                </div>
+                                <div>
+                                    <div class="font-headline-md text-2xl font-bold text-secondary">$349.990</div>
+                                    <span class="text-[11px] text-outline">Acumulado histórico</span>
+                                </div>
+                            </div>
+                            <!-- Tarjeta: Pedidos Pendientes -->
+                            <div class="bg-surface-container-low/70 border border-[#2a2a2a] p-3.5 rounded-xl flex flex-col justify-between">
+                                <div class="flex items-center justify-between text-outline mb-1">
+                                    <span class="font-label-sm text-[11px] uppercase tracking-wider">Pendientes</span>
+                                    <span class="material-symbols-outlined text-[17px] text-amber-400">pending_actions</span>
+                                </div>
+                                <div>
+                                    <div class="font-headline-md text-2xl font-bold text-amber-300">1</div>
+                                    <span class="text-[11px] text-outline">En preparación</span>
+                                </div>
+                            </div>
+                            <!-- Tarjeta: Pedidos Cancelados -->
+                            <div class="bg-surface-container-low/70 border border-[#2a2a2a] p-3.5 rounded-xl flex flex-col justify-between">
+                                <div class="flex items-center justify-between text-outline mb-1">
+                                    <span class="font-label-sm text-[11px] uppercase tracking-wider">Cancelados</span>
+                                    <span class="material-symbols-outlined text-[17px] text-outline">cancel</span>
+                                </div>
+                                <div>
+                                    <div class="font-headline-md text-2xl font-bold text-on-surface-variant">0</div>
+                                    <span class="text-[11px] text-outline">Tasa óptima (0%)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- 4. Historial de Pedidos -->
+                    <section class="space-y-3">
+                        <div class="flex items-center justify-between pb-1 border-b border-[#262626]">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-secondary text-[20px]">receipt_long</span>
+                                <h3 class="font-headline-md text-base font-semibold text-secondary tracking-wide uppercase text-sm">
+                                    4. Historial de Pedidos</h3>
+                            </div>
+                            <a class="font-label-sm text-[11px] text-secondary hover:underline flex items-center gap-0.5"
+                               href="#">
+                                Ver todos los 12
+                                <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+                            </a>
+                        </div>
+                        <div class="bg-surface-container-low/70 border border-[#2a2a2a] rounded-xl overflow-hidden">
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-sm">
+                                    <thead class="bg-surface-container-high/60 font-label-sm text-[11px] uppercase tracking-wider text-outline border-b border-[#262626]">
+                                    <tr>
+                                        <th class="py-2.5 px-4">Pedido</th>
+                                        <th class="py-2.5 px-3">Fecha</th>
+                                        <th class="py-2.5 px-3">Estado</th>
+                                        <th class="py-2.5 px-4 text-right">Total</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-[#262626]/70 font-body-md">
+                                    <!-- Pedido destacado #1001 -->
+                                    <tr class="hover:bg-surface-container-high/30 transition-colors bg-secondary/5">
+                                        <td class="py-3 px-4">
+                                            <div class="flex items-center gap-2">
+                                                <span class="font-semibold text-on-surface text-sm">#1001</span>
+                                                <span class="text-[10px] px-1.5 py-0.5 rounded bg-secondary/20 text-secondary border border-secondary/30 font-semibold">Reciente</span>
+                                            </div>
+                                        </td>
+                                        <td class="py-3 px-3 text-on-surface-variant text-xs">24 Oct 2023</td>
+                                        <td class="py-3 px-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-950/70 text-emerald-300 text-[11px] font-medium border border-emerald-500/20">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Entregado / Pagado
+                  </span>
+                                        </td>
+                                        <td class="py-3 px-4 text-right font-semibold text-secondary text-sm">$349.990
+                                        </td>
+                                    </tr>
+                                    <!-- Pedido #1000 -->
+                                    <tr class="hover:bg-surface-container-high/30 transition-colors">
+                                        <td class="py-3 px-4">
+                                            <span class="font-medium text-on-surface text-sm">#1000</span>
+                                        </td>
+                                        <td class="py-3 px-3 text-on-surface-variant text-xs">12 Sep 2023</td>
+                                        <td class="py-3 px-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-950/70 text-emerald-300 text-[11px] font-medium border border-emerald-500/20">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Entregado
+                  </span>
+                                        </td>
+                                        <td class="py-3 px-4 text-right font-medium text-on-surface text-sm">$189.900
+                                        </td>
+                                    </tr>
+                                    <!-- Pedido #988 -->
+                                    <tr class="hover:bg-surface-container-high/30 transition-colors">
+                                        <td class="py-3 px-4">
+                                            <span class="font-medium text-on-surface text-sm">#988</span>
+                                        </td>
+                                        <td class="py-3 px-3 text-on-surface-variant text-xs">05 Jun 2023</td>
+                                        <td class="py-3 px-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-950/70 text-emerald-300 text-[11px] font-medium border border-emerald-500/20">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Entregado
+                  </span>
+                                        </td>
+                                        <td class="py-3 px-4 text-right font-medium text-on-surface text-sm">$125.000
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- 5. Cupones -->
+                    <section class="space-y-3 pb-4">
+                        <div class="flex items-center justify-between pb-1 border-b border-[#262626]">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-secondary text-[20px]">loyalty</span>
+                                <h3 class="font-headline-md text-base font-semibold text-secondary tracking-wide uppercase text-sm">
+                                    5. Cupones Utilizados</h3>
+                            </div>
+                            <span class="font-label-sm text-[11px] text-outline uppercase tracking-wider">Beneficios Boutique</span>
+                        </div>
+                        <div class="bg-surface-container-low/70 border border-[#2a2a2a] p-4 rounded-xl space-y-4">
+                            <!-- Métricas de Cupones -->
+                            <div class="grid grid-cols-2 gap-3 pb-3 border-b border-[#262626]">
+                                <div class="flex flex-col gap-0.5">
+                                    <span class="font-label-sm text-[11px] text-outline uppercase tracking-wider">Veces Utilizados</span>
+                                    <div class="flex items-baseline gap-1.5">
+                                        <span class="font-headline-md text-xl font-bold text-on-surface">3</span>
+                                        <span class="font-body-md text-xs text-on-surface-variant">cupones redimidos</span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col gap-0.5">
+                                    <span class="font-label-sm text-[11px] text-outline uppercase tracking-wider">Descuento Acumulado</span>
+                                    <div class="flex items-baseline gap-1.5">
+                                        <span class="font-headline-md text-xl font-bold text-secondary">$52.500</span>
+                                        <span class="font-body-md text-xs text-secondary/80">ahorro total</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Badges de Cupones Utilizados -->
+                            <div class="space-y-2">
+                                <span class="font-label-sm text-[11px] text-outline uppercase tracking-wider">Cupones Registrados</span>
+                                <div class="flex flex-wrap gap-2 pt-1">
+                                    <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-high border border-secondary/30 text-secondary">
+                                        <span class="material-symbols-outlined text-[15px]">confirmation_number</span>
+                                        <span class="font-mono text-xs font-bold tracking-wider">LUXURYWELCOME</span>
+                                        <span class="text-[10px] text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded">-15%</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-high border border-primary/30 text-primary">
+                                        <span class="material-symbols-outlined text-[15px]">confirmation_number</span>
+                                        <span class="font-mono text-xs font-bold tracking-wider">PRIVEE15</span>
+                                        <span class="text-[10px] text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded">-$20.000</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-high border border-secondary/30 text-secondary">
+                                        <span class="material-symbols-outlined text-[15px]">confirmation_number</span>
+                                        <span class="font-mono text-xs font-bold tracking-wider">VIPBLACK</span>
+                                        <span class="text-[10px] text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded">-10%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- Drawer Footer Actions -->
+                <div class="px-6 sm:px-8 py-4 border-t border-[#262626] bg-[#0e0e0e]/95 backdrop-blur-md flex items-center justify-between gap-3 sticky bottom-0">
+                    <button class="px-4 py-2 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-label-md text-xs uppercase tracking-wider transition-colors"
+                            onclick="closeClientDrawer()">
+                        Cerrar
+                    </button>
+                    <div class="flex items-center gap-2">
+                        <button class="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-error/40 text-error hover:bg-error-container/30 transition-colors font-label-md text-xs uppercase tracking-wider">
+                            <span class="material-symbols-outlined text-[16px]">lock</span>
+                            Bloquear
+                        </button>
+                        <button class="flex items-center gap-1.5 px-4 py-2 rounded-lg border border-error/40 bg-error-container/40 text-error hover:bg-error-container/80 hover:text-on-error-container font-label-md text-xs uppercase tracking-widest font-semibold transition-colors shadow-md">
+                            <span class="material-symbols-outlined text-[16px]">delete</span>Eliminar Usuario
+                        </button>
+                    </div>
+                </div>
+            </aside>
+            <!-- Overlay de Fondo para Drawer -->
+            <div class="fixed inset-0 bg-background/70 backdrop-blur-sm z-40 transition-opacity duration-300 hidden"
+                 id="drawer-backdrop" onclick="closeClientDrawer()"></div>
+        </div>
+        <script>
+            function openClientDrawer(name, email, phone, status) {
+                const drawer = document.getElementById('client-drawer');
+                const backdrop = document.getElementById('drawer-backdrop');
+
+                if (name) {
+                    document.getElementById('drawer-client-name').textContent = name;
+                    document.getElementById('drawer-info-name').textContent = name;
+
+                    const initials = name.split(' ').map(n => n[0]).slice(0, 2).join('');
+                    document.getElementById('drawer-avatar').textContent = initials;
+                }
+                if (email) {
+                    document.getElementById('drawer-info-email').innerHTML = '<span class="material-symbols-outlined text-outline text-[16px]">mail</span>' + email;
+                }
+                if (phone) {
+                    document.getElementById('drawer-info-phone').innerHTML = '<span class="material-symbols-outlined text-outline text-[16px]">call</span>' + phone;
+                }
+                if (status) {
+                    const isBlocked = status.toLowerCase() === 'bloqueado';
+                    const isInactivo = status.toLowerCase() === 'inactivo';
+
+                    let badgeHtml = '';
+                    if (isBlocked) {
+                        badgeHtml = '<span class="w-1.5 h-1.5 rounded-full bg-error"></span> Bloqueado';
+                        document.getElementById('drawer-status-badge').className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-error-container/80 text-on-error-container text-[11px] font-medium border border-error/30';
+                        document.getElementById('drawer-info-status').className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-error-container/70 text-on-error-container text-[12px] font-medium border border-error/30';
+                    } else if (isInactivo) {
+                        badgeHtml = '<span class="w-1.5 h-1.5 rounded-full bg-outline"></span> Inactivo';
+                        document.getElementById('drawer-status-badge').className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container-highest text-outline text-[11px] font-medium border border-outline/30';
+                        document.getElementById('drawer-info-status').className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container-highest text-outline text-[12px] font-medium border border-outline/30';
+                    } else {
+                        badgeHtml = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Activo';
+                        document.getElementById('drawer-status-badge').className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-950/80 text-emerald-300 text-[11px] font-medium border border-emerald-500/30';
+                        document.getElementById('drawer-info-status').className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-950/70 text-emerald-300 text-[12px] font-medium border border-emerald-500/20';
+                    }
+                    document.getElementById('drawer-status-badge').innerHTML = badgeHtml;
+                    document.getElementById('drawer-info-status').innerHTML = badgeHtml;
+                }
+
+                drawer.classList.remove('translate-x-full');
+                backdrop.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeClientDrawer() {
+                const drawer = document.getElementById('client-drawer');
+                const backdrop = document.getElementById('drawer-backdrop');
+                drawer.classList.add('translate-x-full');
+                backdrop.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+
+            // Keyboard escape listener to close drawer
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    closeClientDrawer();
+                }
+            });
+        </script>
+    </main>
+</div>
+
+</body>
+</html>

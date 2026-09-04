@@ -1,0 +1,631 @@
+<!DOCTYPE html><html class="dark" lang="es" style=""><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Gestión de Pedidos - Luxuria &amp; Sentido</title>
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Tailwind Config injected from Design System -->
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#e5e2e1",
+                        "primary-fixed": "#f0dbff",
+                        "on-secondary-fixed-variant": "#574500",
+                        "error-container": "#93000a",
+                        "secondary": "#e9c349",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "secondary-fixed-dim": "#e9c349",
+                        "outline-variant": "#4c4451",
+                        "on-secondary-fixed": "#241a00",
+                        "inverse-on-surface": "#313030",
+                        "on-secondary-container": "#342800",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "on-secondary": "#3c2f00",
+                        "surface-variant": "#353534",
+                        "on-primary": "#4a0080",
+                        "tertiary-fixed": "#e5e2e1",
+                        "surface-container-low": "#1c1b1b",
+                        "tertiary": "#c8c6c5",
+                        "inverse-primary": "#7b41b3",
+                        "tertiary-container": "#313131",
+                        "surface-container": "#201f1f",
+                        "inverse-surface": "#e5e2e1",
+                        "on-error": "#690005",
+                        "background": "#131313",
+                        "surface-container-highest": "#353534",
+                        "on-tertiary": "#313030",
+                        "surface-bright": "#3a3939",
+                        "on-tertiary-container": "#9b9998",
+                        "surface": "#131313",
+                        "on-primary-container": "#ba7ef4",
+                        "surface-tint": "#ddb7ff",
+                        "error": "#ffb4ab",
+                        "primary-container": "#4b0082",
+                        "surface-container-lowest": "#0e0e0e",
+                        "secondary-fixed": "#ffe088",
+                        "outline": "#978d9d",
+                        "secondary-container": "#af8d11",
+                        "primary-fixed-dim": "#ddb7ff",
+                        "surface-dim": "#131313",
+                        "surface-container-high": "#2a2a2a",
+                        "on-primary-fixed-variant": "#622599",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "on-surface": "#e5e2e1",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-fixed": "#2c0050",
+                        "primary": "#ddb7ff",
+                        "on-surface-variant": "#cec3d3"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "container-max": "1280px",
+                        "gutter": "24px",
+                        "unit": "8px",
+                        "margin-desktop": "64px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": [
+                            "Playfair Display"
+                        ],
+                        "label-sm": [
+                            "Hanken Grotesk"
+                        ],
+                        "body-md": [
+                            "Hanken Grotesk"
+                        ],
+                        "body-lg": [
+                            "Hanken Grotesk"
+                        ],
+                        "headline-xl": [
+                            "Playfair Display"
+                        ],
+                        "label-md": [
+                            "Hanken Grotesk"
+                        ],
+                        "headline-lg-mobile": [
+                            "Playfair Display"
+                        ],
+                        "headline-md": [
+                            "Playfair Display"
+                        ]
+                    },
+                    "fontSize": {
+                        "headline-lg": [
+                            "48px",
+                            {
+                                "lineHeight": "1.2",
+                                "fontWeight": "600"
+                            }
+                        ],
+                        "label-sm": [
+                            "12px",
+                            {
+                                "lineHeight": "1.2",
+                                "fontWeight": "500"
+                            }
+                        ],
+                        "body-md": [
+                            "16px",
+                            {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                            }
+                        ],
+                        "body-lg": [
+                            "18px",
+                            {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                            }
+                        ],
+                        "headline-xl": [
+                            "60px",
+                            {
+                                "lineHeight": "1.1",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                            }
+                        ],
+                        "label-md": [
+                            "14px",
+                            {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "0.1em",
+                                "fontWeight": "600"
+                            }
+                        ],
+                        "headline-lg-mobile": [
+                            "32px",
+                            {
+                                "lineHeight": "1.2",
+                                "fontWeight": "600"
+                            }
+                        ],
+                        "headline-md": [
+                            "32px",
+                            {
+                                "lineHeight": "1.3",
+                                "fontWeight": "500"
+                            }
+                        ]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Custom Scrollbar for a premium feel */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #131313;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #353534;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4c4451;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md text-body-md antialiased min-h-screen flex selection:bg-secondary/30 selection:text-secondary">
+<!-- Nav Overlay for mobile -->
+<div class="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 hidden md:hidden transition-opacity" id="nav-overlay"></div>
+<!-- SideNavBar -->
+<nav class="bg-surface-container-low border-r border-secondary/20 flex flex-col h-full py-8 px-4 w-64 fixed left-0 top-0 shadow-xl z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out" id="sidenav">
+    <div class="mb-12 px-4 flex justify-between items-start">
+        <div>
+            <div class="font-headline-md text-headline-md text-secondary tracking-widest mb-1">Luxuria Admin</div>
+            <div class="font-label-sm text-label-sm text-on-surface-variant">Boutique Management</div>
+        </div>
+        <button class="md:hidden text-on-surface hover:text-secondary transition-colors" id="close-nav">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+    </div>
+    <div class="flex-1 flex flex-col gap-2 overflow-y-auto pr-2 custom-scrollbar">
+        <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300" href="#">
+            <span class="material-symbols-outlined">dashboard</span>Dashboard</a>
+        <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">Catálogo</div>
+        <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300" href="#">
+            <span class="material-symbols-outlined">diamond</span> Productos
+        </a>
+        <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300" href="#">
+            <span class="material-symbols-outlined">category</span> Categorias
+        </a>
+        <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300" href="#">
+            <span class="material-symbols-outlined">verified</span> Marcas
+        </a>
+        <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300" href="#">
+            <span class="material-symbols-outlined">reviews</span> Reseñas
+        </a>
+        <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">Ventas</div>
+        <a class="flex items-center gap-3 text-secondary bg-primary-container/20 rounded-lg px-4 py-3 border-l-2 border-secondary font-label-md text-label-md transition-all duration-200" href="#">
+            <span class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 1;">shopping_cart</span> Pedidos
+            <span class="ml-auto bg-secondary text-on-secondary text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center">45</span></a>
+        <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300" href="#">
+            <span class="material-symbols-outlined">payments</span> Pagos
+        </a>
+        <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300" href="#">
+            <span class="material-symbols-outlined">local_offer</span> Cupones
+        </a>
+        <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">Inventario</div>
+        <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300" href="#">
+            <span class="material-symbols-outlined">inventory_2</span> Inventario
+        </a>
+        <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300" href="#">
+            <span class="material-symbols-outlined">swap_horiz</span> Movimientos
+        </a>
+        <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">Clientes</div>
+        <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300" href="#">
+            <span class="material-symbols-outlined">group</span> Usuarios
+        </a>
+        <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">Contenido</div>
+        <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300" href="#">
+            <span class="material-symbols-outlined">view_quilt</span> Banners y contenido
+        </a>
+        <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">Sistema</div>
+        <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300" href="#">
+            <span class="material-symbols-outlined">notifications</span> Notificaciones
+        </a>
+        <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300" href="#">
+            <span class="material-symbols-outlined">security</span> Auditoría
+        </a>
+        <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300" href="#">
+            <span class="material-symbols-outlined">settings</span> Configuración
+        </a>
+    </div>
+    <div class="mt-auto flex flex-col gap-2 pt-8 border-t border-secondary/10"><a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-3 font-label-md text-label-md transition-all duration-200" href="#">
+            <span class="material-symbols-outlined">logout</span>
+            Cerrar sesión
+        </a></div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-64 min-h-screen flex flex-col relative overflow-hidden bg-background">
+    <!-- Ambient Background Glow -->
+
+    <!-- TopAppBar -->
+
+    <!-- Page Content -->
+    <div class="flex-1 p-margin-mobile md:p-margin-desktop overflow-y-auto z-10 relative">
+        <!-- Page Header -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-10">
+            <div>
+                <h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-semibold">Pedidos</h2>
+                <p class="font-body-md text-body-md text-on-surface-variant mt-2">1,248 pedidos totales en el sistema.</p>
+            </div>
+            <div class="flex gap-4">
+
+            </div>
+        </div>
+        <!-- Bento/Glassmorphism Filters -->
+        <div class="border border-secondary/10 rounded-xl p-6 mb-10 shadow-lg relative overflow-hidden group bg-surface-container">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+                <!-- Date Range -->
+                <div class="space-y-2">
+                    <label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block">Rango de Fechas</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary/70 text-sm">calendar_today</span>
+                        <input class="w-full bg-surface-container-low border-b border-secondary/30 focus:border-secondary border-t-0 border-l-0 border-r-0 text-on-surface pl-9 py-2 focus:ring-0 transition-colors cursor-pointer text-sm" placeholder="Últimos 30 días" type="text">
+                    </div>
+                </div>
+                <!-- Status -->
+                <div class="space-y-2">
+                    <label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block">Estado Pedido</label>
+                    <div class="relative">
+                        <select class="w-full bg-surface-container-low border-b border-secondary/30 focus:border-secondary border-t-0 border-l-0 border-r-0 text-on-surface py-2 focus:ring-0 transition-colors appearance-none text-sm pr-8">
+                            <option value="">Todos los estados</option>
+                            <option value="pending">Pendiente</option>
+                            <option value="processing">Procesando</option>
+                            <option value="shipped">Enviado</option>
+                            <option value="delivered">Entregado</option>
+                            <option value="canceled">Cancelado</option>
+                        </select>
+                        <span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+                    </div>
+                </div>
+                <!-- Payment Status -->
+                <div class="space-y-2">
+                    <label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block">Estado Pago</label>
+                    <div class="relative">
+                        <select class="w-full bg-surface-container-low border-b border-secondary/30 focus:border-secondary border-t-0 border-l-0 border-r-0 text-on-surface py-2 focus:ring-0 transition-colors appearance-none text-sm pr-8">
+                            <option value="">Todos los pagos</option>
+                            <option value="paid">Pagado</option>
+                            <option value="unpaid">No Pagado</option>
+                            <option value="refunded">Reembolsado</option>
+                        </select>
+                        <span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+                    </div>
+                </div>
+                <!-- Clear / Apply -->
+                <div class="flex items-end gap-4 h-full">
+                    <button class="text-on-surface-variant hover:text-secondary text-sm flex items-center gap-1 transition-colors pb-2">
+                        <span class="material-symbols-outlined text-[16px]">close</span> Limpiar
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Orders Table Container -->
+        <div class="bg-surface-container-low rounded-xl border border-secondary/10 overflow-hidden shadow-2xl relative">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                    <tr class="bg-surface-container-highest/50 border-b border-secondary/10">
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest whitespace-nowrap">ID Pedido</th>
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest whitespace-nowrap">Fecha</th>
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest whitespace-nowrap">Cliente</th>
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest whitespace-nowrap">Total</th>
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest whitespace-nowrap max-w-[140px]">Estado Pago</th>
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest whitespace-nowrap max-w-[140px]">Estado Pedido</th>
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest whitespace-nowrap text-right">Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody class="divide-y divide-secondary/5 font-body-md text-sm">
+                    <!-- Row 1: Selected / Focus -->
+                    <tr class="hover:bg-secondary/5 transition-colors group bg-secondary/5 relative">
+                        <td class="py-4 px-6 font-medium text-secondary">#LX-5021</td>
+                        <td class="py-4 px-6 text-on-surface-variant">24 May, 14:30</td>
+                        <td class="py-4 px-6 text-on-surface">Isabella Rossellini</td>
+                        <td class="py-4 px-6 text-on-surface font-semibold">$345.000</td>
+                        <td class="py-4 px-6"><div class="relative inline-block w-full w-[120px]"><select class="appearance-none w-full bg-emerald-900/30 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-full text-xs font-medium tracking-wide focus:ring-0 focus:border-emerald-500 cursor-pointer"><option value="pending">Pendiente</option><option value="approved" selected="">Aprobado</option><option value="rejected">Rechazado</option><option value="canceled">Cancelado</option><option value="refunded">Reembolsado</option></select><span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-emerald-400 pointer-events-none text-xs">expand_more</span></div></td>
+                        <td class="py-4 px-6"><div class="relative inline-block w-full w-[120px]"><select class="appearance-none w-full bg-secondary/10 text-secondary border border-secondary/20 px-2.5 py-1 rounded-full text-xs font-medium tracking-wide focus:ring-0 focus:border-secondary cursor-pointer"><option value="pending">Pendiente</option><option value="paid">Pagado</option><option value="processing" selected="">Procesando</option><option value="shipped">Enviado</option><option value="delivered">Entregado</option><option value="canceled">Cancelado</option></select><span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-secondary pointer-events-none text-xs">expand_more</span></div></td>
+                        <td class="py-4 px-6 text-right">
+                            <div class="flex items-center justify-end gap-3 transition-opacity"><button class="text-on-surface-variant hover:text-secondary transition-colors" title="Ver Detalle" onclick="document.getElementById('order-modal').classList.remove('hidden')"><span class="material-symbols-outlined text-[20px]">visibility</span></button>
+
+                                <button class="text-on-surface-variant hover:text-secondary transition-colors" title="Ver Recibo">
+                                    <span class="material-symbols-outlined text-[20px]">receipt_long</span>
+                                </button>
+                                <button class="text-on-surface-variant hover:text-error transition-colors" title="Cancelar">
+                                    <span class="material-symbols-outlined text-[20px]">block</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Row 2 -->
+                    <tr class="hover:bg-secondary/5 transition-colors group relative">
+                        <td class="py-4 px-6 font-medium text-secondary">#LX-5022</td>
+                        <td class="py-4 px-6 text-on-surface-variant">24 May, 15:10</td>
+                        <td class="py-4 px-6 text-on-surface">Alejandro Vargas</td>
+                        <td class="py-4 px-6 text-on-surface font-semibold">$125.900</td>
+                        <td class="py-4 px-6"><div class="relative inline-block w-full w-[120px]"><select class="appearance-none w-full bg-emerald-900/30 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-full text-xs font-medium tracking-wide focus:ring-0 focus:border-emerald-500 cursor-pointer"><option value="pending">Pendiente</option><option value="approved" selected="">Aprobado</option><option value="rejected">Rechazado</option><option value="canceled">Cancelado</option><option value="refunded">Reembolsado</option></select><span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-emerald-400 pointer-events-none text-xs">expand_more</span></div></td>
+                        <td class="py-4 px-6"><div class="relative inline-block w-full w-[120px]"><select class="appearance-none w-full bg-primary-container/20 text-primary border border-primary/20 px-2.5 py-1 rounded-full text-xs font-medium tracking-wide focus:ring-0 focus:border-primary cursor-pointer"><option value="pending">Pendiente</option><option value="paid">Pagado</option><option value="processing">Procesando</option><option value="shipped" selected="">Enviado</option><option value="delivered">Entregado</option><option value="canceled">Cancelado</option></select><span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-primary pointer-events-none text-xs">expand_more</span></div></td>
+                        <td class="py-4 px-6 text-right">
+                            <div class="flex items-center justify-end gap-3 transition-opacity"><button class="text-on-surface-variant hover:text-secondary transition-colors" title="Ver Detalle"><span class="material-symbols-outlined text-[20px]">visibility</span></button>
+
+                                <button class="text-on-surface-variant hover:text-secondary transition-colors" title="Ver Recibo"><span class="material-symbols-outlined text-[20px]">receipt_long</span></button>
+                                <button class="text-on-surface-variant hover:text-error transition-colors" title="Cancelar"><span class="material-symbols-outlined text-[20px]">block</span></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Row 3 -->
+                    <tr class="hover:bg-secondary/5 transition-colors group relative">
+                        <td class="py-4 px-6 font-medium text-secondary">#LX-5023</td>
+                        <td class="py-4 px-6 text-on-surface-variant">23 May, 10:45</td>
+                        <td class="py-4 px-6 text-on-surface">Valentina Silva</td>
+                        <td class="py-4 px-6 text-on-surface font-semibold">$89.000</td>
+                        <td class="py-4 px-6"><div class="relative inline-block w-full w-[120px]"><select class="appearance-none w-full bg-secondary/10 text-secondary border border-secondary/20 px-2.5 py-1 rounded-full text-xs font-medium tracking-wide focus:ring-0 focus:border-secondary cursor-pointer"><option value="pending" selected="">Pendiente</option><option value="approved">Aprobado</option><option value="rejected">Rechazado</option><option value="canceled">Cancelado</option><option value="refunded">Reembolsado</option></select><span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-secondary pointer-events-none text-xs">expand_more</span></div></td>
+                        <td class="py-4 px-6"><div class="relative inline-block w-full w-[120px]"><select class="appearance-none w-full bg-secondary/10 text-secondary border border-secondary/20 px-2.5 py-1 rounded-full text-xs font-medium tracking-wide focus:ring-0 focus:border-secondary cursor-pointer"><option value="pending" selected="">Pendiente</option><option value="paid">Pagado</option><option value="processing">Procesando</option><option value="shipped">Enviado</option><option value="delivered">Entregado</option><option value="canceled">Cancelado</option></select><span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-secondary pointer-events-none text-xs">expand_more</span></div></td>
+                        <td class="py-4 px-6 text-right">
+                            <div class="flex items-center justify-end gap-3 transition-opacity"><button class="text-on-surface-variant hover:text-secondary transition-colors" title="Ver Detalle"><span class="material-symbols-outlined text-[20px]">visibility</span></button>
+
+                                <button class="text-on-surface-variant hover:text-secondary transition-colors" title="Ver Recibo"><span class="material-symbols-outlined text-[20px]">receipt_long</span></button>
+                                <button class="text-on-surface-variant hover:text-error transition-colors" title="Cancelar"><span class="material-symbols-outlined text-[20px]">block</span></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Row 4 -->
+                    <tr class="hover:bg-secondary/5 transition-colors group relative">
+                        <td class="py-4 px-6 font-medium text-secondary">#LX-5024</td>
+                        <td class="py-4 px-6 text-on-surface-variant">23 May, 09:20</td>
+                        <td class="py-4 px-6 text-on-surface">Roberto Méndez</td>
+                        <td class="py-4 px-6 text-on-surface font-semibold">$450.000</td>
+                        <td class="py-4 px-6"><div class="relative inline-block w-full w-[120px]"><select class="appearance-none w-full bg-emerald-900/30 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-full text-xs font-medium tracking-wide focus:ring-0 focus:border-emerald-500 cursor-pointer"><option value="pending">Pendiente</option><option value="approved" selected="">Aprobado</option><option value="rejected">Rechazado</option><option value="canceled">Cancelado</option><option value="refunded">Reembolsado</option></select><span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-emerald-400 pointer-events-none text-xs">expand_more</span></div></td>
+                        <td class="py-4 px-6"><div class="relative inline-block w-full w-[120px]"><select class="appearance-none w-full bg-tertiary-container/30 text-tertiary border border-secondary/10 px-2.5 py-1 rounded-full text-xs font-medium tracking-wide focus:ring-0 focus:border-tertiary cursor-pointer"><option value="pending">Pendiente</option><option value="paid">Pagado</option><option value="processing">Procesando</option><option value="shipped">Enviado</option><option value="delivered" selected="">Entregado</option><option value="canceled">Cancelado</option></select><span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-tertiary pointer-events-none text-xs">expand_more</span></div></td>
+                        <td class="py-4 px-6 text-right">
+                            <div class="flex items-center justify-end gap-3 transition-opacity"><button class="text-on-surface-variant hover:text-secondary transition-colors" title="Ver Detalle"><span class="material-symbols-outlined text-[20px]">visibility</span></button>
+
+                                <button class="text-on-surface-variant hover:text-secondary transition-colors" title="Ver Recibo"><span class="material-symbols-outlined text-[20px]">receipt_long</span></button>
+                                <button class="text-on-surface-variant hover:text-error transition-colors" title="Cancelar"><span class="material-symbols-outlined text-[20px]">block</span></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Row 5 -->
+                    <tr class="hover:bg-secondary/5 transition-colors group relative">
+                        <td class="py-4 px-6 font-medium text-secondary">#LX-5025</td>
+                        <td class="py-4 px-6 text-on-surface-variant">22 May, 18:30</td>
+                        <td class="py-4 px-6 text-on-surface">Camila Soto</td>
+                        <td class="py-4 px-6 text-on-surface font-semibold">$67.500</td>
+                        <td class="py-4 px-6"><div class="relative inline-block w-full w-[120px]"><select class="appearance-none w-full bg-error-container/20 text-error border border-error/20 px-2.5 py-1 rounded-full text-xs font-medium tracking-wide focus:ring-0 focus:border-error cursor-pointer"><option value="pending">Pendiente</option><option value="approved">Aprobado</option><option value="rejected">Rechazado</option><option value="canceled" selected="">Cancelado</option><option value="refunded">Reembolsado</option></select><span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-error pointer-events-none text-xs">expand_more</span></div></td>
+                        <td class="py-4 px-6"><div class="relative inline-block w-full w-[120px]"><select class="appearance-none w-full bg-error-container/20 text-error border border-error/20 px-2.5 py-1 rounded-full text-xs font-medium tracking-wide focus:ring-0 focus:border-error cursor-pointer"><option value="pending">Pendiente</option><option value="paid">Pagado</option><option value="processing">Procesando</option><option value="shipped">Enviado</option><option value="delivered">Entregado</option><option value="canceled" selected="">Cancelado</option></select><span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-error pointer-events-none text-xs">expand_more</span></div></td>
+                        <td class="py-4 px-6 text-right">
+                            <div class="flex items-center justify-end gap-3 transition-opacity"><button class="text-on-surface-variant hover:text-secondary transition-colors" title="Ver Detalle"><span class="material-symbols-outlined text-[20px]">visibility</span></button>
+
+                                <button class="text-on-surface-variant hover:text-secondary transition-colors" title="Ver Recibo"><span class="material-symbols-outlined text-[20px]">receipt_long</span></button>
+                                <button class="text-on-surface-variant hover:text-error transition-colors" title="Cancelar"><span class="material-symbols-outlined text-[20px]">block</span></button>
+                            </div>
+                        </td>
+                    </tr></tbody>
+                </table>
+            </div>
+            <!-- Pagination -->
+            <div class="bg-surface-container-low border-t border-secondary/10 px-6 py-4 flex items-center justify-between">
+                <p class="text-sm text-on-surface-variant">Mostrando <span class="font-medium text-on-surface">1</span> a <span class="font-medium text-on-surface">5</span> de <span class="font-medium text-on-surface">1,248</span> resultados</p>
+                <div class="flex items-center gap-2">
+                    <button class="p-1 rounded-md text-on-surface-variant hover:text-secondary hover:bg-surface-container-high transition-colors disabled:opacity-50" disabled="">
+                        <span class="material-symbols-outlined">chevron_left</span>
+                    </button>
+                    <button class="p-1 rounded-md text-on-surface-variant hover:text-secondary hover:bg-surface-container-high transition-colors">
+                        <span class="material-symbols-outlined">chevron_right</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- Detail Panel / Modal (Simulated) -->
+<div class="fixed inset-0 z-50 flex justify-end hidden" id="order-modal">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-background/80" onclick="document.getElementById('order-modal').classList.add('hidden')"></div>
+    <!-- Sliding Panel -->
+    <div class="relative w-full max-w-2xl bg-surface-container h-full shadow-2xl border-l border-secondary/20 flex flex-col transform transition-transform duration-300 translate-x-0">
+        <!-- Modal Header -->
+        <div class="flex items-center justify-between px-8 py-6 border-b border-secondary/10 bg-surface/50 backdrop-blur-xl">
+            <div>
+                <h3 class="font-headline-md text-headline-md text-on-surface font-semibold flex items-center gap-3">
+                    #LX-5021
+                    <span class="inline-flex items-center gap-1.5 bg-secondary/10 text-secondary border border-secondary/20 px-2.5 py-1 rounded-full text-xs font-medium tracking-wide font-body-md">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary shadow-[0_0_8px_rgba(233,195,73,0.8)]"></span> Procesando
+                        </span>
+                </h3>
+                <p class="font-body-sm text-sm text-on-surface-variant mt-1">24 May 2024, 14:30 hrs</p>
+            </div>
+            <button class="text-on-surface-variant hover:text-secondary transition-colors bg-surface-container-highest p-2 rounded-full" onclick="document.getElementById('order-modal').classList.add('hidden')">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <!-- Modal Content (Scrollable) -->
+        <div class="flex-1 overflow-y-auto p-8 space-y-10 custom-scrollbar"><!-- Customer & Delivery Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Customer Data -->
+                <div class="space-y-4">
+                    <h4 class="font-label-md text-label-md uppercase tracking-widest text-secondary flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">person</span> Datos del Cliente
+                    </h4>
+                    <div class="bg-surface-container-low p-4 rounded-lg border border-secondary/5">
+                        <p class="text-on-surface font-medium">Isabella Rossellini</p>
+                        <p class="text-on-surface-variant text-sm mt-1">isabella.r@example.com</p>
+                        <p class="text-on-surface-variant text-sm mt-1">+56 9 8765 4321</p>
+                    </div>
+                </div>
+                <!-- Delivery Address -->
+                <div class="space-y-4">
+                    <h4 class="font-label-md text-label-md uppercase tracking-widest text-secondary flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">local_shipping</span> Dirección de Entrega
+                    </h4>
+                    <div class="bg-surface-container-low p-4 rounded-lg border border-secondary/5">
+                        <p class="text-on-surface text-sm">Av. Vitacura 2670, Depto 1201</p>
+                        <p class="text-on-surface-variant text-sm mt-1">Las Condes, Región Metropolitana</p>
+                        <p class="text-on-surface-variant text-sm mt-1">Chile</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Purchased Products -->
+            <div class="space-y-4">
+                <h4 class="font-label-md text-label-md uppercase tracking-widest text-secondary flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">shopping_bag</span> Productos Comprados
+                </h4>
+                <div class="bg-surface-container-low rounded-lg border border-secondary/5 overflow-hidden">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-surface-container-highest/30 border-b border-secondary/10">
+                        <tr>
+                            <th class="px-4 py-3 font-label-sm text-on-surface-variant uppercase">Producto</th>
+                            <th class="px-4 py-3 font-label-sm text-on-surface-variant uppercase text-center">Cant.</th>
+                            <th class="px-4 py-3 font-label-sm text-on-surface-variant uppercase text-right">Precio</th>
+                        </tr>
+                        </thead>
+                        <tbody class="divide-y divide-secondary/5">
+                        <tr class="">
+                            <td class="px-4 py-3 text-on-surface">Anillo de Diamantes 'Eternity'</td>
+                            <td class="px-4 py-3 text-on-surface text-center">1</td>
+                            <td class="px-4 py-3 text-on-surface text-right">$280.000</td>
+                        </tr>
+                        <tr class="">
+                            <td class="px-4 py-3 text-on-surface">Estuche de Terciopelo Premium</td>
+                            <td class="px-4 py-3 text-on-surface text-center">1</td>
+                            <td class="px-4 py-3 text-on-surface text-right">$65.000</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Financial Breakdown & Payment -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="space-y-4">
+                    <h4 class="font-label-md text-label-md uppercase tracking-widest text-secondary flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">payments</span> Pago e Información
+                    </h4>
+                    <div class="bg-surface-container-low p-4 rounded-lg border border-secondary/5 space-y-3">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-on-surface-variant">Método:</span>
+                            <span class="text-on-surface">Tarjeta de Crédito (**** 4421)</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-on-surface-variant">Estado:</span>
+                            <span class="text-emerald-400 font-medium">Pagado</span>
+                        </div>
+                        <div class="pt-2 border-t border-secondary/5">
+                            <span class="text-on-surface-variant text-xs uppercase tracking-widest">Comentarios:</span>
+                            <p class="text-on-surface text-sm mt-1 italic">"Por favor, envolver para regalo con cinta dorada. Es un aniversario."</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <h4 class="font-label-md text-label-md uppercase tracking-widest text-secondary flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">receipt</span> Resumen Financiero
+                    </h4>
+                    <div class="bg-surface-container-low p-4 rounded-lg border border-secondary/5 space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-on-surface-variant">Subtotal:</span>
+                            <span class="text-on-surface">$345.000</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-on-surface-variant">Descuentos:</span>
+                            <span class="text-error">-$15.000</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-on-surface-variant">Cupón (LUX2024):</span>
+                            <span class="text-secondary">Aplicado</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-on-surface-variant">Envío:</span>
+                            <span class="text-on-surface">$15.000</span>
+                        </div>
+                        <div class="flex justify-between text-lg font-semibold pt-2 border-t border-secondary/10">
+                            <span class="text-secondary">Total Final:</span>
+                            <span class="text-secondary">$345.000</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status History -->
+            <div class="space-y-4">
+                <h4 class="font-label-md text-label-md uppercase tracking-widest text-secondary flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">history</span> Historial de Estados
+                </h4>
+                <div class="space-y-4 relative before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[1px] before:bg-secondary/20">
+                    <div class="relative pl-8">
+                        <div class="absolute left-0 top-1.5 w-6 h-6 rounded-full bg-secondary flex items-center justify-center">
+                            <span class="material-symbols-outlined text-[14px] text-on-primary">check</span>
+                        </div>
+                        <p class="text-on-surface font-medium text-sm">Procesando</p>
+                        <p class="text-on-surface-variant text-xs">24 May 2024, 14:30 - Por: Sistema</p>
+                    </div>
+                    <div class="relative pl-8">
+                        <div class="absolute left-0 top-1.5 w-6 h-6 rounded-full bg-surface-container-highest border border-secondary/30 flex items-center justify-center">
+                            <span class="w-2 h-2 rounded-full bg-secondary/50"></span>
+                        </div>
+                        <p class="text-on-surface-variant font-medium text-sm">Pago Confirmado</p>
+                        <p class="text-on-surface-variant text-xs">24 May 2024, 14:28 - Por: Pasarela de Pago</p>
+                    </div>
+                    <div class="relative pl-8">
+                        <div class="absolute left-0 top-1.5 w-6 h-6 rounded-full bg-surface-container-highest border border-secondary/30 flex items-center justify-center">
+                            <span class="w-2 h-2 rounded-full bg-secondary/50"></span>
+                        </div>
+                        <p class="text-on-surface-variant font-medium text-sm">Pedido Creado</p>
+                        <p class="text-on-surface-variant text-xs">24 May 2024, 14:25 - Por: Cliente</p>
+                    </div>
+                </div>
+            </div></div>
+    </div>
+</div>
+<script>
+    // Simple mobile menu toggle
+    const openNav = document.getElementById('open-nav');
+    const closeNav = document.getElementById('close-nav');
+    const sideNav = document.getElementById('sidenav');
+    const navOverlay = document.getElementById('nav-overlay');
+
+    function toggleNav() {
+        const isClosed = sideNav.classList.contains('-translate-x-full');
+        if (isClosed) {
+            sideNav.classList.remove('-translate-x-full');
+            navOverlay.classList.remove('hidden');
+            setTimeout(() => navOverlay.classList.add('opacity-100'), 10);
+        } else {
+            sideNav.classList.add('-translate-x-full');
+            navOverlay.classList.remove('opacity-100');
+            setTimeout(() => navOverlay.classList.add('hidden'), 300);
+        }
+    }
+
+    openNav.addEventListener('click', toggleNav);
+    closeNav.addEventListener('click', toggleNav);
+    navOverlay.addEventListener('click', toggleNav);
+</script>
+
+
+
+
+</body></html>
