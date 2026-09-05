@@ -27,7 +27,7 @@ export const procesarLogin = async (req, res) => {
         }
 
         const resultado = await pool.query(
-            'SELECT id, nombre, apellido, email, password_hash, telefono FROM clientes WHERE email = $1',
+            'SELECT id, nombre, apellido, email, password_hash, telefono, rol FROM clientes WHERE email = $1',
             [email]
         );
 
@@ -57,10 +57,15 @@ export const procesarLogin = async (req, res) => {
             nombre: usuario.nombre,
             apellido: usuario.apellido,
             email: usuario.email,
-            telefono: usuario.telefono
+            telefono: usuario.telefono,
+            rol: usuario.rol
         };
 
-        registrarActividad(`🔐 POST /autenticacion/login - ÉXITO: Sesión iniciada para ${email}.`);
+        registrarActividad(`🔐 POST /autenticacion/login - ÉXITO: Sesión iniciada para ${email} (rol: ${usuario.rol}).`);
+
+        if (usuario.rol === 'admin') {
+            return res.redirect('/admin');
+        }
         res.redirect('/');
     } catch (error) {
         registrarActividad(`🔐❌ POST /autenticacion/login - ERROR CRÍTICO: ${error.message}`);
@@ -98,11 +103,11 @@ export const procesarRegistro = async (req, res) => {
         const passwordHash = await bcrypt.hash(password, 10);
 
         const insertSql = `
-            INSERT INTO clientes (nombre, apellido, email, password_hash, telefono)
-            VALUES ($1, $2, $3, $4, $5)
-                RETURNING id, nombre, apellido, email, telefono
+            INSERT INTO clientes (nombre, apellido, email, password_hash, telefono, rol)
+            VALUES ($1, $2, $3, $4, $5, $6)
+                RETURNING id, nombre, apellido, email, telefono, rol
         `;
-        const valores = [validator.escape(nombre), validator.escape(apellido), email, passwordHash, telefono];
+        const valores = [validator.escape(nombre), validator.escape(apellido), email, passwordHash, telefono, "user"];
         await pool.query(insertSql, valores);
 
         registrarActividad(`🔐 POST /autenticacion/registro - ÉXITO: Usuario registrado correctamente (${email}).`);

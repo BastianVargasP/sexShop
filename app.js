@@ -21,6 +21,7 @@ import pagosRouter from './routes/pagos.js';
 import carritoRouter from './routes/carrito.js';
 import favoritosRouter from './routes/favoritos.js';
 import checkoutRouter from './routes/checkout.js';
+import adminRouter from './routes/admin.js';
 
 // Importación de configuración y logger propios del proyecto
 import {config} from "./config/config.js";
@@ -111,6 +112,7 @@ app.use('/', favoritosRouter);
 app.use('/', checkoutRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
+app.use('/admin', adminRouter);
 
 // Acá se configura el error más común en HTTP = 404 - No encontrado (not found)
 app.use((req, res, next) => {
