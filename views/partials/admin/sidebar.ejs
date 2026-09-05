@@ -1,11 +1,4 @@
 <%
-/**
- * Sidebar de administración reutilizable.
- * Uso: <%- include('../partials/admin/sidebar', { activo: 'pedidos' }) %>
- *
- * `activo` debe coincidir con uno de los data-path listados abajo.
- * Opcional: `pedidosPendientes` (número) muestra el badge sobre "Pedidos".
- */
 const claseActiva = "flex items-center gap-3 text-secondary bg-primary-container/20 rounded-lg px-4 py-2.5 border-l-2 border-secondary font-label-md text-label-md transition-all duration-200";
 const claseInactiva = "flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-2 font-label-md text-label-md hover:translate-x-1 transition-all duration-300";
 const clase = (path) => (path === activo ? claseActiva : claseInactiva);
