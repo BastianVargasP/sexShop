@@ -1,6 +1,4 @@
 export const mostrarDashboard = (req, res) => res.render('admin/dashboard', { titulo: 'Dashboard' });
-export const mostrarProductos = (req, res) => res.render('admin/productos', { titulo: 'Productos' });
-export const mostrarCategorias = (req, res) => res.render('admin/categorias', { titulo: 'Categorías' });
 export const mostrarCupones = (req, res) => res.render('admin/cupones', { titulo: 'Cupones' });
 export const mostrarClientes = (req, res) => res.render('admin/clientes', { titulo: 'Clientes' });
 export const mostrarPedidos = (req, res) => res.render('admin/pedidos', { titulo: 'Gestión de Pedidos' });

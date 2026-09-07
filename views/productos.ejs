@@ -24,32 +24,41 @@
             <!-- Category Filter -->
             <div class="space-y-4">
                 <h3 class="font-label-md text-label-md text-on-surface border-b border-surface-variant pb-2">Categoría</h3>
-                <ul class="space-y-2">
-                    <li>
-                        <label class="flex items-center gap-3 cursor-pointer group">
-                            <input name="categoria" value="joyeria" class="form-checkbox h-4 w-4 text-primary-container bg-surface-container-highest border-outline-variant focus:ring-primary focus:ring-offset-background rounded-sm" type="checkbox">
-                            <span class="font-body-md text-body-md text-on-surface-variant group-hover:text-secondary transition-colors">Joyería Íntima</span>
-                        </label>
-                    </li>
-                    <li>
-                        <label class="flex items-center gap-3 cursor-pointer group">
-                            <input name="categoria" value="estimuladores" class="form-checkbox h-4 w-4 text-primary-container bg-surface-container-highest border-outline-variant focus:ring-primary focus:ring-offset-background rounded-sm" type="checkbox">
-                            <span class="font-body-md text-body-md text-on-surface-variant group-hover:text-secondary transition-colors">Estimuladores Premium</span>
-                        </label>
-                    </li>
-                    <li>
-                        <label class="flex items-center gap-3 cursor-pointer group">
-                            <input name="categoria" value="cosmetica" class="form-checkbox h-4 w-4 text-primary-container bg-surface-container-highest border-outline-variant focus:ring-primary focus:ring-offset-background rounded-sm" type="checkbox">
-                            <span class="font-body-md text-body-md text-on-surface-variant group-hover:text-secondary transition-colors">Cosmética Sensorial</span>
-                        </label>
-                    </li>
-                    <li>
-                        <label class="flex items-center gap-3 cursor-pointer group">
-                            <input name="categoria" value="kits" class="form-checkbox h-4 w-4 text-primary-container bg-surface-container-highest border-outline-variant focus:ring-primary focus:ring-offset-background rounded-sm" type="checkbox">
-                            <span class="font-body-md text-body-md text-on-surface-variant group-hover:text-secondary transition-colors">Kits Exclusivos</span>
-                        </label>
-                    </li>
-                </ul>
+                <% if (categoriasFiltro.length === 0) { %>
+                    <p class="font-body-md text-sm text-on-surface-variant">No hay categorías disponibles por ahora.</p>
+                <% } else { %>
+                    <ul class="space-y-1" id="listaCategorias">
+                        <% categoriasFiltro.forEach(cat => { %>
+                            <% const subsDeEstaCategoria = subcategoriasFiltro.filter(s => String(s.categoria_id) === String(cat.id)); %>
+                            <li>
+                                <div class="flex items-center justify-between gap-2 group">
+                                    <label class="flex items-center gap-3 cursor-pointer flex-1 py-1">
+                                        <input name="categoria" value="<%= cat.id %>" class="form-checkbox h-4 w-4 text-primary-container bg-surface-container-highest border-outline-variant focus:ring-primary focus:ring-offset-background rounded-sm" type="checkbox">
+                                        <span class="font-body-md text-body-md text-on-surface-variant group-hover:text-secondary transition-colors"><%= cat.nombre %></span>
+                                    </label>
+                                    <% if (subsDeEstaCategoria.length > 0) { %>
+                                        <button type="button" data-toggle-subcategorias="<%= cat.id %>"
+                                                class="text-on-surface-variant hover:text-secondary transition-colors p-1 shrink-0">
+                                            <span class="material-symbols-outlined text-[18px] transition-transform" data-chevron="<%= cat.id %>">expand_more</span>
+                                        </button>
+                                    <% } %>
+                                </div>
+                                <% if (subsDeEstaCategoria.length > 0) { %>
+                                    <ul class="pl-7 space-y-1 hidden" data-subcategorias-de="<%= cat.id %>">
+                                        <% subsDeEstaCategoria.forEach(sub => { %>
+                                            <li>
+                                                <label class="flex items-center gap-3 cursor-pointer group py-1">
+                                                    <input name="subcategoria" value="<%= sub.id %>" data-categoria-padre="<%= cat.id %>" class="form-checkbox h-3.5 w-3.5 text-primary-container bg-surface-container-highest border-outline-variant focus:ring-primary focus:ring-offset-background rounded-sm" type="checkbox">
+                                                    <span class="font-body-md text-sm text-on-surface-variant group-hover:text-secondary transition-colors"><%= sub.nombre %></span>
+                                                </label>
+                                            </li>
+                                        <% }) %>
+                                    </ul>
+                                <% } %>
+                            </li>
+                        <% }) %>
+                    </ul>
+                <% } %>
             </div>
         </aside>
         <!-- Product Grid -->
@@ -81,11 +90,12 @@
                 <% productos.forEach(producto => { %>
                 <% const esFavorito = favoritosIds.has(producto.id); %>
                 <!-- Product Card -->
-                <div class="producto-card relative glass-panel rounded-lg overflow-hidden flex flex-col hover-gold-glow transition-all duration-300 group bg-surface-container-low border border-surface-container"
-                     data-categoria="<%= producto.categoria %>"
-                     data-precio="<%= producto.precio %>"
-                     data-creado="<%= new Date(producto.created_at).getTime() %>"
-                     data-destacado="<%= producto.destacado ? '1' : '0' %>">
+                    <div class="producto-card relative glass-panel rounded-lg overflow-hidden flex flex-col hover-gold-glow transition-all duration-300 group bg-surface-container-low border border-surface-container"
+                         data-categoria="<%= producto.categoria_id %>"
+                         data-subcategoria="<%= producto.subcategoria_id || '' %>"
+                         data-precio="<%= producto.precio %>"
+                         data-creado="<%= new Date(producto.created_at).getTime() %>"
+                         data-destacado="<%= producto.destacado ? '1' : '0' %>">
                     <% if (producto.etiqueta) { %>
                     <div class="absolute top-4 left-4 z-10 bg-primary-fixed-dim text-on-primary-fixed text-xs font-bold px-2 py-1 rounded-sm uppercase tracking-wider">
                         <%= producto.etiqueta %>

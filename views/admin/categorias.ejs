@@ -5,17 +5,11 @@
 </head>
 <body class="bg-background text-on-background font-body-md min-h-screen flex overflow-x-hidden">
 
-<!-- Topbar móvil -->
 <%- include('../partials/admin/mobile-topbar') %>
-
-<!-- Sidebar -->
 <%- include('../partials/admin/sidebar', { activo: 'categorias', pedidosPendientes: typeof pedidosPendientes !== 'undefined' ? pedidosPendientes : 0 }) %>
 
-<!-- Main Content Wrapper -->
 <div class="flex-1 ml-0 md:ml-64 flex flex-col min-h-screen">
-    <!-- Main Canvas -->
     <main class="flex-1 p-4 md:p-gutter xl:px-margin-desktop py-8 max-w-container-max mx-auto w-full">
-        <!-- Page Header Section -->
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-10 gap-6">
             <div>
                 <h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2">
@@ -24,416 +18,263 @@
                     productos de la boutique. Mantén las colecciones organizadas para una experiencia de descubrimiento
                     refinada.</p>
             </div>
-            <button class="bg-secondary text-on-secondary font-label-md text-label-md px-6 py-3 rounded-DEFAULT uppercase tracking-widest flex items-center gap-2 hover:bg-secondary-fixed-dim transition-all duration-300 shadow-[0_0_15px_rgba(233,195,73,0.15)] active:scale-95 shrink-0">
+            <button class="bg-secondary text-on-secondary font-label-md text-label-md px-6 py-3 rounded-DEFAULT uppercase tracking-widest flex items-center gap-2 hover:bg-secondary-fixed-dim transition-all duration-300 shadow-[0_0_15px_rgba(233,195,73,0.15)] active:scale-95 shrink-0"
+                    onclick="openCreateCategoryModal()">
                 <span class="material-symbols-outlined text-[18px]">add</span>
                 Crear Categoría
             </button>
         </div>
-        <!-- Tabs / Segmented Control -->
+
+        <!-- Tabs -->
         <div class="flex border-b border-secondary/20 mb-8 overflow-x-auto no-scrollbar" id="category-tabs">
-            <button class="font-label-md text-label-md pb-3 px-6 whitespace-nowrap uppercase tracking-widest transition-colors text-on-surface-variant hover:text-on-surface"
+            <button class="font-label-md text-label-md pb-3 px-6 whitespace-nowrap uppercase tracking-widest transition-colors text-secondary border-b-2 border-secondary"
                     id="tab-main">
                 Categorías Principales
             </button>
-            <button class="font-label-md text-label-md pb-3 px-6 whitespace-nowrap uppercase tracking-widest transition-colors text-secondary border-b-2 border-secondary"
+            <button class="font-label-md text-label-md pb-3 px-6 whitespace-nowrap uppercase tracking-widest transition-colors text-on-surface-variant hover:text-on-surface"
                     id="tab-sub">
                 Subcategorías
             </button>
         </div>
-        <!-- Data Table Container (Glass Panel) -->
+
         <div class="glass-panel rounded-xl overflow-hidden mb-8" id="data-table-container">
-            <div class="overflow-x-auto w-full hidden" id="table-main-wrapper">
+            <!-- ===== TABLA: CATEGORÍAS PRINCIPALES ===== -->
+            <div class="overflow-x-auto w-full" id="table-main-wrapper">
                 <table class="w-full text-left border-collapse min-w-[800px]" id="categories-table">
                     <thead>
                     <tr class="bg-surface-container-high/50 border-b border-secondary/10">
                         <th class="py-4 px-4 w-12 text-center text-on-surface-variant"></th>
-                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest w-24">
-                            Imagen
-                        </th>
-                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest max-w-xs">
-                            Nombre &amp; Info
-                        </th>
-                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-center w-32">
-                            Estado
-                        </th>
-                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-center w-24">
-                            Orden
-                        </th>
-                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-center w-32">
-                            Productos
-                        </th>
-                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-right w-40">
-                            Acciones
-                        </th>
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest w-24">Imagen</th>
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest max-w-xs">Nombre &amp; Info</th>
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-center w-32">Estado</th>
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-center w-24">Subcategorías</th>
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-center w-32">Productos</th>
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-right w-40">Acciones</th>
                     </tr>
                     </thead>
                     <tbody class="divide-y divide-secondary/10" id="sortable-tbody-main">
-                    <!-- Row 1 -->
-                    <tr class="group hover:bg-surface-container-high/30 transition-colors" draggable="true">
-                        <td class="py-4 px-4 text-center drag-handle text-on-surface-variant hover:text-secondary">
-                            <span class="material-symbols-outlined">drag_indicator</span>
-                        </td>
-                        <td class="py-4 px-6">
-                            <div class="w-12 h-12 rounded bg-surface-container-highest border border-secondary/20 overflow-hidden">
-                                <img alt="Lencería Íntima thumbnail" class="w-full h-full object-cover"
-                                     data-alt="A macro shot of luxurious silk lingerie fabric in deep emerald green, softly lit to highlight the texture. A subtle gold trim is visible. The lighting is moody and intimate, classic high-end boutique product photography."
-                                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFsZKXTh_3kOiwy7WVyQ3gSHwaEVKVGUUAuM5eDnljK68Dz4bnkY3Rq_FQIDDRn8ae2CTmMV245NMhWEXXwGJjmg0NqrJxhDOO2QASa1_Bz0ZnfdXnOTe80heNrhmF-hMS22av7Hr9lIo1IOj0HQA0yl2cjid0LH-wiXXjg-vmVDJTGgYiU4w5YrXySOEMigG1L6es_HvObIESoGVesxlirvRiHUGXGc1bqfG3zm1gLhefp0mIhr4">
-                            </div>
-                        </td>
-                        <td class="py-4 px-6 max-w-xs">
-                            <p class="font-label-md text-label-md text-on-surface mb-1">Lencería Íntima</p>
-                            <p class="font-body-md text-[13px] text-on-surface-variant max-w-xs">Colecciones exclusivas
-                                de seda y encaje francés.</p>
-                        </td>
-                        <td class="py-4 px-6 text-center">
-<span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-secondary-container/20 border border-secondary/30 text-secondary font-label-sm text-[10px] uppercase tracking-widest">
-<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
-                                        Activo
+                    <% if (categorias.length === 0) { %>
+                        <tr><td colspan="7" class="p-8 text-center text-on-surface-variant">Aún no hay categorías creadas.</td></tr>
+                    <% } %>
+                    <% categorias.forEach(cat => { %>
+                        <tr class="group hover:bg-surface-container-high/30 transition-colors <%= !cat.activa ? 'opacity-60' : '' %>" draggable="true" data-id="<%= cat.id %>">
+                            <td class="py-4 px-4 text-center drag-handle text-on-surface-variant hover:text-secondary">
+                                <span class="material-symbols-outlined">drag_indicator</span>
+                            </td>
+                            <td class="py-4 px-6">
+                                <div class="w-12 h-12 rounded bg-surface-container-highest border border-secondary/20 overflow-hidden flex items-center justify-center">
+                                    <% if (cat.imagen) { %>
+                                        <img alt="<%= cat.nombre %>" class="w-full h-full object-cover" src="<%= cat.imagen %>">
+                                    <% } else { %>
+                                        <span class="material-symbols-outlined text-on-surface-variant">category</span>
+                                    <% } %>
+                                </div>
+                            </td>
+                            <td class="py-4 px-6 max-w-xs">
+                                <p class="font-label-md text-label-md text-on-surface mb-1"><%= cat.nombre %></p>
+                                <% if (cat.descripcion) { %>
+                                    <p class="font-body-md text-[13px] text-on-surface-variant max-w-xs"><%= cat.descripcion %></p>
+                                <% } %>
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <% if (cat.activa) { %>
+                                    <span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-secondary-container/20 border border-secondary/30 text-secondary font-label-sm text-[10px] uppercase tracking-widest">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Activo
                                     </span>
-                        </td>
-                        <td class="py-4 px-6 text-center">
-                            <span class="font-label-md text-label-md text-on-surface-variant order-cell">01</span>
-                        </td>
-                        <td class="py-4 px-6 text-center">
-                            <span class="font-label-md text-label-md text-on-surface-variant">142</span>
-                        </td>
-                        <td class="py-4 px-6 text-right">
-                            <div class="flex justify-end gap-2 opacity-100 group-hover:opacity-100 transition-opacity">
-                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"
-                                        title="Editar">
-                                    <span class="material-symbols-outlined text-[20px]">edit</span>
-                                </button>
-                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"
-                                        title="Desactivar">
-                                    <span class="material-symbols-outlined text-[20px]">visibility_off</span>
-                                </button>
-                                <button class="p-2 text-on-surface-variant hover:text-error transition-colors"
-                                        title="Eliminar">
-                                    <span class="material-symbols-outlined text-[20px]">delete</span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <!-- Row 2 -->
-                    <tr class="group hover:bg-surface-container-high/30 transition-colors" draggable="true">
-                        <td class="py-4 px-4 text-center drag-handle text-on-surface-variant hover:text-secondary">
-                            <span class="material-symbols-outlined">drag_indicator</span>
-                        </td>
-                        <td class="py-4 px-6">
-                            <div class="w-12 h-12 rounded bg-surface-container-highest border border-secondary/20 overflow-hidden">
-                                <img alt="Esencias &amp; Perfumes thumbnail" class="w-full h-full object-cover"
-                                     data-alt="A minimalist composition featuring a sleek, dark glass perfume bottle resting on a black marble surface. Subtle reflections and a single soft spotlight create an aura of mystery and premium quality. Luxury fragrance photography."
-                                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuBo-yZAUIrk6dSBVEbUtE_E_zm7bWSiPpGi4lstmuMfGJwMYJdJWUV6eBNurPSWzy7vXpSpfLxtrl9f58y9w44iCOUzkhvVtWlwvbDGQC0j_mRPzW9bV4GzKlJ2I12UfCyole84D_WJ28VqYEIEGXjfs9ugsozTE9NBI0yPh-dhPB4M1UZ8EWaeg3z_jEh26FEUYjkxjzvi1t8WQGwvZTkvJifq6dFBGZIZx5ru_JBQO7dqIVHo-Wg">
-                            </div>
-                        </td>
-                        <td class="py-4 px-6 max-w-xs">
-                            <p class="font-label-md text-label-md text-on-surface mb-1">Esencias &amp; Perfumes</p>
-                            <p class="font-body-md text-[13px] text-on-surface-variant max-w-xs">Aromaterapia de nicho y
-                                perfumería botánica.</p>
-                        </td>
-                        <td class="py-4 px-6 text-center">
-<span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-secondary-container/20 border border-secondary/30 text-secondary font-label-sm text-[10px] uppercase tracking-widest">
-<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
-                                        Activo
+                                <% } else { %>
+                                    <span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-surface-variant border border-outline-variant text-on-surface-variant font-label-sm text-[10px] uppercase tracking-widest">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-on-surface-variant"></span> Inactivo
                                     </span>
-                        </td>
-                        <td class="py-4 px-6 text-center">
-                            <span class="font-label-md text-label-md text-on-surface-variant order-cell">02</span>
-                        </td>
-                        <td class="py-4 px-6 text-center">
-                            <span class="font-label-md text-label-md text-on-surface-variant">56</span>
-                        </td>
-                        <td class="py-4 px-6 text-right">
-                            <div class="flex justify-end gap-2 opacity-100 group-hover:opacity-100 transition-opacity">
-                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"
-                                        title="Editar">
-                                    <span class="material-symbols-outlined text-[20px]">edit</span>
-                                </button>
-                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"
-                                        title="Desactivar">
-                                    <span class="material-symbols-outlined text-[20px]">visibility_off</span>
-                                </button>
-                                <button class="p-2 text-on-surface-variant hover:text-error transition-colors"
-                                        title="Eliminar">
-                                    <span class="material-symbols-outlined text-[20px]">delete</span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <!-- Row 3 (Inactive Example) -->
-                    <tr class="group hover:bg-surface-container-high/30 transition-colors opacity-60" draggable="true">
-                        <td class="py-4 px-4 text-center drag-handle text-on-surface-variant hover:text-secondary">
-                            <span class="material-symbols-outlined">drag_indicator</span>
-                        </td>
-                        <td class="py-4 px-6">
-                            <div class="w-12 h-12 rounded bg-surface-container-highest border border-outline-variant overflow-hidden grayscale">
-                                <img alt="Aceites &amp; Masajes thumbnail" class="w-full h-full object-cover"
-                                     data-alt="A collection of massage oils in elegant, dark amber glass bottles with gold dropper caps, arranged on a black velvet background. The lighting is very soft and moody, emphasizing relaxation and luxury spa treatments."
-                                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEmNqiq4q5Ilme9FhcPlc_T-jBEWNZGK4hm28IjDOPQBt7hfmcWFW4Cc_7wrfvT8aPGCZucJMwz_geE2IKlz4ZSwHIDmywBWufdGEbIbAxTF6u4y7Kvao8TBdMWJ20hifIQ92NxBB_E7T3w1yn7WsQi18P-rat-daQXNhvROOChYObDxZtTmOxKFO1xBNy6vKd73-4ajg3HO0MsBWqXTDmWA3pZOGyyJujKwJ7EkEbM_dGcP1_ql0">
-                            </div>
-                        </td>
-                        <td class="py-4 px-6 max-w-xs">
-                            <p class="font-label-md text-label-md text-on-surface mb-1">Aceites &amp; Masajes</p>
-                            <p class="font-body-md text-[13px] text-on-surface-variant max-w-xs">Rituales de cuidado
-                                corporal e hidratación profunda.</p>
-                        </td>
-                        <td class="py-4 px-6 text-center">
-<span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-surface-variant border border-outline-variant text-on-surface-variant font-label-sm text-[10px] uppercase tracking-widest">
-<span class="w-1.5 h-1.5 rounded-full bg-on-surface-variant"></span>
-                                        Inactivo
-                                    </span>
-                        </td>
-                        <td class="py-4 px-6 text-center">
-                            <span class="font-label-md text-label-md text-on-surface-variant order-cell">03</span>
-                        </td>
-                        <td class="py-4 px-6 text-center">
-                            <span class="font-label-md text-label-md text-on-surface-variant">0</span>
-                        </td>
-                        <td class="py-4 px-6 text-right">
-                            <div class="flex justify-end gap-2 opacity-100 group-hover:opacity-100 transition-opacity">
-                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"
-                                        title="Editar">
-                                    <span class="material-symbols-outlined text-[20px]">edit</span>
-                                </button>
-                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"
-                                        title="Activar">
-                                    <span class="material-symbols-outlined text-[20px]">visibility</span>
-                                </button>
-                                <button class="p-2 text-on-surface-variant hover:text-error transition-colors"
-                                        title="Eliminar">
-                                    <span class="material-symbols-outlined text-[20px]">delete</span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+                                <% } %>
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="font-label-md text-label-md text-on-surface-variant order-cell"><%= cat.total_subcategorias %></span>
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="font-label-md text-label-md text-on-surface-variant"><%= cat.total_productos %></span>
+                            </td>
+                            <td class="py-4 px-6 text-right">
+                                <div class="flex justify-end gap-2 opacity-100 transition-opacity">
+                                    <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors" title="Editar"
+                                            onclick="location.href='/admin/categorias/<%= cat.id %>/editar'">
+                                        <span class="material-symbols-outlined text-[20px]">edit</span>
+                                    </button>
+                                    <form method="POST" action="/admin/categorias/<%= cat.id %>/activar" class="contents">
+                                        <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors" title="<%= cat.activa ? 'Desactivar' : 'Activar' %>">
+                                            <span class="material-symbols-outlined text-[20px]"><%= cat.activa ? 'visibility_off' : 'visibility' %></span>
+                                        </button>
+                                    </form>
+                                    <form method="POST" action="/admin/categorias/<%= cat.id %>/eliminar" class="contents" onsubmit="return confirm('¿Eliminar esta categoría? También se eliminarán sus subcategorías.');">
+                                        <button class="p-2 text-on-surface-variant hover:text-error transition-colors" title="Eliminar">
+                                            <span class="material-symbols-outlined text-[20px]">delete</span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    <% }) %>
                     </tbody>
                 </table>
             </div>
-            <!-- Subcategories Table Wrapper (Hidden by default) -->
-            <div class="overflow-x-auto w-full" id="table-sub-wrapper">
+
+            <!-- ===== TABLA: SUBCATEGORÍAS ===== -->
+            <div class="overflow-x-auto w-full hidden" id="table-sub-wrapper">
+                <div class="flex justify-end p-4 border-b border-secondary/10 bg-surface-container-high/30">
+                    <button class="bg-secondary text-on-secondary font-label-sm text-label-sm px-4 py-2 rounded flex items-center gap-1.5 hover:bg-secondary-fixed-dim transition-colors"
+                            onclick="openCreateSubcategoryModal()" <%= categorias.length === 0 ? 'disabled title="Crea primero una categoría principal"' : '' %>>
+                        <span class="material-symbols-outlined text-[16px]">add</span> Crear Subcategoría
+                    </button>
+                </div>
                 <table class="w-full text-left border-collapse min-w-[800px]" id="subcategories-table">
                     <thead>
                     <tr class="bg-surface-container-high/50 border-b border-secondary/10">
                         <th class="py-4 px-4 w-12 text-center text-on-surface-variant"></th>
-                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest w-24">
-                            Imagen
-                        </th>
-                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest max-w-xs">
-                            Nombre &amp; Padre
-                        </th>
-                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-center w-32">
-                            Estado
-                        </th>
-                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-center w-24">
-                            Orden
-                        </th>
-                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-center w-32">
-                            Productos
-                        </th>
-                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-right w-40">
-                            Acciones
-                        </th>
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest w-24">Imagen</th>
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest max-w-xs">Nombre &amp; Padre</th>
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-center w-32">Estado</th>
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-center w-32">Productos</th>
+                        <th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest text-right w-40">Acciones</th>
                     </tr>
                     </thead>
                     <tbody class="divide-y divide-secondary/10" id="sortable-tbody-sub">
-                    <!-- Subcategory 1 -->
-                    <tr class="group hover:bg-surface-container-high/30 transition-colors" draggable="true">
-                        <td class="py-4 px-4 text-center drag-handle text-on-surface-variant hover:text-secondary">
-                            <span class="material-symbols-outlined">drag_indicator</span>
-                        </td>
-                        <td class="py-4 px-6">
-                            <div class="w-12 h-12 rounded bg-surface-container-highest border border-secondary/20 overflow-hidden flex items-center justify-center">
-                                <span class="material-symbols-outlined text-on-surface-variant">category</span>
-                            </div>
-                        </td>
-                        <td class="py-4 px-6 max-w-xs">
-                            <p class="font-label-md text-label-md text-on-surface mb-1">Seda Pura</p>
-                            <p class="font-body-md text-[13px] text-on-surface-variant max-w-xs">Lencería Íntima</p>
-                        </td>
-                        <td class="py-4 px-6 text-center">
-<span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-secondary-container/20 border border-secondary/30 text-secondary font-label-sm text-[10px] uppercase tracking-widest">
-<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
-                                        Activo
+                    <% if (subcategorias.length === 0) { %>
+                        <tr><td colspan="6" class="p-8 text-center text-on-surface-variant">Aún no hay subcategorías creadas.</td></tr>
+                    <% } %>
+                    <% subcategorias.forEach(sub => { %>
+                        <tr class="group hover:bg-surface-container-high/30 transition-colors <%= !sub.activa ? 'opacity-60' : '' %>" draggable="true" data-id="<%= sub.id %>">
+                            <td class="py-4 px-4 text-center drag-handle text-on-surface-variant hover:text-secondary">
+                                <span class="material-symbols-outlined">drag_indicator</span>
+                            </td>
+                            <td class="py-4 px-6">
+                                <div class="w-12 h-12 rounded bg-surface-container-highest border border-secondary/20 overflow-hidden flex items-center justify-center">
+                                    <% if (sub.imagen) { %>
+                                        <img alt="<%= sub.nombre %>" class="w-full h-full object-cover" src="<%= sub.imagen %>">
+                                    <% } else { %>
+                                        <span class="material-symbols-outlined text-on-surface-variant">category</span>
+                                    <% } %>
+                                </div>
+                            </td>
+                            <td class="py-4 px-6 max-w-xs">
+                                <p class="font-label-md text-label-md text-on-surface mb-1"><%= sub.nombre %></p>
+                                <p class="font-body-md text-[13px] text-on-surface-variant max-w-xs"><%= sub.categoria_nombre %></p>
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <% if (sub.activa) { %>
+                                    <span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-secondary-container/20 border border-secondary/30 text-secondary font-label-sm text-[10px] uppercase tracking-widest">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Activo
                                     </span>
-                        </td>
-                        <td class="py-4 px-6 text-center">
-                            <span class="font-label-md text-label-md text-on-surface-variant order-cell">01</span>
-                        </td>
-                        <td class="py-4 px-6 text-center">
-                            <span class="font-label-md text-label-md text-on-surface-variant">45</span>
-                        </td>
-                        <td class="py-4 px-6 text-right">
-                            <div class="flex justify-end gap-2 opacity-100 group-hover:opacity-100 transition-opacity">
-                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"
-                                        title="Editar">
-                                    <span class="material-symbols-outlined text-[20px]">edit</span>
-                                </button>
-                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"
-                                        title="Desactivar">
-                                    <span class="material-symbols-outlined text-[20px]">visibility_off</span>
-                                </button>
-                                <button class="p-2 text-on-surface-variant hover:text-error transition-colors"
-                                        title="Eliminar">
-                                    <span class="material-symbols-outlined text-[20px]">delete</span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <!-- Subcategory 2 -->
-                    <tr class="group hover:bg-surface-container-high/30 transition-colors" draggable="true">
-                        <td class="py-4 px-4 text-center drag-handle text-on-surface-variant hover:text-secondary">
-                            <span class="material-symbols-outlined">drag_indicator</span>
-                        </td>
-                        <td class="py-4 px-6">
-                            <div class="w-12 h-12 rounded bg-surface-container-highest border border-secondary/20 overflow-hidden flex items-center justify-center">
-                                <span class="material-symbols-outlined text-on-surface-variant">category</span>
-                            </div>
-                        </td>
-                        <td class="py-4 px-6 max-w-xs">
-                            <p class="font-label-md text-label-md text-on-surface mb-1">Encaje Francés</p>
-                            <p class="font-body-md text-[13px] text-on-surface-variant max-w-xs">Lencería Íntima</p>
-                        </td>
-                        <td class="py-4 px-6 text-center">
-<span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-secondary-container/20 border border-secondary/30 text-secondary font-label-sm text-[10px] uppercase tracking-widest">
-<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
-                                        Activo
+                                <% } else { %>
+                                    <span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-surface-variant border border-outline-variant text-on-surface-variant font-label-sm text-[10px] uppercase tracking-widest">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-on-surface-variant"></span> Inactivo
                                     </span>
-                        </td>
-                        <td class="py-4 px-6 text-center">
-                            <span class="font-label-md text-label-md text-on-surface-variant order-cell">02</span>
-                        </td>
-                        <td class="py-4 px-6 text-center">
-                            <span class="font-label-md text-label-md text-on-surface-variant">32</span>
-                        </td>
-                        <td class="py-4 px-6 text-right">
-                            <div class="flex justify-end gap-2 opacity-100 group-hover:opacity-100 transition-opacity">
-                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"
-                                        title="Editar">
-                                    <span class="material-symbols-outlined text-[20px]">edit</span>
-                                </button>
-                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"
-                                        title="Desactivar">
-                                    <span class="material-symbols-outlined text-[20px]">visibility_off</span>
-                                </button>
-                                <button class="p-2 text-on-surface-variant hover:text-error transition-colors"
-                                        title="Eliminar">
-                                    <span class="material-symbols-outlined text-[20px]">delete</span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <!-- Subcategory 3 -->
-                    <tr class="group hover:bg-surface-container-high/30 transition-colors" draggable="true">
-                        <td class="py-4 px-4 text-center drag-handle text-on-surface-variant hover:text-secondary">
-                            <span class="material-symbols-outlined">drag_indicator</span>
-                        </td>
-                        <td class="py-4 px-6">
-                            <div class="w-12 h-12 rounded bg-surface-container-highest border border-secondary/20 overflow-hidden flex items-center justify-center">
-                                <span class="material-symbols-outlined text-on-surface-variant">category</span>
-                            </div>
-                        </td>
-                        <td class="py-4 px-6 max-w-xs">
-                            <p class="font-label-md text-label-md text-on-surface mb-1">Velas Aromáticas</p>
-                            <p class="font-body-md text-[13px] text-on-surface-variant max-w-xs">Esencias &amp;
-                                Perfumes</p>
-                        </td>
-                        <td class="py-4 px-6 text-center">
-<span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-secondary-container/20 border border-secondary/30 text-secondary font-label-sm text-[10px] uppercase tracking-widest">
-<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
-                                        Activo
-                                    </span>
-                        </td>
-                        <td class="py-4 px-6 text-center">
-                            <span class="font-label-md text-label-md text-on-surface-variant order-cell">03</span>
-                        </td>
-                        <td class="py-4 px-6 text-center">
-                            <span class="font-label-md text-label-md text-on-surface-variant">18</span>
-                        </td>
-                        <td class="py-4 px-6 text-right">
-                            <div class="flex justify-end gap-2 opacity-100 group-hover:opacity-100 transition-opacity">
-                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"
-                                        title="Editar">
-                                    <span class="material-symbols-outlined text-[20px]">edit</span>
-                                </button>
-                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"
-                                        title="Desactivar">
-                                    <span class="material-symbols-outlined text-[20px]">visibility_off</span>
-                                </button>
-                                <button class="p-2 text-on-surface-variant hover:text-error transition-colors"
-                                        title="Eliminar">
-                                    <span class="material-symbols-outlined text-[20px]">delete</span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <!-- Subcategory 4 (Inactive) -->
-                    <tr class="group hover:bg-surface-container-high/30 transition-colors opacity-60" draggable="true">
-                        <td class="py-4 px-4 text-center drag-handle text-on-surface-variant hover:text-secondary">
-                            <span class="material-symbols-outlined">drag_indicator</span>
-                        </td>
-                        <td class="py-4 px-6">
-                            <div class="w-12 h-12 rounded bg-surface-container-highest border border-outline-variant overflow-hidden flex items-center justify-center grayscale">
-                                <span class="material-symbols-outlined text-on-surface-variant">category</span>
-                            </div>
-                        </td>
-                        <td class="py-4 px-6 max-w-xs">
-                            <p class="font-label-md text-label-md text-on-surface mb-1">Aceites Relajantes</p>
-                            <p class="font-body-md text-[13px] text-on-surface-variant max-w-xs">Bienestar</p>
-                        </td>
-                        <td class="py-4 px-6 text-center">
-<span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-surface-variant border border-outline-variant text-on-surface-variant font-label-sm text-[10px] uppercase tracking-widest">
-<span class="w-1.5 h-1.5 rounded-full bg-on-surface-variant"></span>
-                                        Inactivo
-                                    </span>
-                        </td>
-                        <td class="py-4 px-6 text-center">
-                            <span class="font-label-md text-label-md text-on-surface-variant order-cell">04</span>
-                        </td>
-                        <td class="py-4 px-6 text-center">
-                            <span class="font-label-md text-label-md text-on-surface-variant">0</span>
-                        </td>
-                        <td class="py-4 px-6 text-right">
-                            <div class="flex justify-end gap-2 opacity-100 group-hover:opacity-100 transition-opacity">
-                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"
-                                        title="Editar">
-                                    <span class="material-symbols-outlined text-[20px]">edit</span>
-                                </button>
-                                <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors"
-                                        title="Activar">
-                                    <span class="material-symbols-outlined text-[20px]">visibility</span>
-                                </button>
-                                <button class="p-2 text-on-surface-variant hover:text-error transition-colors"
-                                        title="Eliminar">
-                                    <span class="material-symbols-outlined text-[20px]">delete</span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+                                <% } %>
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <span class="font-label-md text-label-md text-on-surface-variant"><%= sub.total_productos %></span>
+                            </td>
+                            <td class="py-4 px-6 text-right">
+                                <div class="flex justify-end gap-2 opacity-100 transition-opacity">
+                                    <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors" title="Editar"
+                                            onclick="location.href='/admin/subcategorias/<%= sub.id %>/editar'">
+                                        <span class="material-symbols-outlined text-[20px]">edit</span>
+                                    </button>
+                                    <form method="POST" action="/admin/subcategorias/<%= sub.id %>/activar" class="contents">
+                                        <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors" title="<%= sub.activa ? 'Desactivar' : 'Activar' %>">
+                                            <span class="material-symbols-outlined text-[20px]"><%= sub.activa ? 'visibility_off' : 'visibility' %></span>
+                                        </button>
+                                    </form>
+                                    <form method="POST" action="/admin/subcategorias/<%= sub.id %>/eliminar" class="contents" onsubmit="return confirm('¿Eliminar esta subcategoría?');">
+                                        <button class="p-2 text-on-surface-variant hover:text-error transition-colors" title="Eliminar">
+                                            <span class="material-symbols-outlined text-[20px]">delete</span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    <% }) %>
                     </tbody>
                 </table>
-            </div>
-            <!-- Pagination Footer -->
-            <div class="bg-surface-container-low border-t border-secondary/10 px-6 py-4 flex items-center justify-between">
-                <p class="font-label-sm text-label-sm text-on-surface-variant">Mostrando resultados</p>
-                <div class="flex gap-2">
-                    <button class="w-8 h-8 rounded border border-secondary/20 flex items-center justify-center text-on-surface-variant hover:border-secondary hover:text-secondary transition-colors disabled:opacity-50"
-                            disabled="">
-                        <span class="material-symbols-outlined text-[18px]">chevron_left</span>
-                    </button>
-                    <button class="w-8 h-8 rounded bg-secondary/10 border border-secondary flex items-center justify-center text-secondary font-label-sm">
-                        1
-                    </button>
-                    <button class="w-8 h-8 rounded border border-secondary/20 flex items-center justify-center text-on-surface-variant hover:border-secondary hover:text-secondary transition-colors font-label-sm">
-                        2
-                    </button>
-                    <button class="w-8 h-8 rounded border border-secondary/20 flex items-center justify-center text-on-surface-variant hover:border-secondary hover:text-secondary transition-colors">
-                        <span class="material-symbols-outlined text-[18px]">chevron_right</span>
-                    </button>
-                </div>
             </div>
         </div>
     </main>
 </div>
+
+<!-- ========================================================================= -->
+<!-- MODAL: Crear / Editar Categoría o Subcategoría -->
+<!-- ========================================================================= -->
+<div class="fixed inset-0 z-50 items-center justify-center p-4 bg-black/80 backdrop-blur-md hidden" id="categoryModal">
+    <div class="glass-panel w-full max-w-xl rounded-2xl border border-secondary/30 shadow-2xl overflow-hidden">
+        <div class="px-6 py-5 border-b border-surface-container-highest flex items-center justify-between bg-surface-container-lowest/90">
+            <h2 class="font-headline-md text-xl text-on-surface font-semibold" id="categoryModalTitle">Nueva Categoría</h2>
+            <button class="text-on-surface-variant hover:text-secondary p-1.5 rounded-lg hover:bg-surface-container-high transition-colors" onclick="closeCategoryModal()">
+                <span class="material-symbols-outlined text-[22px]">close</span>
+            </button>
+        </div>
+        <form id="categoryForm" method="POST" action="" class="p-6 flex flex-col gap-5">
+            <!-- Solo visible para subcategorías -->
+            <div id="categoryParentField" class="hidden">
+                <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Categoría Principal *</label>
+                <select name="categoriaId" id="categoryParentSelect" class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg px-3 py-2.5 text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none">
+                    <option value="">Seleccionar categoría</option>
+                    <% categorias.forEach(cat => { %>
+                        <option value="<%= cat.id %>"><%= cat.nombre %></option>
+                    <% }) %>
+                </select>
+            </div>
+            <div>
+                <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Nombre *</label>
+                <input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg px-3 py-2.5 text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none"
+                       type="text" name="nombre" id="categoryNombre" required placeholder="Ej: Lencería Íntima">
+            </div>
+            <!-- Solo visible para categorías principales -->
+            <div id="categoryDescField">
+                <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Descripción</label>
+                <textarea class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg px-3 py-2.5 text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none min-h-[80px]"
+                          name="descripcion" id="categoryDescripcion" placeholder="Breve descripción de la colección"></textarea>
+            </div>
+            <div>
+                <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">URL de Imagen</label>
+                <input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg px-3 py-2.5 text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none"
+                       type="text" name="imagen" id="categoryImagen" placeholder="https://...">
+            </div>
+            <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" name="activa" id="categoryActiva" class="checkbox-premium" checked>
+                <span class="font-body-md text-body-md text-on-surface">Activa (visible en la tienda)</span>
+            </label>
+            <div class="flex items-center justify-end gap-3 pt-2">
+                <button class="px-5 py-2.5 rounded-lg border border-outline-variant/40 text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors font-label-md text-label-sm"
+                        onclick="closeCategoryModal()" type="button">Cancelar</button>
+                <button class="px-6 py-2.5 rounded-lg bg-secondary text-on-secondary font-label-md text-label-sm font-bold hover:bg-secondary-fixed transition-colors" type="submit" id="categoryModalSubmit">
+                    Guardar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Datos para precargar el modal si venimos de una edición -->
+<% if (categoriaEditando) { %>
+    <script>
+        window.__editarCategoria = {
+            id: <%- JSON.stringify(categoriaEditando.id) %>,
+            nombre: <%- JSON.stringify(categoriaEditando.nombre) %>,
+            descripcion: <%- JSON.stringify(categoriaEditando.descripcion || '') %>,
+            imagen: <%- JSON.stringify(categoriaEditando.imagen || '') %>,
+            activa: <%- JSON.stringify(categoriaEditando.activa) %>
+        };
+    </script>
+<% } %>
+<% if (subcategoriaEditando) { %>
+    <script>
+        window.__editarSubcategoria = {
+            id: <%- JSON.stringify(subcategoriaEditando.id) %>,
+            nombre: <%- JSON.stringify(subcategoriaEditando.nombre) %>,
+            categoriaId: <%- JSON.stringify(subcategoriaEditando.categoria_id) %>,
+            imagen: <%- JSON.stringify(subcategoriaEditando.imagen || '') %>,
+            activa: <%- JSON.stringify(subcategoriaEditando.activa) %>
+        };
+    </script>
+<% } %>
 
 <script src="/javascripts/admin/sidebar-toggle.js"></script>
 <script src="/javascripts/admin/categorias.js"></script>

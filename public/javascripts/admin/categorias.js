@@ -22,13 +22,27 @@
     tabMain.addEventListener('click', () => setActive(tabMain, tabSub, true));
     tabSub.addEventListener('click', () => setActive(tabSub, tabMain, false));
 
-    function initDragAndDrop(tbodyId) {
+    /* ==================== Drag & drop con persistencia ==================== */
+
+    function initDragAndDrop(tbodyId, endpoint) {
         const tbody = document.getElementById(tbodyId);
         if (!tbody) return;
 
         let draggedRow = null;
 
-        tbody.querySelectorAll('tr').forEach(row => {
+        function guardarOrden() {
+            const ids = Array.from(tbody.querySelectorAll('tr[data-id]')).map((row) => Number(row.dataset.id));
+            fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'same-origin',
+                body: JSON.stringify({ ids })
+            }).catch(() => {
+                // si falla el guardado, no rompemos la UI; el usuario puede recargar
+            });
+        }
+
+        tbody.querySelectorAll('tr').forEach((row) => {
             row.addEventListener('dragstart', function (e) {
                 draggedRow = this;
                 setTimeout(() => this.classList.add('dragging'), 0);
@@ -39,14 +53,13 @@
                 this.classList.remove('dragging');
                 draggedRow = null;
                 updateOrderNumbers(tbodyId);
-                tbody.querySelectorAll('tr').forEach(r => r.classList.remove('drag-over'));
+                tbody.querySelectorAll('tr').forEach((r) => r.classList.remove('drag-over'));
+                guardarOrden();
             });
 
             row.addEventListener('dragover', function (e) {
                 e.preventDefault();
-                if (this !== draggedRow) {
-                    this.classList.add('drag-over');
-                }
+                if (this !== draggedRow) this.classList.add('drag-over');
                 e.dataTransfer.dropEffect = 'move';
             });
 
@@ -78,13 +91,97 @@
         const rows = tbody.querySelectorAll('tr');
         rows.forEach((row, index) => {
             const orderCell = row.querySelector('.order-cell');
-            if (orderCell) {
-                orderCell.textContent = String(index + 1).padStart(2, '0');
-            }
+            if (orderCell) orderCell.textContent = String(index + 1).padStart(2, '0');
         });
     }
 
-    // Initialize on load for both tables
-    initDragAndDrop('sortable-tbody-main');
-    initDragAndDrop('sortable-tbody-sub');
+    initDragAndDrop('sortable-tbody-main', '/admin/categorias/orden');
+    initDragAndDrop('sortable-tbody-sub', '/admin/subcategorias/orden');
+
+    /* ==================== Modal crear/editar ==================== */
+
+    window.openCategoryModal = function (opciones) {
+        const modal = document.getElementById('categoryModal');
+        const form = document.getElementById('categoryForm');
+        const title = document.getElementById('categoryModalTitle');
+        const parentField = document.getElementById('categoryParentField');
+        const descField = document.getElementById('categoryDescField');
+
+        form.action = opciones.action;
+        title.textContent = opciones.title;
+
+        document.getElementById('categoryNombre').value = opciones.nombre || '';
+        document.getElementById('categoryImagen').value = opciones.imagen || '';
+        document.getElementById('categoryActiva').checked = opciones.activa !== false;
+
+        if (opciones.esSubcategoria) {
+            parentField.classList.remove('hidden');
+            descField.classList.add('hidden');
+            document.getElementById('categoryParentSelect').value = opciones.categoriaId || '';
+        } else {
+            parentField.classList.add('hidden');
+            descField.classList.remove('hidden');
+            document.getElementById('categoryDescripcion').value = opciones.descripcion || '';
+        }
+
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    };
+
+    window.closeCategoryModal = function () {
+        const modal = document.getElementById('categoryModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+
+        // Si veníamos de una URL de edición, volvemos al listado limpio al cancelar
+        if (window.__editarCategoria || window.__editarSubcategoria) {
+            window.location.href = '/admin/categorias';
+        }
+    };
+
+    window.openCreateCategoryModal = function () {
+        openCategoryModal({
+            action: '/admin/categorias',
+            title: 'Nueva Categoría',
+            esSubcategoria: false
+        });
+    };
+
+    window.openCreateSubcategoryModal = function () {
+        openCategoryModal({
+            action: '/admin/subcategorias',
+            title: 'Nueva Subcategoría',
+            esSubcategoria: true
+        });
+    };
+
+    // Si la vista se cargó en modo edición (vino de /admin/categorias/:id/editar
+    // o /admin/subcategorias/:id/editar), abrir el modal ya precargado.
+    document.addEventListener('DOMContentLoaded', () => {
+        if (window.__editarCategoria) {
+            const c = window.__editarCategoria;
+            openCategoryModal({
+                action: `/admin/categorias/${c.id}/editar`,
+                title: 'Editar Categoría',
+                esSubcategoria: false,
+                nombre: c.nombre,
+                descripcion: c.descripcion,
+                imagen: c.imagen,
+                activa: c.activa
+            });
+        }
+        if (window.__editarSubcategoria) {
+            const s = window.__editarSubcategoria;
+            setActive(tabSub, tabMain, false);
+            openCategoryModal({
+                action: `/admin/subcategorias/${s.id}/editar`,
+                title: 'Editar Subcategoría',
+                esSubcategoria: true,
+                nombre: s.nombre,
+                categoriaId: s.categoriaId,
+                imagen: s.imagen,
+                activa: s.activa
+            });
+        }
+    });
 })();

@@ -5,92 +5,66 @@
 </head>
 <body class="bg-background text-on-surface font-body-md h-screen overflow-hidden flex">
 
-<!-- Topbar móvil -->
 <%- include('../partials/admin/mobile-topbar') %>
-
-<!-- Sidebar -->
 <%- include('../partials/admin/sidebar', { activo: 'productos', pedidosPendientes: typeof pedidosPendientes !== 'undefined' ? pedidosPendientes : 0 }) %>
 
-<!-- Main Canvas -->
 <main class="ml-64 p-gutter w-full h-[calc(100vh-64px)] overflow-y-auto bg-background">
-    <!-- Page Header -->
     <div class="flex justify-between items-end mb-8">
         <div>
             <p class="font-label-sm text-label-sm text-primary uppercase tracking-widest mb-2">Inventario</p>
             <h2 class="font-headline-lg text-headline-lg text-on-surface">Gestión de Catálogo</h2>
         </div>
-        <button class="bg-secondary text-on-secondary px-6 py-3 rounded font-label-md text-label-md font-bold hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] transition-all flex items-center gap-2"
-                onclick="toggleProductDrawer()">
-            <span class="material-symbols-outlined">add</span>
-            Crear Producto
-        </button>
+        <% if (categorias.length === 0) { %>
+            <a href="/admin/categorias" class="bg-secondary text-on-secondary px-6 py-3 rounded font-label-md text-label-md font-bold hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] transition-all flex items-center gap-2">
+                <span class="material-symbols-outlined">category</span>
+                Crea una categoría primero
+            </a>
+        <% } else { %>
+            <button class="bg-secondary text-on-secondary px-6 py-3 rounded font-label-md text-label-md font-bold hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] transition-all flex items-center gap-2"
+                    onclick="abrirDrawerNuevo()">
+                <span class="material-symbols-outlined">add</span>
+                Crear Producto
+            </button>
+        <% } %>
     </div>
-    <!-- Filters Section -->
-    <div class="glass-panel p-6 rounded-xl mb-8">
+
+    <!-- Filtros -->
+    <form method="GET" action="/admin/productos" class="glass-panel p-6 rounded-xl mb-8">
         <div class="flex items-center gap-2 mb-4 text-secondary">
             <span class="material-symbols-outlined">filter_list</span>
-            <span class="font-label-md text-label-md uppercase tracking-wider">Filtros Rápidos</span>
+            <span class="font-label-md text-label-md uppercase tracking-wider">Filtros</span>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div>
                 <label class="block font-label-sm text-label-sm text-on-surface-variant mb-2">Categoría</label>
-                <select class="w-full bg-surface-container-highest border border-secondary/20 rounded p-2 text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary appearance-none">
-                    <option>Todas las categorías</option>
-                    <option>Lencería</option>
-                    <option>Juguetes Íntimos</option>
-                    <option>Cuidado Personal</option>
-                    <option>Accesorios</option>
-                </select>
-            </div>
-            <div>
-                <label class="block font-label-sm text-label-sm text-on-surface-variant mb-2">Subcategoría</label>
-                <select class="w-full bg-surface-container-highest border border-secondary/20 rounded p-2 text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary appearance-none">
-                    <option>Todas las subcategorías</option>
-                </select>
-            </div>
-            <div>
-                <label class="block font-label-sm text-label-sm text-on-surface-variant mb-2">Marca</label>
-                <select class="w-full bg-surface-container-highest border border-secondary/20 rounded p-2 text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary appearance-none">
-                    <option>Todas las marcas</option>
-                    <option>Lelo</option>
-                    <option>Fleur du Mal</option>
-                    <option>Bordelle</option>
+                <select name="categoriaId" class="w-full bg-surface-container-highest border border-secondary/20 rounded p-2 text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary appearance-none">
+                    <option value="" <%= filtros.categoriaId === '' ? 'selected' : '' %>>Todas las categorías</option>
+                    <% categorias.forEach(cat => { %>
+                        <option value="<%= cat.id %>" <%= String(filtros.categoriaId) === String(cat.id) ? 'selected' : '' %>><%= cat.nombre %></option>
+                    <% }) %>
                 </select>
             </div>
             <div>
                 <label class="block font-label-sm text-label-sm text-on-surface-variant mb-2">Estado</label>
-                <select class="w-full bg-surface-container-highest border border-secondary/20 rounded p-2 text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary appearance-none">
-                    <option>Todos los estados</option>
-                    <option>Activo</option>
-                    <option>Inactivo</option>
-                    <option>Borrador</option>
+                <select name="estado" class="w-full bg-surface-container-highest border border-secondary/20 rounded p-2 text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary appearance-none">
+                    <option value="" <%= filtros.estado === '' ? 'selected' : '' %>>Todos los estados</option>
+                    <option value="activo" <%= filtros.estado === 'activo' ? 'selected' : '' %>>Activo</option>
+                    <option value="inactivo" <%= filtros.estado === 'inactivo' ? 'selected' : '' %>>Inactivo</option>
                 </select>
             </div>
+            <div class="md:col-span-2">
+                <label class="block font-label-sm text-label-sm text-on-surface-variant mb-2">Buscar por nombre o SKU</label>
+                <input type="text" name="busqueda" value="<%= filtros.busqueda %>" placeholder="Ej: Élixir Sensuel / LX-EST-..."
+                       class="w-full bg-surface-container-highest border border-secondary/20 rounded p-2 text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary">
+            </div>
         </div>
-        <div class="flex flex-wrap gap-6 border-t border-surface-container-highest pt-4">
-            <label class="flex items-center gap-2 cursor-pointer group">
-                <input checked="" class="checkbox-premium" type="checkbox">
-                <span class="font-label-sm text-label-sm text-on-surface-variant group-hover:text-on-surface transition-colors">Con stock</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer group">
-                <input class="checkbox-premium" type="checkbox">
-                <span class="font-label-sm text-label-sm text-on-surface-variant group-hover:text-on-surface transition-colors">Sin stock</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer group">
-                <input class="checkbox-premium" type="checkbox">
-                <span class="font-label-sm text-label-sm text-on-surface-variant group-hover:text-on-surface transition-colors">Con oferta</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer group">
-                <input class="checkbox-premium" type="checkbox">
-                <span class="font-label-sm text-label-sm text-on-surface-variant group-hover:text-on-surface transition-colors">Nuevos</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer group">
-                <input class="checkbox-premium" type="checkbox">
-                <span class="font-label-sm text-label-sm text-on-surface-variant group-hover:text-on-surface transition-colors">Más vendidos</span>
-            </label>
+        <div class="flex justify-end gap-3 mt-4">
+            <a href="/admin/productos" class="px-4 py-2 rounded text-on-surface-variant hover:text-on-surface transition-colors font-label-sm text-label-sm">Limpiar</a>
+            <button type="submit" class="bg-secondary text-on-secondary px-6 py-2 rounded font-label-md text-label-md font-bold">Filtrar</button>
         </div>
-    </div>
-    <!-- Products Table -->
+    </form>
+
+    <!-- Tabla -->
     <div class="bg-surface-container-low rounded-xl border border-secondary/10 overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
@@ -98,420 +72,224 @@
                 <tr class="border-b border-secondary/10 bg-surface-container-high/50">
                     <th class="p-4 font-label-sm text-label-sm text-on-surface-variant font-medium">Producto</th>
                     <th class="p-4 font-label-sm text-label-sm text-on-surface-variant font-medium">SKU</th>
-                    <th class="p-4 font-label-sm text-label-sm text-on-surface-variant font-medium">Categoría / Marca
-                    </th>
-                    <th class="p-4 font-label-sm text-label-sm text-on-surface-variant font-medium text-right">Precio
-                    </th>
-                    <th class="p-4 font-label-sm text-label-sm text-on-surface-variant font-medium text-center">Stock
-                    </th>
-                    <th class="p-4 font-label-sm text-label-sm text-on-surface-variant font-medium text-center">Estado
-                    </th>
-                    <th class="p-4 font-label-sm text-label-sm text-on-surface-variant font-medium text-right">
-                        Acciones
-                    </th>
+                    <th class="p-4 font-label-sm text-label-sm text-on-surface-variant font-medium">Categoría / Marca</th>
+                    <th class="p-4 font-label-sm text-label-sm text-on-surface-variant font-medium text-right">Precio</th>
+                    <th class="p-4 font-label-sm text-label-sm text-on-surface-variant font-medium text-center">Stock</th>
+                    <th class="p-4 font-label-sm text-label-sm text-on-surface-variant font-medium text-center">Estado</th>
+                    <th class="p-4 font-label-sm text-label-sm text-on-surface-variant font-medium text-right">Acciones</th>
                 </tr>
                 </thead>
                 <tbody class="divide-y divide-surface-container-high">
-                <!-- Row 1 -->
-                <tr class="hover:bg-surface-container-high/30 transition-colors group">
-                    <td class="p-4">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded bg-surface-container-highest border border-secondary/20 overflow-hidden shrink-0">
-                                <img class="w-full h-full object-cover"
-                                     data-alt="A small, high-quality product thumbnail showing a luxurious intimate device. The product is sleek, perhaps metallic or silicone, resting on a velvet-like pure black surface. A subtle, sophisticated purple-to-gold gradient light hits the edge of the product, separating it from the dark background. Minimalist and premium."
-                                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZdkrVVX7_RHJ4p0fewIHlKzGSowtv6tm7WLHCL7V1mFSNwioqQmhulKL1xP48L092s4k9zA30pjgrzStx7_NQPlGiibpyji4TwePsYc2f-z4mG56HkYE_C2d8Ti6tWWO97NyMxea8Rgcaw4A2HioWBKIMZmI7NsKk7CjVqNZ55xVEAbpdt1WylXCGqlWY5gDPCnlV0OsKa1TmoEZW9nW5ZbfpNBXKSMgvbVPbcquEvP7riDoFZVM">
+                <% if (productos.length === 0) { %>
+                    <tr>
+                        <td colspan="7" class="p-8 text-center text-on-surface-variant">No hay productos que coincidan con estos filtros.</td>
+                    </tr>
+                <% } %>
+                <% productos.forEach(producto => { %>
+                    <tr class="hover:bg-surface-container-high/30 transition-colors group <%= !producto.activo ? 'opacity-60' : '' %>">
+                        <td class="p-4">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded bg-surface-container-highest border border-secondary/20 overflow-hidden shrink-0">
+                                    <% if (producto.imagen) { %>
+                                        <img class="w-full h-full object-cover" src="<%= producto.imagen %>" alt="<%= producto.nombre %>">
+                                    <% } %>
+                                </div>
+                                <div>
+                                    <p class="font-body-md text-body-md text-on-surface font-medium group-hover:text-secondary transition-colors"><%= producto.nombre %></p>
+                                    <% if (producto.etiqueta) { %>
+                                        <p class="font-label-sm text-label-sm text-secondary mt-1 text-[11px] uppercase"><%= producto.etiqueta %></p>
+                                    <% } %>
+                                </div>
                             </div>
-                            <div>
-                                <p class="font-body-md text-body-md text-on-surface font-medium group-hover:text-secondary transition-colors">
-                                    Sora Vibrador Sónico</p>
-                                <p class="font-label-sm text-label-sm text-on-surface-variant mt-1 text-[11px]">Añadido:
-                                    12 Oct 2023</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="p-4 font-body-md text-body-md text-on-surface-variant text-sm">LEL-SOR-001</td>
-                    <td class="p-4">
-                        <p class="font-body-md text-body-md text-on-surface text-sm">Juguetes Íntimos</p>
-                        <p class="font-label-sm text-label-sm text-primary mt-1">Lelo</p>
-                    </td>
-                    <td class="p-4 text-right">
-                        <p class="font-body-md text-body-md text-secondary font-medium">$189.000</p>
-                    </td>
-                    <td class="p-4 text-center">
-                        <span class="inline-block px-2 py-1 rounded bg-surface-container-highest border border-outline-variant text-xs font-medium">42</span>
-                    </td>
-                    <td class="p-4 text-center">
-<span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-secondary-container/20 border border-secondary/30 text-secondary text-[11px] font-bold uppercase tracking-wider">
-<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
-                                    Activo
+                        </td>
+                        <td class="p-4 font-mono font-label-sm text-label-sm text-on-surface-variant text-[11px]"><%= producto.sku %></td>
+                        <td class="p-4">
+                            <p class="font-body-md text-body-md text-on-surface text-sm">
+                                <%= producto.categoria_nombre || '—' %><% if (producto.subcategoria_nombre) { %> / <%= producto.subcategoria_nombre %><% } %>
+                            </p>
+                            <% if (producto.marca) { %>
+                                <p class="font-label-sm text-label-sm text-primary mt-1"><%= producto.marca %></p>
+                            <% } %>
+                        </td>
+                        <td class="p-4 text-right">
+                            <p class="font-body-md text-body-md text-secondary font-medium"><%= formatearCLP(producto.precio) %></p>
+                        </td>
+                        <td class="p-4 text-center">
+                            <span class="inline-block px-2 py-1 rounded <%= producto.stock === 0 ? 'bg-error-container/10 border border-error/30 text-error' : 'bg-surface-container-highest border border-outline-variant text-on-surface' %> text-xs font-medium">
+                                <%= producto.stock %>
+                            </span>
+                        </td>
+                        <td class="p-4 text-center">
+                            <% if (producto.activo) { %>
+                                <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-secondary-container/20 border border-secondary/30 text-secondary text-[11px] font-bold uppercase tracking-wider">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Activo
                                 </span>
-                    </td>
-                    <td class="p-4">
-                        <div class="flex items-center justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
-                            <button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-variant text-on-surface-variant hover:text-secondary"
-                                    title="Editar">
-                                <span class="material-symbols-outlined text-[18px]">edit</span>
-                            </button>
-                            <button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-variant text-on-surface-variant hover:text-secondary"
-                                    title="Duplicar">
-                                <span class="material-symbols-outlined text-[18px]">content_copy</span>
-                            </button>
-                            <button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-variant text-on-surface-variant hover:text-secondary"
-                                    title="Desactivar">
-                                <span class="material-symbols-outlined text-[18px]">visibility_off</span>
-                            </button>
-                            <button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-error-container/20 text-on-surface-variant hover:text-error"
-                                    title="Eliminar">
-                                <span class="material-symbols-outlined text-[18px]">delete</span>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                <!-- Row 2 -->
-                <tr class="hover:bg-surface-container-high/30 transition-colors group">
-                    <td class="p-4">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded bg-surface-container-highest border border-secondary/20 overflow-hidden shrink-0">
-                                <img class="w-full h-full object-cover"
-                                     data-alt="A small, high-quality product thumbnail of an elegant silk blindfold or restraint accessory. It lies elegantly draped on a completely black surface. The lighting is very soft and moody, creating gentle highlights on the silk fabric. The overall vibe is mysterious and premium, fitting a luxury boutique."
-                                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzWXTsJda8P3QmnQmyEpij_GNFtzHaSAdcnmaolvzf8UCjncpRTzlE0-mcc8AvPt4MYdGzqAEEmJwugNdGeApT7dYE8zJdRXSMXU36FUAuO4h86XEG9Gjnhj_L0as1omFwkMIVBxBfh5fQcfQpX6NdNanAUmVwKqor8zoMfWYRGbMRixMQBKM3LY6ZRX_9t0ewkZuOHAd2MACXxq_i3hv74_87Bc5gpZ7PlkxbekRu6mJLyzXBNJU">
-                            </div>
-                            <div>
-                                <p class="font-body-md text-body-md text-on-surface font-medium group-hover:text-secondary transition-colors">
-                                    Antifaz de Seda Pura</p>
-                                <p class="font-label-sm text-label-sm text-on-surface-variant mt-1 text-[11px]">Añadido:
-                                    05 Nov 2023</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="p-4 font-body-md text-body-md text-on-surface-variant text-sm">BOR-ANT-022</td>
-                    <td class="p-4">
-                        <p class="font-body-md text-body-md text-on-surface text-sm">Accesorios</p>
-                        <p class="font-label-sm text-label-sm text-primary mt-1">Bordelle</p>
-                    </td>
-                    <td class="p-4 text-right">
-                        <p class="font-body-md text-body-md text-on-surface-variant line-through text-xs mb-0.5">
-                            $85.000</p>
-                        <p class="font-body-md text-body-md text-secondary font-medium">$65.000</p>
-                    </td>
-                    <td class="p-4 text-center">
-                        <span class="inline-block px-2 py-1 rounded bg-error-container/10 border border-error/30 text-error text-xs font-medium">3</span>
-                    </td>
-                    <td class="p-4 text-center">
-<span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-secondary-container/20 border border-secondary/30 text-secondary text-[11px] font-bold uppercase tracking-wider">
-<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
-                                    Activo
+                            <% } else { %>
+                                <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-surface-container-highest border border-outline-variant text-on-surface-variant text-[11px] font-bold uppercase tracking-wider">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-outline"></span> Inactivo
                                 </span>
-                    </td>
-                    <td class="p-4">
-                        <div class="flex items-center justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
-                            <button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-variant text-on-surface-variant hover:text-secondary"
-                                    title="Editar">
-                                <span class="material-symbols-outlined text-[18px]">edit</span>
-                            </button>
-                            <button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-variant text-on-surface-variant hover:text-secondary"
-                                    title="Duplicar">
-                                <span class="material-symbols-outlined text-[18px]">content_copy</span>
-                            </button>
-                            <button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-variant text-on-surface-variant hover:text-secondary"
-                                    title="Desactivar">
-                                <span class="material-symbols-outlined text-[18px]">visibility_off</span>
-                            </button>
-                            <button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-error-container/20 text-on-surface-variant hover:text-error"
-                                    title="Eliminar">
-                                <span class="material-symbols-outlined text-[18px]">delete</span>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
+                            <% } %>
+                        </td>
+                        <td class="p-4">
+                            <div class="flex items-center justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
+                                <a href="/admin/productos/<%= producto.id %>/editar" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-variant text-on-surface-variant hover:text-secondary" title="Editar">
+                                    <span class="material-symbols-outlined text-[18px]">edit</span>
+                                </a>
+                                <form method="POST" action="/admin/productos/<%= producto.id %>/activar" class="contents">
+                                    <button type="submit" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-variant text-on-surface-variant hover:text-secondary"
+                                            title="<%= producto.activo ? 'Desactivar' : 'Activar' %>">
+                                        <span class="material-symbols-outlined text-[18px]"><%= producto.activo ? 'visibility_off' : 'visibility' %></span>
+                                    </button>
+                                </form>
+                                <form method="POST" action="/admin/productos/<%= producto.id %>/eliminar" class="contents" onsubmit="return confirm('¿Eliminar este producto? Esta acción no se puede deshacer.');">
+                                    <button type="submit" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-error-container/20 text-on-surface-variant hover:text-error" title="Eliminar">
+                                        <span class="material-symbols-outlined text-[18px]">delete</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                <% }) %>
                 </tbody>
             </table>
         </div>
-        <!-- Pagination -->
-        <div class="border-t border-secondary/10 p-4 flex items-center justify-between">
-            <p class="font-label-sm text-label-sm text-on-surface-variant">Mostrando 1-2 de 45 productos</p>
-            <div class="flex items-center gap-2">
-                <button class="w-8 h-8 rounded bg-surface-container-high border border-outline-variant flex items-center justify-center text-on-surface-variant disabled:opacity-50">
-                    <span class="material-symbols-outlined text-sm">chevron_left</span>
-                </button>
-                <button class="w-8 h-8 rounded bg-secondary text-on-secondary font-label-sm text-label-sm font-bold flex items-center justify-center">
-                    1
-                </button>
-                <button class="w-8 h-8 rounded bg-surface-container-high border border-outline-variant flex items-center justify-center text-on-surface-variant hover:border-secondary hover:text-secondary transition-colors font-label-sm text-label-sm">
-                    2
-                </button>
-                <button class="w-8 h-8 rounded bg-surface-container-high border border-outline-variant flex items-center justify-center text-on-surface-variant hover:border-secondary hover:text-secondary transition-colors font-label-sm text-label-sm">
-                    3
-                </button>
-                <button class="w-8 h-8 rounded bg-surface-container-high border border-outline-variant flex items-center justify-center text-on-surface-variant hover:border-secondary hover:text-secondary transition-colors">
-                    <span class="material-symbols-outlined text-sm">chevron_right</span>
-                </button>
-            </div>
-        </div>
     </div>
-    <!-- Bottom padding for scroll -->
     <div class="h-24"></div>
 </main>
+
 <!-- Drawer Overlay -->
 <div class="fixed inset-0 bg-background/80 backdrop-blur-sm z-[60] transition-opacity duration-300 opacity-0 hidden"
      id="drawerOverlay" onclick="toggleProductDrawer()"></div>
-<!-- Right Side Drawer: Product Form -->
-<aside class="fixed top-0 right-0 w-full md:w-[600px] h-screen bg-surface-container-low border-l border-secondary/20 z-[70] shadow-2xl transform transition-transform duration-300 ease-in-out flex flex-col translate-x-full"
+
+<!-- Drawer: Crear / Editar -->
+<aside class="fixed top-0 right-0 w-full md:w-[600px] h-screen bg-surface-container-low border-l border-secondary/20 z-[70] shadow-2xl transform transition-transform duration-300 ease-in-out flex flex-col <%= productoEditando ? '' : 'translate-x-full' %>"
        id="productDrawer">
-    <!-- Drawer Header -->
     <div class="h-16 px-6 flex items-center justify-between border-b border-secondary/10 bg-surface/90 backdrop-blur-md shrink-0">
-        <h3 class="font-headline-md text-headline-md text-secondary text-xl">Nuevo Producto</h3>
-        <button class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface hover:text-secondary hover:bg-surface-variant transition-colors"
-                onclick="toggleProductDrawer()">
-            <span class="material-symbols-outlined">close</span>
-        </button>
+        <h3 class="font-headline-md text-headline-md text-secondary text-xl">
+            <%= productoEditando ? 'Editar Producto' : 'Nuevo Producto' %>
+        </h3>
+        <% if (productoEditando) { %>
+            <a href="/admin/productos" class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface hover:text-secondary hover:bg-surface-variant transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </a>
+        <% } else { %>
+            <button class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface hover:text-secondary hover:bg-surface-variant transition-colors"
+                    onclick="toggleProductDrawer()">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        <% } %>
     </div>
-    <!-- Drawer Content (Scrollable) -->
-    <div class="flex-1 overflow-y-auto p-6 space-y-8 custom-scrollbar">
-        <!-- Basic Info Section -->
-        <section>
-            <div class="flex items-center gap-2 mb-4 border-b border-surface-container-highest pb-2">
-                <span class="material-symbols-outlined text-primary text-sm">info</span>
-                <h4 class="font-label-md text-label-md text-on-surface uppercase tracking-widest">Información
-                    Básica</h4>
+
+    <form class="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar" method="POST"
+          action="<%= productoEditando ? '/admin/productos/' + productoEditando.id + '/editar' : '/admin/productos' %>">
+
+        <% if (productoEditando) { %>
+            <div class="bg-surface-container-high/50 border border-secondary/10 rounded-lg p-3 flex items-center justify-between">
+                <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">SKU (no editable)</span>
+                <span class="font-mono text-secondary text-sm"><%= productoEditando.sku %></span>
             </div>
-            <div class="space-y-5">
-                <div>
-                    <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Nombre del Producto
-                        *</label>
-                    <input class="input-premium w-full p-3 rounded-t" placeholder="Ej: Aceite de Masaje Sensual"
-                           type="text">
-                </div>
-                <div>
-                    <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Descripción</label>
-                    <textarea class="input-premium w-full p-3 rounded-t min-h-[120px]"
-                              placeholder="Descripción para la página detallada del producto"></textarea>
-                </div>
-                <div>
-                    <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Descripción
-                        Corta</label>
-                    <textarea class="input-premium w-full p-3 rounded-t min-h-[80px]"
-                              placeholder="Breve descripción para listados..."></textarea>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="">
-                        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">SKU *</label>
-                        <div class="flex gap-2">
-                            <input class="input-premium flex-1 p-3 rounded-t min-w-0" placeholder="Ej: LUX-001"
-                                   type="text">
-                            <button class="bg-secondary text-on-secondary px-3 py-2 rounded font-label-sm text-label-sm font-bold hover:bg-secondary-fixed transition-all flex items-center gap-1 shrink-0 shadow-sm">
-                                <span class="material-symbols-outlined text-sm">refresh</span>
-                                Generar
-                            </button>
-                        </div>
-                    </div>
-                    <div class="">
-                        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Marca</label>
-                        <select class="input-premium w-full p-3 rounded-t appearance-none">
-                            <option>Seleccionar marca</option>
-                            <option>Lelo</option>
-                            <option>Fleur du Mal</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Categoría
-                            *</label>
-                        <select class="input-premium w-full p-3 rounded-t appearance-none">
-                            <option>Seleccionar categoría</option>
-                            <option>Lencería</option>
-                            <option>Cuidado Personal</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Subcategoría</label>
-                        <select class="input-premium w-full p-3 rounded-t appearance-none">
-                            <option>Seleccionar subcategoría</option>
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Etiquetas (separadas
-                        por coma)</label>
-                    <input class="input-premium w-full p-3 rounded-t" placeholder="lujo, regalo, vegano" type="text">
-                </div>
+        <% } else { %>
+            <div class="bg-surface-container-high/50 border border-secondary/10 rounded-lg p-3 text-on-surface-variant text-xs">
+                El SKU se genera automáticamente al guardar, según la categoría elegida.
             </div>
-            <div class="mt-6">
-                <label class="block font-label-sm text-label-sm text-on-surface-variant mb-2">Características</label>
-                <div class="flex flex-wrap gap-2 mb-3">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-high border border-secondary/20 text-on-surface text-xs">
-                        <span class="">Hipoalergénico</span>
-                        <button class="material-symbols-outlined text-xs hover:text-error transition-colors">close
-                        </button>
-                    </div>
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-high border border-secondary/20 text-on-surface text-xs">
-                        <span class="">Resistente al agua</span>
-                        <button class="material-symbols-outlined text-xs hover:text-error transition-colors">close
-                        </button>
-                    </div>
-                </div>
-                <button class="text-secondary font-label-sm text-label-sm flex items-center gap-1 hover:text-secondary-fixed transition-colors">
-                    <span class="material-symbols-outlined text-sm">add</span>
-                    Añadir otra característica
-                </button>
-            </div>
-        </section>
-        <section class="space-y-6">
-            <div class="flex items-center gap-2 mb-4 border-b border-surface-container-highest pb-2"><span
-                        class="material-symbols-outlined text-primary text-sm">layers</span><h4
-                        class="font-label-md text-label-md text-on-surface uppercase tracking-widest">Variantes</h4>
-            </div>
-            <div class="flex flex-wrap gap-2 mb-6">
-                <button class="px-4 py-2 rounded-full bg-secondary text-on-secondary font-label-sm text-label-sm font-bold shadow-[0_0_10px_rgba(212,175,55,0.2)]">
-                    Color
-                </button>
-                <button class="px-4 py-2 rounded-full bg-surface-container-high border border-outline-variant text-on-surface-variant hover:border-secondary hover:text-secondary transition-colors font-label-sm text-label-sm">
-                    Tamaño
-                </button>
-                <button class="px-4 py-2 rounded-full bg-surface-container-high border border-outline-variant text-on-surface-variant hover:border-secondary hover:text-secondary transition-colors font-label-sm text-label-sm">
-                    Material
-                </button>
-                <button class="px-4 py-2 rounded-full bg-surface-container-high border border-outline-variant text-on-surface-variant hover:border-secondary hover:text-secondary transition-colors font-label-sm text-label-sm">
-                    Aroma
-                </button>
-                <button class="px-4 py-2 rounded-full bg-surface-container-high border border-outline-variant text-on-surface-variant hover:border-secondary hover:text-secondary transition-colors font-label-sm text-label-sm">
-                    Sabor
-                </button>
-                <button class="px-4 py-2 rounded-full bg-surface-container-high border border-outline-variant text-on-surface-variant hover:border-secondary hover:text-secondary transition-colors font-label-sm text-label-sm">
-                    Cantidad
-                </button>
-            </div>
-            <div class="space-y-4">
-                <div class="bg-surface-container-high/50 p-4 rounded-lg border border-secondary/10"><p
-                            class="font-label-sm text-label-sm text-on-surface mb-3">Opciones de Color</p>
-                    <div class="flex flex-wrap gap-3 mb-3">
-                        <div class="w-8 h-8 rounded-full bg-black border border-secondary/30 cursor-pointer ring-1 ring-secondary ring-offset-2 ring-offset-surface-container-low"></div>
-                        <div class="w-8 h-8 rounded-full bg-red-700 border border-secondary/10 cursor-pointer"></div>
-                        <div class="w-8 h-8 rounded-full bg-[#d4af37] border border-secondary/10 cursor-pointer"></div>
-                    </div>
-                    <button class="text-secondary font-label-sm text-label-sm flex items-center gap-1 hover:text-secondary-fixed transition-colors">
-                        <span class="material-symbols-outlined text-sm">add</span>Añadir nuevo color
-                    </button>
-                </div>
-            </div>
-        </section>
-        <!-- Pricing & Inventory -->
-        <section>
-            <div class="flex items-center gap-2 mb-4 border-b border-surface-container-highest pb-2">
-                <span class="material-symbols-outlined text-primary text-sm">payments</span>
-                <h4 class="font-label-md text-label-md text-on-surface uppercase tracking-widest">Precio e
-                    Inventario</h4>
-            </div>
-            <div class="grid grid-cols-2 gap-6 mb-5">
-                <div>
-                    <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Precio Normal (CLP)
-                        *</label>
-                    <div class="relative">
-                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">CLP$</span>
-                        <input class="input-premium w-full p-3 pl-8 rounded-t" placeholder="0.00" step="0.01"
-                               type="number">
-                    </div>
-                </div>
-                <div>
-                    <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Precio Oferta
-                        (CLP)</label>
-                    <div class="relative">
-                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">CLP$</span>
-                        <input class="input-premium w-full p-3 pl-8 rounded-t" placeholder="0.00" step="0.01"
-                               type="number">
-                    </div>
-                </div>
-            </div>
-            <div class="flex items-center justify-between p-4 bg-surface-container-high rounded-lg mb-5 border border-surface-container-highest">
-                <div>
-                    <p class="font-label-md text-label-md text-on-surface">Activar precio de oferta</p>
-                    <p class="font-label-sm text-label-sm text-on-surface-variant">Mostrará el producto con
-                        descuento.</p>
-                </div>
-                <label class="relative inline-flex items-center cursor-pointer">
-                    <input class="sr-only peer" type="checkbox" value="">
-                    <div class="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
-                </label>
-            </div>
-            <div class="grid grid-cols-2 gap-6">
-                <div>
-                    <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Stock Actual</label>
-                    <input class="input-premium w-full p-3 rounded-t" placeholder="0" type="number">
-                </div>
-                <div>
-                    <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Alerta Stock
-                        Mínimo</label>
-                    <input class="input-premium w-full p-3 rounded-t" placeholder="5" type="number">
-                </div>
-            </div>
-        </section>
-        <!-- Images Area -->
-        <section>
-            <div class="flex items-center gap-2 mb-4 border-b border-surface-container-highest pb-2">
-                <span class="material-symbols-outlined text-primary text-sm">image</span>
-                <h4 class="font-label-md text-label-md text-on-surface uppercase tracking-widest">Imágenes</h4>
-            </div>
-            <div class="mb-4">
-                <p class="font-label-sm text-label-sm text-on-surface-variant mb-2">Imagen Principal (Fondo oscuro
-                    preferido)</p>
-                <div class="w-full h-40 border-2 border-dashed border-secondary/30 rounded-lg flex flex-col items-center justify-center bg-surface-container-high/30 hover:bg-surface-container-high transition-colors cursor-pointer group">
-                    <span class="material-symbols-outlined text-3xl text-secondary/50 group-hover:text-secondary mb-2 transition-colors">add_photo_alternate</span>
-                    <p class="font-label-sm text-label-sm text-on-surface-variant group-hover:text-on-surface">Arrastra
-                        o haz clic para subir</p>
-                </div>
+        <% } %>
+
+        <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Nombre del Producto *</label>
+            <input class="input-premium w-full p-3 rounded-t" name="nombre" required type="text"
+                   value="<%= productoEditando ? productoEditando.nombre : '' %>" placeholder="Ej: Aceite de Masaje Sensual">
+        </div>
+        <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Descripción *</label>
+            <textarea class="input-premium w-full p-3 rounded-t min-h-[120px]" name="descripcion" required
+                      placeholder="Descripción para la página detallada del producto"><%= productoEditando ? productoEditando.descripcion : '' %></textarea>
+        </div>
+        <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Descripción Corta</label>
+            <textarea class="input-premium w-full p-3 rounded-t min-h-[80px]" name="descripcionCorta"
+                      placeholder="Breve descripción para listados..."><%= productoEditando ? (productoEditando.descripcion_corta || '') : '' %></textarea>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Categoría *</label>
+                <select class="input-premium w-full p-3 rounded-t appearance-none" name="categoriaId" id="selectCategoria" required <%= categorias.length === 0 ? 'disabled' : '' %>>
+                    <option value="">Seleccionar categoría</option>
+                    <% categorias.forEach(cat => { %>
+                        <option value="<%= cat.id %>" <%= (productoEditando && String(productoEditando.categoria_id) === String(cat.id)) ? 'selected' : '' %>>
+                            <%= cat.nombre %><%= !cat.activa ? ' (inactiva)' : '' %>
+                        </option>
+                    <% }) %>
+                </select>
+                <% if (categorias.length === 0) { %>
+                    <span class="text-[10px] text-error mt-1 block">No hay categorías creadas. <a href="/admin/categorias" class="underline">Crea una primero</a>.</span>
+                <% } %>
             </div>
             <div>
-                <p class="font-label-sm text-label-sm text-on-surface-variant mb-2">Galería</p>
-                <div class="flex gap-4 overflow-x-auto pb-2">
-                    <!-- Upload more btn -->
-                    <div class="w-20 h-20 shrink-0 border-2 border-dashed border-outline-variant rounded-md flex items-center justify-center cursor-pointer hover:border-secondary hover:text-secondary transition-colors text-on-surface-variant">
-                        <span class="material-symbols-outlined">add</span>
-                    </div>
-                    <!-- Empty states for demo -->
-                    <div class="w-20 h-20 shrink-0 bg-surface-container-highest rounded-md"></div>
-                    <div class="w-20 h-20 shrink-0 bg-surface-container-highest rounded-md"></div>
-                </div>
+                <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Subcategoría</label>
+                <select class="input-premium w-full p-3 rounded-t appearance-none" name="subcategoriaId" id="selectSubcategoria">
+                    <option value="">Sin subcategoría</option>
+                </select>
             </div>
-        </section>
-        <!-- Status -->
-        <section>
-            <div class="flex items-center gap-2 mb-4 border-b border-surface-container-highest pb-2">
-                <span class="material-symbols-outlined text-primary text-sm">visibility</span>
-                <h4 class="font-label-md text-label-md text-on-surface uppercase tracking-widest">Estado de
-                    Publicación</h4>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Marca</label>
+                <input class="input-premium w-full p-3 rounded-t" name="marca" type="text" placeholder="Ej: Lelo"
+                       value="<%= productoEditando ? (productoEditando.marca || '') : '' %>">
             </div>
-            <div class="flex flex-col gap-3 bg-surface-container-high p-4 rounded-lg border border-surface-container-highest">
-                <label class="flex items-center gap-3 cursor-pointer group">
-                    <input checked="" class="accent-secondary w-4 h-4 bg-surface border-outline-variant" name="status"
-                           type="radio">
-                    <span class="font-body-md text-body-md text-on-surface">Activo (Visible en tienda)</span>
-                </label>
-                <label class="flex items-center gap-3 cursor-pointer group">
-                    <input class="accent-secondary w-4 h-4 bg-surface border-outline-variant" name="status"
-                           type="radio">
-                    <span class="font-body-md text-body-md text-on-surface">Borrador (Solo visible en admin)</span>
-                </label>
-                <label class="flex items-center gap-3 cursor-pointer group">
-                    <input class="accent-secondary w-4 h-4 bg-surface border-outline-variant" name="status"
-                           type="radio">
-                    <span class="font-body-md text-body-md text-on-surface">Inactivo (Oculto temporalmente)</span>
-                </label>
+            <div>
+                <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Precio (CLP) *</label>
+                <input class="input-premium w-full p-3 rounded-t" name="precio" type="number" min="0" step="1" required
+                       value="<%= productoEditando ? productoEditando.precio : '' %>">
             </div>
-        </section>
-        <div class="h-10"></div> <!-- padding bottom -->
-    </div>
-    <!-- Drawer Footer (Sticky) -->
-    <div class="p-6 border-t border-secondary/10 bg-surface/90 backdrop-blur-md shrink-0 flex gap-4">
-        <button class="flex-1 py-3 px-4 border border-outline-variant text-on-surface rounded font-label-md text-label-md hover:bg-surface-container-high transition-colors text-center"
-                onclick="toggleProductDrawer()">
-            Cancelar
-        </button>
-        <button class="flex-1 py-3 px-4 bg-secondary text-on-secondary rounded font-label-md text-label-md font-bold hover:bg-secondary-fixed transition-colors text-center shadow-[0_0_10px_rgba(212,175,55,0.2)]">
-            Guardar Producto
-        </button>
-    </div>
+        </div>
+
+        <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Stock</label>
+            <input class="input-premium w-full p-3 rounded-t" name="stock" type="number" min="0" step="1"
+                   value="<%= productoEditando ? productoEditando.stock : 0 %>">
+        </div>
+        <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">URL de Imagen</label>
+            <input class="input-premium w-full p-3 rounded-t" name="imagen" type="text" placeholder="https://..."
+                   value="<%= productoEditando ? (productoEditando.imagen || '') : '' %>">
+        </div>
+        <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Etiqueta (opcional)</label>
+            <input class="input-premium w-full p-3 rounded-t" name="etiqueta" type="text" placeholder="Ej: Nuevo, Oferta"
+                   value="<%= productoEditando ? (productoEditando.etiqueta || '') : '' %>">
+        </div>
+        <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Características (una por línea)</label>
+            <textarea class="input-premium w-full p-3 rounded-t min-h-[100px]" name="caracteristicas"
+                      placeholder="Hipoalergénico&#10;Resistente al agua"><%= productoEditando && productoEditando.caracteristicas ? productoEditando.caracteristicas.join('\n') : '' %></textarea>
+        </div>
+        <label class="flex items-center gap-3 cursor-pointer">
+            <input class="checkbox-premium" type="checkbox" name="destacado" value="true"
+                    <%= (productoEditando && productoEditando.destacado) ? 'checked' : '' %>>
+            <span class="font-body-md text-body-md text-on-surface">Producto destacado</span>
+        </label>
+
+        <div class="pt-4 flex gap-4">
+            <% if (productoEditando) { %>
+                <a href="/admin/productos" class="flex-1 py-3 px-4 border border-outline-variant text-on-surface rounded font-label-md text-label-md hover:bg-surface-container-high transition-colors text-center">Cancelar</a>
+            <% } else { %>
+                <button type="button" onclick="toggleProductDrawer()" class="flex-1 py-3 px-4 border border-outline-variant text-on-surface rounded font-label-md text-label-md hover:bg-surface-container-high transition-colors text-center">Cancelar</button>
+            <% } %>
+            <button type="submit" class="flex-1 py-3 px-4 bg-secondary text-on-secondary rounded font-label-md text-label-md font-bold hover:bg-secondary-fixed transition-colors text-center shadow-[0_0_10px_rgba(212,175,55,0.2)]">
+                <%= productoEditando ? 'Guardar Cambios' : 'Guardar Producto' %>
+            </button>
+        </div>
+    </form>
 </aside>
+
+<!-- Datos para el select dependiente de subcategoría -->
+<script>
+    window.__subcategorias = <%- JSON.stringify(subcategorias.map(s => ({ id: s.id, nombre: s.nombre, categoriaId: s.categoria_id, activa: s.activa }))) %>;
+    window.__subcategoriaSeleccionada = <%- JSON.stringify(productoEditando ? productoEditando.subcategoria_id : null) %>;
+</script>
 
 <script src="/javascripts/admin/sidebar-toggle.js"></script>
 <script src="/javascripts/admin/productos-admin.js"></script>
