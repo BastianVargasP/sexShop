@@ -1,13 +1,28 @@
 import express from 'express';
+import { pool } from '../helpers/database.js';
 import { estaAutenticado, esAdmin } from '../middlewares/auth.js';
 import * as adminController from '../controllers/adminController.js';
 import * as productosAdminController from '../controllers/adminProductosController.js';
 import * as categoriasAdminController from '../controllers/adminCategoriasController.js';
+import * as pedidosAdminController from '../controllers/adminPedidosController.js';
+import * as cuponesAdminController from '../controllers/adminCuponesController.js';
 
 const router = express.Router();
 
 // Todas las rutas /admin/* requieren sesión Y rol admin
 router.use(estaAutenticado, esAdmin);
+
+router.use(async (req, res, next) => {
+    try {
+        const resultado = await pool.query(
+            "SELECT COUNT(*) AS total FROM pedidos WHERE estado = 'procesando'"
+        );
+        res.locals.pedidosPendientes = Number(resultado.rows[0].total);
+    } catch (error) {
+        res.locals.pedidosPendientes = 0;
+    }
+    next();
+});
 
 router.get('/', adminController.mostrarDashboard);
 
@@ -33,9 +48,19 @@ router.post('/subcategorias/:id/activar', categoriasAdminController.alternarActi
 router.post('/subcategorias/:id/eliminar', categoriasAdminController.eliminarSubcategoria);
 router.post('/subcategorias/orden', categoriasAdminController.actualizarOrdenSubcategorias);
 
-router.get('/cupones', adminController.mostrarCupones);
+router.get('/cupones', cuponesAdminController.listarCupones);
+router.post('/cupones', cuponesAdminController.crearCupon);
+router.get('/cupones/:id/editar', cuponesAdminController.mostrarFormularioEditar);
+router.post('/cupones/:id/editar', cuponesAdminController.actualizarCupon);
+router.post('/cupones/:id/activar', cuponesAdminController.alternarActivo);
+router.post('/cupones/:id/eliminar', cuponesAdminController.eliminarCupon);
+
 router.get('/clientes', adminController.mostrarClientes);
-router.get('/pedidos', adminController.mostrarPedidos);
+
+router.get('/pedidos', pedidosAdminController.listarPedidos);
+router.post('/pedidos/:id/estado', pedidosAdminController.actualizarEstado);
+router.post('/pedidos/:id/pago', pedidosAdminController.actualizarEstadoPago);
+
 router.get('/inventario', adminController.mostrarInventario);
 router.get('/configuracion', adminController.mostrarConfiguracion);
 

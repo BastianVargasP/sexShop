@@ -31,6 +31,12 @@
                 <span class="font-label-md text-label-md">Métodos de pago</span>
             </a>
             <div class="mt-8 pt-4 border-t border-secondary/10">
+                <% if (usuario && usuario.rol === 'admin') { %>
+                    <a href="/admin" class="flex items-center gap-3 px-4 py-3 rounded-lg text-error hover:text-warning-container hover:bg-error/10 transition-all duration-300">
+                        <span class="material-symbols-outlined">admin_panel_settings</span>
+                        Volver al Panel Admin
+                    </a>
+                <% } %>
                 <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-error hover:text-error-container hover:bg-error/10 transition-all duration-300" href="/auth/logout">
                     <span class="material-symbols-outlined">logout</span>
                     <span class="font-label-md text-label-md">Cerrar Sesión</span>

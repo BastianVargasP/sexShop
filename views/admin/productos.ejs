@@ -96,9 +96,7 @@
                                 </div>
                                 <div>
                                     <p class="font-body-md text-body-md text-on-surface font-medium group-hover:text-secondary transition-colors"><%= producto.nombre %></p>
-                                    <% if (producto.etiqueta) { %>
-                                        <p class="font-label-sm text-label-sm text-secondary mt-1 text-[11px] uppercase"><%= producto.etiqueta %></p>
-                                    <% } %>
+                                    <p class="font-label-sm text-label-sm text-on-surface-variant mt-1 text-[11px]">Añadido: <%= producto.created_at.toLocaleDateString("es-CL", {day:"numeric", month:"short", year:"numeric"}) %></p>
                                 </div>
                             </div>
                         </td>

@@ -110,19 +110,51 @@
                             </div>
                         <% }) %>
                     </div>
+                    <!-- Cupón -->
+                    <div class="mb-6 border-b border-surface-container-high pb-6">
+                        <% if (cupon) { %>
+                            <div class="flex items-center justify-between bg-secondary/10 border border-secondary/30 rounded-lg px-4 py-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-secondary text-[18px]">local_offer</span>
+                                    <div>
+                                        <p class="font-label-md text-label-md text-secondary"><%= cupon.codigo %></p>
+                                        <p class="text-[11px] text-on-surface-variant"><%= cupon.descripcion %></p>
+                                    </div>
+                                </div>
+                                <button type="button" id="btnQuitarCupon" class="text-on-surface-variant hover:text-error transition-colors">
+                                    <span class="material-symbols-outlined text-[18px]">close</span>
+                                </button>
+                            </div>
+                        <% } else { %>
+                            <div class="flex gap-2">
+                                <input type="text" id="inputCupon" placeholder="Código de cupón"
+                                       class="flex-1 bg-transparent border border-outline-variant rounded-md px-3 py-2 text-sm text-on-surface uppercase placeholder-on-surface-variant/50 focus:border-secondary focus:outline-none">
+                                <button type="button" id="btnAplicarCupon" class="px-4 py-2 rounded-md border border-secondary text-secondary text-sm font-label-md uppercase tracking-wider hover:bg-secondary hover:text-on-secondary transition-colors">
+                                    Aplicar
+                                </button>
+                            </div>
+                            <p id="errorCupon" class="text-error text-xs mt-2 <%= errorCupon ? '' : 'hidden' %>"><%= errorCupon || '' %></p>
+                        <% } %>
+                    </div>
                     <!-- Totals -->
                     <div class="border-t border-surface-container-high pt-6 space-y-4">
                         <div class="flex justify-between font-body-md text-body-md text-on-surface-variant">
                             <span>Subtotal</span>
-                            <span><%= formatearCLP(subtotal) %></span>
+                            <span id="checkoutSubtotal"><%= formatearCLP(subtotal) %></span>
                         </div>
+                        <% if (descuento > 0) { %>
+                            <div class="flex justify-between font-body-md text-body-md text-secondary" id="filaDescuento">
+                                <span>Descuento</span>
+                                <span id="checkoutDescuento">-<%= formatearCLP(descuento) %></span>
+                            </div>
+                        <% } %>
                         <div class="flex justify-between font-body-md text-body-md text-on-surface-variant">
                             <span>Envío Express</span>
-                            <span><%= formatearCLP(envio) %></span>
+                            <span id="checkoutEnvio"><%= envio === 0 ? 'Gratis' : formatearCLP(envio) %></span>
                         </div>
                         <div class="flex justify-between font-headline-md text-xl text-secondary pt-4 border-t border-surface-container-high mt-4">
                             <span>Total</span>
-                            <span><%= formatearCLP(total) %></span>
+                            <span id="checkoutTotal"><%= formatearCLP(total) %></span>
                         </div>
                     </div>
                     <!-- Action -->
@@ -144,5 +176,6 @@
 </main>
 <!-- Footer -->
 <%-include('partials/footer')%>
+<script src="/javascripts/checkout.js"></script>
 </body>
 </html>

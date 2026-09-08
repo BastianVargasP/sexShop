@@ -22,8 +22,7 @@
 
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <p class="font-body-lg text-body-lg text-on-surface-variant"> Pedido #<%= pedido.numero_pedido %>
-                | <%= new Date(pedido.created_at).toLocaleDateString('es-CL') %> <span
-                        class="mx-2 text-surface-variant">|</span> 12 Oct 2023</p>
+                | <%= new Date(pedido.created_at).toLocaleDateString('es-CL') %>
 
             <div class="inline-flex items-center gap-2 px-4 py-2 bg-primary-container/20 border border-primary/30 rounded-full">
                 <span class="material-symbols-outlined text-primary fill text-[18px]">check_circle</span>

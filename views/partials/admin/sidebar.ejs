@@ -33,9 +33,10 @@ const relleno = (path) => (path === activo ? " style=\"font-variation-settings: 
             <span class="flex items-center gap-3">
                 <span class="material-symbols-outlined"<%- relleno('pedidos') %>>shopping_cart</span> Pedidos
             </span>
-            <% if (typeof pedidosPendientes !== 'undefined' && pedidosPendientes) { %>
-                <span class="text-[11px] bg-secondary text-on-secondary px-1.5 py-0.5 rounded-full font-bold min-w-[20px] text-center"><%= pedidosPendientes %></span>
-            <% } %>
+            <span id="sidebar-pedidos-badge"
+                  class="text-[11px] bg-secondary text-on-secondary px-1.5 py-0.5 rounded-full font-bold min-w-[20px] text-center <%= (typeof pedidosPendientes !== 'undefined' && pedidosPendientes) ? '' : 'hidden' %>">
+                <%= typeof pedidosPendientes !== 'undefined' ? pedidosPendientes : 0 %>
+            </span>
         </a>
         <a class="<%= clase('pagos') %>" data-path="pagos" href="/admin/pagos">
             <span class="material-symbols-outlined"<%- relleno('pagos') %>>payments</span> Pagos
@@ -79,6 +80,10 @@ const relleno = (path) => (path === activo ? " style=\"font-variation-settings: 
         </a>
     </div>
     <div class="mt-auto flex flex-col gap-2 pt-4 border-t border-secondary/10">
+        <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-3 font-label-md text-label-md transition-all duration-200" href="/">
+            <span class="material-symbols-outlined">storefront</span>
+            Ver Tienda
+        </a>
         <a class="flex items-center gap-3 text-on-surface-variant hover:bg-tertiary-container/30 hover:text-secondary rounded-lg px-4 py-3 font-label-md text-label-md transition-all duration-200" href="/auth/logout">
             <span class="material-symbols-outlined">logout</span>
             Cerrar sesión

@@ -5,16 +5,20 @@
 </head>
 <body class="bg-background text-on-surface font-body-md antialiased overflow-x-hidden selection:bg-secondary selection:text-on-secondary">
 
-<!-- Topbar móvil -->
 <%- include('../partials/admin/mobile-topbar') %>
-
-<!-- Sidebar -->
 <%- include('../partials/admin/sidebar', { activo: 'cupones', pedidosPendientes: typeof pedidosPendientes !== 'undefined' ? pedidosPendientes : 0 }) %>
 
+<% const TIPO_LABELS = { porcentaje: 'Porcentaje', monto_fijo: 'Monto Fijo', envio_gratis: 'Envío Gratis' }; %>
+<% const ESTADO_LABELS = { activo: 'Activo', inactivo: 'Inactivo', expirado: 'Expirado', agotado: 'Agotado' }; %>
+<% const ESTADO_BADGE = {
+    activo: 'bg-emerald-950/80 border-emerald-500/40 text-emerald-300',
+    inactivo: 'bg-surface-container-highest border-outline-variant/40 text-on-surface-variant',
+    expirado: 'bg-error-container/40 border-error/30 text-error',
+    agotado: 'bg-secondary/10 border-secondary/30 text-secondary'
+}; %>
+
 <div class="flex h-screen overflow-hidden">
-    <!-- Main Content Area -->
     <main class="flex-1 flex flex-col h-full overflow-y-auto md:ml-64 bg-background custom-scrollbar">
-        <!-- Top Header Desktop -->
         <header class="hidden md:flex items-center justify-between px-8 lg:px-12 py-5 sticky top-0 z-30 bg-background/90 backdrop-blur-md border-b border-surface-container-highest">
             <div class="flex flex-col">
                 <div class="flex items-center gap-3">
@@ -23,656 +27,261 @@
                 </div>
                 <p class="text-xs text-on-surface-variant mt-0.5">Crea, administra y supervisa los códigos de descuento e incentivos de la boutique</p>
             </div>
-            <div class="flex items-center gap-4">
-                <div class="relative w-64">
-                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
-                    <input class="w-full pl-9 pr-3 py-2 bg-surface-container-lowest border border-outline-variant/40 rounded-lg text-xs text-on-surface placeholder:text-on-surface-variant/60 focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none transition-all" placeholder="Buscar cupón o código..." type="text">
-                </div>
-                <button class="flex items-center gap-2 bg-secondary hover:bg-secondary-fixed text-on-secondary px-4 py-2 rounded-lg font-label-md text-xs uppercase tracking-wider font-semibold shadow-[0_0_15px_rgba(233,195,73,0.25)] transition-all hover:shadow-[0_0_20px_rgba(233,195,73,0.4)] cursor-pointer" onclick="openModal()">
-                    <span class="material-symbols-outlined text-[18px]">add_circle</span> Crear Cupón
-                </button>
-            </div>
+            <button class="flex items-center gap-2 bg-secondary hover:bg-secondary-fixed text-on-secondary px-4 py-2 rounded-lg font-label-md text-xs uppercase tracking-wider font-semibold shadow-[0_0_15px_rgba(233,195,73,0.25)] transition-all cursor-pointer" onclick="openCreateCouponModal()">
+                <span class="material-symbols-outlined text-[18px]">add_circle</span> Crear Cupón
+            </button>
         </header>
+
         <div class="p-6 md:p-8 lg:p-10 max-w-container-max mx-auto w-full flex flex-col gap-6">
-            <!-- Metrics / KPI Summary Cards -->
+            <!-- Metrics -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                <!-- Card 1: Cupones Activos -->
-                <div class="glass-panel p-5 rounded-xl flex items-center justify-between glow-hover transition-all border-l-2 border-l-secondary relative overflow-hidden">
-                    <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-secondary/5 rounded-full blur-xl pointer-events-none"></div>
+                <div class="glass-panel p-5 rounded-xl flex items-center justify-between glow-hover transition-all border-l-2 border-l-secondary">
                     <div>
                         <span class="font-label-sm text-[11px] text-on-surface-variant uppercase tracking-wider block mb-1">Cupones Activos</span>
                         <div class="font-headline-lg text-[32px] font-bold text-secondary flex items-baseline gap-2">
-                            8 <span class="text-xs text-on-surface-variant font-normal font-label-sm">/ 12 totales</span>
+                            <%= metricas.activos %> <span class="text-xs text-on-surface-variant font-normal font-label-sm">/ <%= metricas.total %> totales</span>
                         </div>
-                        <span class="text-[11px] text-secondary/80 flex items-center gap-1 mt-1">
-<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block animate-pulse"></span> 4 en campaña activa
-            </span>
                     </div>
                     <div class="w-12 h-12 rounded-lg bg-secondary/10 border border-secondary/20 flex items-center justify-center text-secondary">
                         <span class="material-symbols-outlined text-[26px]">confirmation_number</span>
                     </div>
                 </div>
-                <!-- Card 2: Usos este mes -->
-                <div class="glass-panel p-5 rounded-xl flex items-center justify-between glow-hover transition-all border-l-2 border-l-primary relative overflow-hidden">
-                    <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-primary/5 rounded-full blur-xl pointer-events-none"></div>
+                <div class="glass-panel p-5 rounded-xl flex items-center justify-between glow-hover transition-all border-l-2 border-l-primary">
                     <div>
                         <span class="font-label-sm text-[11px] text-on-surface-variant uppercase tracking-wider block mb-1">Usos este Mes</span>
-                        <div class="font-headline-lg text-[32px] font-bold text-on-surface">1,420</div>
-                        <span class="text-[11px] text-emerald-400 flex items-center gap-0.5 mt-1 font-label-sm">
-<span class="material-symbols-outlined text-[14px]">trending_up</span> +18.4% vs mes anterior
-            </span>
+                        <div class="font-headline-lg text-[32px] font-bold text-on-surface"><%= metricas.usos_mes %></div>
                     </div>
                     <div class="w-12 h-12 rounded-lg bg-primary-container/30 border border-primary/20 flex items-center justify-center text-primary">
                         <span class="material-symbols-outlined text-[26px]">redeem</span>
                     </div>
                 </div>
-                <!-- Card 3: Total Descuentos -->
-                <div class="glass-panel p-5 rounded-xl flex items-center justify-between glow-hover transition-all border-l-2 border-l-secondary relative overflow-hidden">
-                    <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-secondary/5 rounded-full blur-xl pointer-events-none"></div>
+                <div class="glass-panel p-5 rounded-xl flex items-center justify-between glow-hover transition-all border-l-2 border-l-secondary">
                     <div>
                         <span class="font-label-sm text-[11px] text-on-surface-variant uppercase tracking-wider block mb-1">Total Descuentos</span>
-                        <div class="font-headline-lg text-[30px] font-bold text-on-surface">$4.850.000 <span class="text-xs text-secondary font-sans font-normal">CLP</span></div>
-                        <span class="text-[11px] text-on-surface-variant flex items-center gap-1 mt-1">
-                Ticket prom. ahorro: $3.415 CLP
-            </span>
+                        <div class="font-headline-lg text-[30px] font-bold text-on-surface"><%= formatearCLP(metricas.total_descuentos) %></div>
                     </div>
                     <div class="w-12 h-12 rounded-lg bg-secondary/10 border border-secondary/20 flex items-center justify-center text-secondary">
                         <span class="material-symbols-outlined text-[26px]">savings</span>
                     </div>
                 </div>
-                <!-- Card 4: Tasa de Conversión -->
-                <div class="glass-panel p-5 rounded-xl flex items-center justify-between glow-hover transition-all border-l-2 border-l-primary relative overflow-hidden">
-                    <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-primary/5 rounded-full blur-xl pointer-events-none"></div>
+                <div class="glass-panel p-5 rounded-xl flex items-center justify-between glow-hover transition-all border-l-2 border-l-primary">
                     <div>
-                        <span class="font-label-sm text-[11px] text-on-surface-variant uppercase tracking-wider block mb-1">Efectividad / Conversión</span>
-                        <div class="font-headline-lg text-[32px] font-bold text-secondary">24.8%</div>
-                        <span class="text-[11px] text-emerald-400 flex items-center gap-0.5 mt-1 font-label-sm">
-<span class="material-symbols-outlined text-[14px]">auto_graph</span> Alto rendimiento
-            </span>
+                        <span class="font-label-sm text-[11px] text-on-surface-variant uppercase tracking-wider block mb-1">Cupones Totales</span>
+                        <div class="font-headline-lg text-[32px] font-bold text-secondary"><%= metricas.total %></div>
                     </div>
                     <div class="w-12 h-12 rounded-lg bg-primary-container/30 border border-primary/20 flex items-center justify-center text-primary">
-                        <span class="material-symbols-outlined text-[26px]">percent</span>
+                        <span class="material-symbols-outlined text-[26px]">loyalty</span>
                     </div>
                 </div>
             </div>
-            <!-- Filters Bar & Search -->
-            <div class="glass-panel p-4 rounded-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 border border-outline-variant/30">
-                <!-- Category Tabs -->
-                <div class="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 custom-scrollbar">
-                    <button class="px-3.5 py-1.5 rounded-lg bg-secondary/20 border border-secondary/60 text-secondary text-xs font-semibold whitespace-nowrap shadow-sm">
-                        Todos (12)
-                    </button>
-                    <button class="px-3.5 py-1.5 rounded-lg hover:bg-surface-container-high border border-transparent hover:border-outline-variant/50 text-on-surface-variant hover:text-on-surface text-xs font-medium whitespace-nowrap transition-all">
-                        Porcentaje (6)
-                    </button>
-                    <button class="px-3.5 py-1.5 rounded-lg hover:bg-surface-container-high border border-transparent hover:border-outline-variant/50 text-on-surface-variant hover:text-on-surface text-xs font-medium whitespace-nowrap transition-all">
-                        Monto Fijo (4)
-                    </button>
-                    <button class="px-3.5 py-1.5 rounded-lg hover:bg-surface-container-high border border-transparent hover:border-outline-variant/50 text-on-surface-variant hover:text-on-surface text-xs font-medium whitespace-nowrap transition-all">
-                        Envío Gratis (2)
-                    </button>
-                    <button class="px-3.5 py-1.5 rounded-lg hover:bg-surface-container-high border border-transparent hover:border-outline-variant/50 text-error/80 hover:text-error text-xs font-medium whitespace-nowrap transition-all">
-                        Inactivos / Expirados (3)
-                    </button>
+
+            <!-- Filtros -->
+            <form method="GET" action="/admin/cupones" class="glass-panel p-4 rounded-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 border border-outline-variant/30">
+                <div class="flex items-center gap-3 flex-1">
+                    <input type="text" name="busqueda" value="<%= filtros.busqueda %>" placeholder="Buscar cupón o código..."
+                           class="flex-1 bg-surface-container-lowest border border-outline-variant/40 rounded-lg px-3 py-2 text-xs text-on-surface placeholder:text-on-surface-variant/60 focus:border-secondary focus:outline-none">
+                    <select name="estado" class="bg-surface-container-lowest border border-outline-variant/40 rounded-lg text-xs text-on-surface py-2 px-3 focus:border-secondary focus:outline-none">
+                        <option value="" <%= filtros.estado === '' ? 'selected' : '' %>>Todos los estados</option>
+                        <% Object.entries(ESTADO_LABELS).forEach(([valor, label]) => { %>
+                            <option value="<%= valor %>" <%= filtros.estado === valor ? 'selected' : '' %>><%= label %></option>
+                        <% }) %>
+                    </select>
                 </div>
-                <!-- Filter Dropdowns & Actions -->
-                <div class="flex items-center gap-3">
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs text-on-surface-variant font-label-sm">Estado:</span>
-                        <select class="bg-surface-container-lowest border border-outline-variant/40 rounded-lg text-xs text-on-surface py-1.5 px-3 focus:border-secondary focus:ring-0 focus:outline-none">
-                            <option>Todos los estados</option>
-                            <option>Solo Activos</option>
-                            <option>Solo Inactivos</option>
-                            <option>Expirados</option>
-                        </select>
-                    </div>
-                    <button class="md:hidden flex items-center justify-center gap-1.5 bg-secondary text-surface-container-lowest px-3 py-1.5 rounded-lg text-xs font-semibold" onclick="openModal()">
-                        <span class="material-symbols-outlined text-[16px]">add</span> Crear Cupón
-                    </button>
+                <div class="flex items-center gap-2">
+                    <a href="/admin/cupones" class="px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface text-xs">Limpiar</a>
+                    <button type="submit" class="bg-secondary text-on-secondary px-4 py-2 rounded-lg text-xs font-semibold">Filtrar</button>
                 </div>
-            </div>
-            <!-- Coupons Table Container -->
+            </form>
+
+            <!-- Tabla -->
             <div class="glass-panel rounded-xl border border-surface-container-highest overflow-hidden shadow-2xl">
                 <div class="overflow-x-auto custom-scrollbar">
                     <table class="w-full text-left border-collapse">
                         <thead>
                         <tr class="border-b border-surface-container-highest bg-surface-container-lowest/70 text-on-surface-variant font-label-sm text-[11px] uppercase tracking-wider">
                             <th class="py-3.5 px-4 font-semibold">Código</th>
-                            <th class="py-3.5 px-4 font-semibold">Descripción / Nombre</th>
+                            <th class="py-3.5 px-4 font-semibold">Descripción</th>
                             <th class="py-3.5 px-4 font-semibold">Tipo</th>
                             <th class="py-3.5 px-4 font-semibold">Valor</th>
                             <th class="py-3.5 px-4 font-semibold">Vigencia</th>
-                            <th class="py-3.5 px-4 font-semibold">Límite</th>
-                            <th class="py-3.5 px-4 font-semibold">Usos Realizados</th>
+                            <th class="py-3.5 px-4 font-semibold">Usos</th>
                             <th class="py-3.5 px-4 font-semibold text-center">Estado</th>
                             <th class="py-3.5 px-4 font-semibold text-right">Acciones</th>
                         </tr>
                         </thead>
                         <tbody class="divide-y divide-surface-container-highest/60 text-xs">
-                        <!-- Coupon 1 -->
-                        <tr class="hover:bg-surface-container-high/40 transition-colors group">
-                            <td class="py-4 px-4 whitespace-nowrap">
-                                <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-secondary/10 border border-secondary/30 text-secondary font-mono font-bold tracking-wider group-hover:border-secondary/60 transition-all">
-                                    <span class="">SEDUCCION20</span>
-                                    <button class="opacity-60 hover:opacity-100 hover:text-white transition-opacity" title="Copiar código">
-                                        <span class="material-symbols-outlined text-[14px]">content_copy</span>
-                                    </button>
-                                </div>
-                            </td>
-                            <td class="py-4 px-4">
-                                <div class="font-medium text-on-surface text-sm">Colección Íntima VIP</div>
-                                <div class="text-[11px] text-on-surface-variant line-clamp-1">Válido en Lencería y Cosmética Sensual</div>
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap">
-<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium bg-primary-container/40 text-primary border border-primary/20">
-<span class="material-symbols-outlined text-[12px]">percent</span> Porcentaje
-                        </span>
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap font-semibold text-secondary text-sm">
-                                20% OFF
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap">
-                                <div class="text-on-surface font-medium">01 Nov 2024</div>
-                                <div class="text-[11px] text-on-surface-variant">al 31 Dic 2024</div>
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap text-on-surface-variant">
-                                500 usos
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap min-w-[140px]">
-                                <div class="flex items-center justify-between text-[11px] mb-1">
-                                    <span class="text-on-surface font-medium">342 / 500</span>
-                                    <span class="text-secondary font-semibold">68%</span>
-                                </div>
-                                <div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
-                                    <div class="h-full bg-secondary rounded-full" style="width: 68%;"></div>
-                                </div>
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap text-center">
-<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-950/80 border border-emerald-500/40 text-emerald-300">
-<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Activo
-                        </span>
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap text-right">
-                                <div class="flex items-center justify-end gap-2">
-                                    <!-- Toggle switch -->
-                                    <button class="w-8 h-4 bg-emerald-500/80 rounded-full relative p-0.5 transition-colors" title="Desactivar cupón">
-                                        <div class="w-3 h-3 bg-white rounded-full ml-auto shadow"></div>
-                                    </button>
-                                    <button class="p-1 text-on-surface-variant hover:text-secondary rounded hover:bg-surface-container transition-colors" onclick="openModal()" title="Editar configuración">
-                                        <span class="material-symbols-outlined text-[18px]">edit</span>
-                                    </button>
-                                    <button class="p-1 text-on-surface-variant hover:text-error rounded hover:bg-error-container/20 transition-colors" title="Eliminar cupón">
-                                        <span class="material-symbols-outlined text-[18px]">delete</span>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <!-- Coupon 2 -->
-                        <tr class="hover:bg-surface-container-high/40 transition-colors group">
-                            <td class="py-4 px-4 whitespace-nowrap">
-                                <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-secondary/10 border border-secondary/30 text-secondary font-mono font-bold tracking-wider group-hover:border-secondary/60 transition-all">
-                                    <span class="">BIENVENIDA15K</span>
-                                    <button class="opacity-60 hover:opacity-100 hover:text-white transition-opacity" title="Copiar código">
-                                        <span class="material-symbols-outlined text-[14px]">content_copy</span>
-                                    </button>
-                                </div>
-                            </td>
-                            <td class="py-4 px-4">
-                                <div class="font-medium text-on-surface text-sm">Bono Primera Compra</div>
-                                <div class="text-[11px] text-on-surface-variant line-clamp-1">Mínimo de compra $60.000 CLP, nuevos usuarios</div>
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap">
-<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium bg-secondary/15 text-secondary border border-secondary/30">
-<span class="material-symbols-outlined text-[12px]">payments</span> Monto Fijo
-                        </span>
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap font-semibold text-on-surface text-sm">
-                                $15.000 <span class="text-[10px] text-secondary">CLP</span>
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap">
-                                <div class="text-on-surface font-medium">15 Oct 2024</div>
-                                <div class="text-[11px] text-emerald-400">Sin vencimiento</div>
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap text-on-surface-variant">
-                                1.000 usos
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap min-w-[140px]">
-                                <div class="flex items-center justify-between text-[11px] mb-1">
-                                    <span class="text-on-surface font-medium">812 / 1.000</span>
-                                    <span class="text-secondary font-semibold">81%</span>
-                                </div>
-                                <div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
-                                    <div class="h-full bg-secondary rounded-full" style="width: 81%;"></div>
-                                </div>
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap text-center">
-<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-950/80 border border-emerald-500/40 text-emerald-300">
-<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Activo
-                        </span>
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap text-right">
-                                <div class="flex items-center justify-end gap-2">
-                                    <button class="w-8 h-4 bg-emerald-500/80 rounded-full relative p-0.5 transition-colors" title="Desactivar cupón">
-                                        <div class="w-3 h-3 bg-white rounded-full ml-auto shadow"></div>
-                                    </button>
-                                    <button class="p-1 text-on-surface-variant hover:text-secondary rounded hover:bg-surface-container transition-colors" onclick="openModal()" title="Editar configuración">
-                                        <span class="material-symbols-outlined text-[18px]">edit</span>
-                                    </button>
-                                    <button class="p-1 text-on-surface-variant hover:text-error rounded hover:bg-error-container/20 transition-colors" title="Eliminar cupón">
-                                        <span class="material-symbols-outlined text-[18px]">delete</span>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <!-- Coupon 3 -->
-                        <tr class="hover:bg-surface-container-high/40 transition-colors group">
-                            <td class="py-4 px-4 whitespace-nowrap">
-                                <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-secondary/10 border border-secondary/30 text-secondary font-mono font-bold tracking-wider group-hover:border-secondary/60 transition-all">
-                                    <span class="">ENVIOPREMIUM</span>
-                                    <button class="opacity-60 hover:opacity-100 hover:text-white transition-opacity" title="Copiar código">
-                                        <span class="material-symbols-outlined text-[14px]">content_copy</span>
-                                    </button>
-                                </div>
-                            </td>
-                            <td class="py-4 px-4">
-                                <div class="font-medium text-on-surface text-sm">Despacho Discreto Gratuito</div>
-                                <div class="text-[11px] text-on-surface-variant line-clamp-1">Todo Chile continental en compras sobre $45.000 CLP</div>
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap">
-<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium bg-tertiary-container/60 text-tertiary border border-tertiary/30">
-<span class="material-symbols-outlined text-[12px]">local_shipping</span> Envío Gratis
-                        </span>
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap font-semibold text-secondary text-sm">
-                                100% Envío
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap">
-                                <div class="text-on-surface font-medium">01 Oct 2024</div>
-                                <div class="text-[11px] text-on-surface-variant">al 30 Nov 2024</div>
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap text-on-surface-variant">
-                                Ilimitado
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap min-w-[140px]">
-                                <div class="flex items-center justify-between text-[11px] mb-1">
-                                    <span class="text-on-surface font-medium">420 usos</span>
-                                    <span class="text-on-surface-variant font-mono text-[10px]">∞</span>
-                                </div>
-                                <div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
-                                    <div class="h-full bg-primary-container rounded-full" style="width: 45%;"></div>
-                                </div>
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap text-center">
-<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-950/80 border border-emerald-500/40 text-emerald-300">
-<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Activo
-                        </span>
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap text-right">
-                                <div class="flex items-center justify-end gap-2">
-                                    <button class="w-8 h-4 bg-emerald-500/80 rounded-full relative p-0.5 transition-colors" title="Desactivar cupón">
-                                        <div class="w-3 h-3 bg-white rounded-full ml-auto shadow"></div>
-                                    </button>
-                                    <button class="p-1 text-on-surface-variant hover:text-secondary rounded hover:bg-surface-container transition-colors" onclick="openModal()" title="Editar configuración">
-                                        <span class="material-symbols-outlined text-[18px]">edit</span>
-                                    </button>
-                                    <button class="p-1 text-on-surface-variant hover:text-error rounded hover:bg-error-container/20 transition-colors" title="Eliminar cupón">
-                                        <span class="material-symbols-outlined text-[18px]">delete</span>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <!-- Coupon 4 -->
-                        <tr class="hover:bg-surface-container-high/40 transition-colors group">
-                            <td class="py-4 px-4 whitespace-nowrap">
-                                <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-secondary/10 border border-secondary/30 text-secondary font-mono font-bold tracking-wider group-hover:border-secondary/60 transition-all">
-                                    <span class="">GOLDEN50K</span>
-                                    <button class="opacity-60 hover:opacity-100 hover:text-white transition-opacity" title="Copiar código">
-                                        <span class="material-symbols-outlined text-[14px]">content_copy</span>
-                                    </button>
-                                </div>
-                            </td>
-                            <td class="py-4 px-4">
-                                <div class="font-medium text-on-surface text-sm">Privilegio Alta Gama</div>
-                                <div class="text-[11px] text-on-surface-variant line-clamp-1">Monto de compra mínima $180.000 CLP en Joyería y Perfumes</div>
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap">
-<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium bg-secondary/15 text-secondary border border-secondary/30">
-<span class="material-symbols-outlined text-[12px]">payments</span> Monto Fijo
-                        </span>
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap font-semibold text-secondary text-sm">
-                                $50.000 <span class="text-[10px] text-secondary">CLP</span>
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap">
-                                <div class="text-on-surface font-medium">10 Nov 2024</div>
-                                <div class="text-[11px] text-on-surface-variant">al 20 Dic 2024</div>
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap text-on-surface-variant">
-                                150 usos
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap min-w-[140px]">
-                                <div class="flex items-center justify-between text-[11px] mb-1">
-                                    <span class="text-on-surface font-medium">148 / 150</span>
-                                    <span class="text-error font-semibold">98%</span>
-                                </div>
-                                <div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
-                                    <div class="h-full bg-error rounded-full" style="width: 98%;"></div>
-                                </div>
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap text-center">
-<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-950/80 border border-emerald-500/40 text-emerald-300">
-<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Activo
-                        </span>
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap text-right">
-                                <div class="flex items-center justify-end gap-2">
-                                    <button class="w-8 h-4 bg-emerald-500/80 rounded-full relative p-0.5 transition-colors" title="Desactivar cupón">
-                                        <div class="w-3 h-3 bg-white rounded-full ml-auto shadow"></div>
-                                    </button>
-                                    <button class="p-1 text-on-surface-variant hover:text-secondary rounded hover:bg-surface-container transition-colors" onclick="openModal()" title="Editar configuración">
-                                        <span class="material-symbols-outlined text-[18px]">edit</span>
-                                    </button>
-                                    <button class="p-1 text-on-surface-variant hover:text-error rounded hover:bg-error-container/20 transition-colors" title="Eliminar cupón">
-                                        <span class="material-symbols-outlined text-[18px]">delete</span>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <!-- Coupon 5 (Inactivo) -->
-                        <tr class="hover:bg-surface-container-high/40 transition-colors group opacity-75">
-                            <td class="py-4 px-4 whitespace-nowrap">
-                                <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-surface-container-highest border border-outline/30 text-on-surface-variant font-mono font-bold tracking-wider">
-                                    <span class="">HALLOWEEN10</span>
-                                    <button class="opacity-60 hover:opacity-100 hover:text-white transition-opacity" title="Copiar código">
-                                        <span class="material-symbols-outlined text-[14px]">content_copy</span>
-                                    </button>
-                                </div>
-                            </td>
-                            <td class="py-4 px-4">
-                                <div class="font-medium text-on-surface text-sm">Especial Noche Mágica</div>
-                                <div class="text-[11px] text-on-surface-variant line-clamp-1">Campaña de temporada finalizada</div>
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap">
-<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium bg-primary-container/40 text-primary border border-primary/20">
-<span class="material-symbols-outlined text-[12px]">percent</span> Porcentaje
-                        </span>
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap font-semibold text-on-surface-variant text-sm">
-                                10% OFF
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap">
-                                <div class="text-on-surface font-medium">20 Oct 2024</div>
-                                <div class="text-[11px] text-error font-medium">Expiró 01 Nov</div>
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap text-on-surface-variant">
-                                300 usos
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap min-w-[140px]">
-                                <div class="flex items-center justify-between text-[11px] mb-1">
-                                    <span class="text-on-surface font-medium">300 / 300</span>
-                                    <span class="text-on-surface-variant font-semibold">100%</span>
-                                </div>
-                                <div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
-                                    <div class="h-full bg-outline rounded-full" style="width: 100%;"></div>
-                                </div>
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap text-center">
-<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-surface-container-highest border border-outline-variant/40 text-on-surface-variant">
-<span class="w-1.5 h-1.5 rounded-full bg-outline"></span> Inactivo
-                        </span>
-                            </td>
-                            <td class="py-4 px-4 whitespace-nowrap text-right">
-                                <div class="flex items-center justify-end gap-2">
-                                    <!-- Toggle OFF -->
-                                    <button class="w-8 h-4 bg-surface-container-highest rounded-full relative p-0.5 transition-colors border border-outline/30" title="Activar cupón">
-                                        <div class="w-3 h-3 bg-outline rounded-full shadow"></div>
-                                    </button>
-                                    <button class="p-1 text-on-surface-variant hover:text-secondary rounded hover:bg-surface-container transition-colors" onclick="openModal()" title="Editar configuración">
-                                        <span class="material-symbols-outlined text-[18px]">edit</span>
-                                    </button>
-                                    <button class="p-1 text-on-surface-variant hover:text-error rounded hover:bg-error-container/20 transition-colors" title="Eliminar cupón">
-                                        <span class="material-symbols-outlined text-[18px]">delete</span>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
+                        <% if (cupones.length === 0) { %>
+                            <tr><td colspan="8" class="p-8 text-center text-on-surface-variant">No hay cupones que coincidan con estos filtros.</td></tr>
+                        <% } %>
+                        <% cupones.forEach(cupon => { %>
+                            <tr class="hover:bg-surface-container-high/40 transition-colors group <%= cupon.estadoCalculado !== 'activo' ? 'opacity-75' : '' %>">
+                                <td class="py-4 px-4 whitespace-nowrap">
+                                    <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-secondary/10 border border-secondary/30 text-secondary font-mono font-bold tracking-wider">
+                                        <%= cupon.codigo %>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="font-medium text-on-surface text-sm max-w-xs truncate"><%= cupon.descripcion %></div>
+                                </td>
+                                <td class="py-4 px-4 whitespace-nowrap"><%= TIPO_LABELS[cupon.tipo] %></td>
+                                <td class="py-4 px-4 whitespace-nowrap font-semibold text-secondary text-sm">
+                                    <% if (cupon.tipo === 'porcentaje') { %><%= Number(cupon.valor) %>% DESC.
+                                    <% } else if (cupon.tipo === 'monto_fijo') { %><%= formatearCLP(cupon.valor) %>
+                                    <% } else { %>100% Envío<% } %>
+                                </td>
+                                <td class="py-4 px-4 whitespace-nowrap">
+                                    <div class="text-on-surface font-medium"><%= new Date(cupon.fecha_inicio).toLocaleDateString('es-CL') %></div>
+                                    <div class="text-[11px] text-on-surface-variant"><%= cupon.fecha_fin ? 'al ' + new Date(cupon.fecha_fin).toLocaleDateString('es-CL') : 'Sin vencimiento' %></div>
+                                </td>
+                                <td class="py-4 px-4 whitespace-nowrap text-on-surface-variant">
+                                    <%= cupon.usos_realizados %><%= cupon.limite_usos ? ' / ' + cupon.limite_usos : '' %>
+                                </td>
+                                <td class="py-4 px-4 whitespace-nowrap text-center">
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold border <%= ESTADO_BADGE[cupon.estadoCalculado] %>">
+                                        <%= ESTADO_LABELS[cupon.estadoCalculado] %>
+                                    </span>
+                                </td>
+                                <td class="py-4 px-4 whitespace-nowrap text-right">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <form method="POST" action="/admin/cupones/<%= cupon.id %>/activar" class="contents">
+                                            <button class="w-8 h-4 <%= cupon.activo ? 'bg-emerald-500/80' : 'bg-surface-container-highest border border-outline/30' %> rounded-full relative p-0.5 transition-colors" title="<%= cupon.activo ? 'Desactivar' : 'Activar' %>">
+                                                <div class="w-3 h-3 <%= cupon.activo ? 'bg-white ml-auto' : 'bg-outline' %> rounded-full shadow"></div>
+                                            </button>
+                                        </form>
+                                        <button class="p-1 text-on-surface-variant hover:text-secondary rounded hover:bg-surface-container transition-colors" onclick="location.href='/admin/cupones/<%= cupon.id %>/editar'" title="Editar configuración">
+                                            <span class="material-symbols-outlined text-[18px]">edit</span>
+                                        </button>
+                                        <form method="POST" action="/admin/cupones/<%= cupon.id %>/eliminar" class="contents" onsubmit="return confirm('¿Eliminar este cupón?');">
+                                            <button class="p-1 text-on-surface-variant hover:text-error rounded hover:bg-error-container/20 transition-colors" title="Eliminar cupón">
+                                                <span class="material-symbols-outlined text-[18px]">delete</span>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% }) %>
                         </tbody>
                     </table>
-                </div>
-                <!-- Table Footer / Pagination -->
-                <div class="px-5 py-3.5 bg-surface-container-lowest/60 border-t border-surface-container-highest flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-on-surface-variant">
-                    <div class="">Mostrando <span class="text-on-surface font-semibold">5</span> de <span class="text-on-surface font-semibold">12</span> cupones registrados</div>
-                    <div class="flex items-center gap-1">
-                        <button class="p-1.5 rounded border border-outline-variant/30 text-on-surface-variant hover:text-secondary hover:border-secondary transition-colors disabled:opacity-40" disabled="">
-                            <span class="material-symbols-outlined text-[16px] align-middle">chevron_left</span>
-                        </button>
-                        <button class="px-2.5 py-1 rounded bg-secondary/20 border border-secondary text-secondary font-semibold">1</button>
-                        <button class="px-2.5 py-1 rounded hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors">2</button>
-                        <button class="px-2.5 py-1 rounded hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors">3</button>
-                        <button class="p-1.5 rounded border border-outline-variant/30 text-on-surface-variant hover:text-secondary hover:border-secondary transition-colors">
-                            <span class="material-symbols-outlined text-[16px] align-middle">chevron_right</span>
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
     </main>
 </div>
-<!-- ========================================================================= -->
-<!-- DETAILED COUPON CONFIGURATION MODAL / DRAWER (Configuración del cupón) -->
-<!-- ========================================================================= -->
-<div class="fixed inset-0 z-50 items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md overflow-y-auto transition-all flex" id="couponModal">
-    <div class="glass-panel w-full max-w-3xl rounded-2xl border border-secondary/30 shadow-[0_0_50px_rgba(0,0,0,0.8)] overflow-hidden my-auto flex flex-col max-h-[92vh]">
-        <!-- Modal Header -->
+
+<!-- Modal Crear/Editar Cupón -->
+<div class="fixed inset-0 z-50 items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md overflow-y-auto transition-all hidden" id="couponModal">
+    <div class="glass-panel w-full max-w-2xl rounded-2xl border border-secondary/30 shadow-[0_0_50px_rgba(0,0,0,0.8)] overflow-hidden my-auto flex flex-col max-h-[92vh]">
         <div class="px-6 py-5 border-b border-surface-container-highest flex items-center justify-between bg-surface-container-lowest/90 sticky top-0 z-10">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-lg bg-secondary/10 border border-secondary/30 flex items-center justify-center text-secondary">
-                    <span class="material-symbols-outlined text-[22px]">tune</span>
-                </div>
-                <div>
-                    <h2 class="font-headline-md text-xl text-on-surface font-semibold">Configuración del Cupón</h2>
-                    <p class="text-xs text-on-surface-variant">Define los parámetros, restricciones y vigencia de la promoción</p>
-                </div>
-            </div>
-            <button class="text-on-surface-variant hover:text-secondary p-1.5 rounded-lg hover:bg-surface-container-high transition-colors" onclick="closeModal()">
+            <h2 class="font-headline-md text-xl text-on-surface font-semibold" id="couponModalTitle">Nuevo Cupón</h2>
+            <button class="text-on-surface-variant hover:text-secondary p-1.5 rounded-lg hover:bg-surface-container-high transition-colors" onclick="closeCouponModal()">
                 <span class="material-symbols-outlined text-[22px]">close</span>
             </button>
         </div>
-        <!-- Modal Body (Scrollable form) -->
-        <div class="p-6 md:p-8 overflow-y-auto custom-scrollbar flex flex-col gap-6 text-xs">
-            <!-- Section 1: Identificación y Código -->
-            <div class="flex flex-col gap-4">
-                <div class="text-[11px] font-label-sm font-semibold uppercase tracking-widest text-secondary border-b border-surface-container-highest pb-1.5 flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-[14px]">sell</span> Identificación del Descuento
+        <form id="couponForm" method="POST" action="" class="p-6 flex flex-col gap-5 overflow-y-auto text-xs">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div id="couponCodeField">
+                    <label class="block text-on-surface font-medium mb-1.5">Código del Cupón *</label>
+                    <input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg px-3 py-2.5 font-mono text-secondary font-bold text-sm tracking-wider uppercase focus:border-secondary focus:outline-none" id="couponCodigo" name="codigo" type="text" required placeholder="EJ: VERANO20">
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <!-- Código Input + Auto-generate -->
-                    <div class="md:col-span-1">
-                        <label class="block text-on-surface font-medium mb-1.5">Código del Cupón *</label>
-                        <div class="relative">
-                            <input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg px-3 py-2.5 font-mono text-secondary font-bold text-sm tracking-wider uppercase focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none" id="couponCodeInput" type="text" value="SEDUCCION2024">
-                            <button class="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-on-surface-variant hover:text-secondary rounded transition-colors" title="Generar código aleatorio" type="button">
-                                <span class="material-symbols-outlined text-[16px]">autorenew</span>
-                            </button>
-                        </div>
-                        <span class="text-[10px] text-on-surface-variant/70 mt-1 block">Visible para clientes en el checkout</span>
-                    </div>
-                    <!-- Descripción Interna -->
-                    <div class="md:col-span-2">
-                        <label class="block text-on-surface font-medium mb-1.5">Descripción Interna / Nombre de Campaña *</label>
-                        <input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg px-3 py-2.5 text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none placeholder:text-on-surface-variant/50" placeholder="Ej: Especial Black Friday 2024" type="text" value="Promoción exclusiva para clientes VIP y miembros del club">
-                        <span class="text-[10px] text-on-surface-variant/70 mt-1 block">Uso administrativo interno para reportes y seguimiento</span>
-                    </div>
-                </div>
-            </div>
-            <!-- Section 2: Tipo de Descuento y Valores -->
-            <div class="flex flex-col gap-4">
-                <div class="text-[11px] font-label-sm font-semibold uppercase tracking-widest text-secondary border-b border-surface-container-highest pb-1.5 flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-[14px]">price_change</span> Beneficio y Montos (CLP)
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <!-- Tipo de Descuento (Pill Selector) -->
-                    <div class="md:col-span-3">
-                        <label class="block text-on-surface font-medium mb-2">Tipo de Descuento *</label>
-                        <div class="grid grid-cols-3 gap-3">
-                            <label class="cursor-pointer border-2 border-secondary bg-secondary/15 rounded-xl p-3 flex flex-col items-center justify-center text-center gap-1.5 hover:bg-secondary/20 transition-all">
-                                <input checked="" class="sr-only" name="discount_type" type="radio">
-                                <span class="material-symbols-outlined text-secondary text-xl">percent</span>
-                                <span class="font-semibold text-secondary text-xs">Porcentaje</span>
-                                <span class="text-[10px] text-on-surface-variant">% de descuento al subtotal</span>
-                            </label>
-                            <label class="cursor-pointer border border-outline-variant/40 bg-surface-container-lowest hover:border-secondary/50 rounded-xl p-3 flex flex-col items-center justify-center text-center gap-1.5 hover:bg-surface-container-high transition-all">
-                                <input class="sr-only" name="discount_type" type="radio">
-                                <span class="material-symbols-outlined text-on-surface-variant text-xl">payments</span>
-                                <span class="font-semibold text-on-surface text-xs">Monto Fijo</span>
-                                <span class="text-[10px] text-on-surface-variant">Rebaja en pesos CLP</span>
-                            </label>
-                            <label class="cursor-pointer border border-outline-variant/40 bg-surface-container-lowest hover:border-secondary/50 rounded-xl p-3 flex flex-col items-center justify-center text-center gap-1.5 hover:bg-surface-container-high transition-all">
-                                <input class="sr-only" name="discount_type" type="radio">
-                                <span class="material-symbols-outlined text-on-surface-variant text-xl">local_shipping</span>
-                                <span class="font-semibold text-on-surface text-xs">Envío Gratis</span>
-                                <span class="text-[10px] text-on-surface-variant">Cubre despacho a domicilio</span>
-                            </label>
-                        </div>
-                    </div>
-                    <!-- Valor del Descuento -->
-                    <div>
-                        <label class="block text-on-surface font-medium mb-1.5">Valor del Descuento *</label>
-                        <div class="relative">
-                            <input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg pl-3 pr-8 py-2 text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none font-semibold" type="number" value="20">
-                            <span class="absolute right-3 top-1/2 -translate-y-1/2 text-secondary font-bold text-xs">%</span>
-                        </div>
-                        <span class="text-[10px] text-on-surface-variant/70 mt-1 block">Porcentaje directo aplicable</span>
-                    </div>
-                    <!-- Compra Mínima Requerida -->
-                    <div>
-                        <label class="block text-on-surface font-medium mb-1.5">Compra Mínima Requerida</label>
-                        <div class="relative">
-                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-xs">$</span>
-                            <input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg pl-7 pr-12 py-2 text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none" type="text" value="50.000">
-                            <span class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[10px] uppercase">CLP</span>
-                        </div>
-                        <span class="text-[10px] text-on-surface-variant/70 mt-1 block">Subtotal mínimo sin despacho</span>
-                    </div>
-                    <!-- Descuento Máximo Aplicable -->
-                    <div>
-                        <label class="block text-on-surface font-medium mb-1.5">Tope Máximo de Descuento</label>
-                        <div class="relative">
-                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-xs">$</span>
-                            <input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg pl-7 pr-12 py-2 text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none" type="text" value="30.000">
-                            <span class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[10px] uppercase">CLP</span>
-                        </div>
-                        <span class="text-[10px] text-on-surface-variant/70 mt-1 block">Límite para evitar abusos</span>
-                    </div>
-                </div>
-            </div>
-            <!-- Section 3: Vigencia y Restricción de Usos -->
-            <div class="flex flex-col gap-4">
-                <div class="text-[11px] font-label-sm font-semibold uppercase tracking-widest text-secondary border-b border-surface-container-highest pb-1.5 flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-[14px]">event</span> Vigencia y Límites de Uso
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Fecha Inicio -->
-                    <div>
-                        <label class="block text-on-surface font-medium mb-1.5">Fecha de Inicio *</label>
-                        <input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg px-3 py-2 text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none" type="date" value="2024-11-01">
-                    </div>
-                    <!-- Fecha Expiración -->
-                    <div>
-                        <div class="flex items-center justify-between mb-1.5">
-                            <label class="text-on-surface font-medium">Fecha de Vencimiento</label>
-                            <label class="flex items-center gap-1 text-[11px] text-secondary cursor-pointer">
-                                <input class="rounded border-outline-variant/40 text-secondary focus:ring-0" type="checkbox"> Sin vencimiento
-                            </label>
-                        </div>
-                        <input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg px-3 py-2 text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none" type="date" value="2024-12-31">
-                    </div>
-                    <!-- Límite Total de Usos -->
-                    <div>
-                        <label class="block text-on-surface font-medium mb-1.5">Límite Total de Usos</label>
-                        <input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg px-3 py-2 text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none" placeholder="12" type="number" value="200">
-                        <span class="text-[10px] text-on-surface-variant/70 mt-1 block">Cantidad máxima de veces que puede redimirse</span>
-                    </div>
-                    <!-- Límite por Usuario -->
-                    <div>
-                        <label class="block text-on-surface font-medium mb-1.5">Límite de Usos por Cliente</label>
-                        <input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg px-3 py-2 text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none" placeholder="1" type="number" value="1">
-                        <span class="text-[10px] text-on-surface-variant/70 mt-1 block">Restricción vinculada al correo o cuenta</span>
-                    </div>
-                </div>
-            </div>
-            <!-- Section 4: Segmentación / Categorías y Productos -->
-            <div class="flex flex-col gap-4">
-                <div class="text-[11px] font-label-sm font-semibold uppercase tracking-widest text-secondary border-b border-surface-container-highest pb-1.5 flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-[14px]">category</span> Aplicabilidad y Segmentación
-                </div>
-                <!-- Categorías aplicables -->
                 <div>
-                    <label class="block text-on-surface font-medium mb-2">Categorías Aplicables</label>
-                    <div class="flex flex-wrap gap-2">
-                        <button class="px-3 py-1 rounded-full border border-outline-variant/50 text-on-surface-variant hover:text-on-surface text-xs transition-colors" type="button">
-                            Todas las categorías
-                        </button>
-                        <button class="px-3 py-1 rounded-full border border-secondary bg-secondary/15 text-secondary text-xs font-semibold flex items-center gap-1" type="button">
-                            Lencería <span class="material-symbols-outlined text-[14px]">check</span>
-                        </button>
-                        <button class="px-3 py-1 rounded-full border border-secondary bg-secondary/15 text-secondary text-xs font-semibold flex items-center gap-1" type="button">
-                            Cosmética Sensual <span class="material-symbols-outlined text-[14px]">check</span>
-                        </button>
-                        <button class="px-3 py-1 rounded-full border border-outline-variant/50 text-on-surface-variant hover:text-on-surface text-xs transition-colors" type="button">
-                            Juguetes de Lujo
-                        </button>
-                        <button class="px-3 py-1 rounded-full border border-outline-variant/50 text-on-surface-variant hover:text-on-surface text-xs transition-colors" type="button">
-                            Aceites &amp; Velas
-                        </button>
-                    </div>
-                </div>
-                <!-- Productos aplicables -->
-                <div>
-                    <label class="block text-on-surface font-medium mb-1.5">Productos Aplicables</label>
-                    <div class="flex items-center gap-2 p-2 rounded-lg bg-surface-container-lowest border border-outline-variant/40">
-                        <div class="flex flex-wrap items-center gap-1.5 flex-1">
-<span class="bg-surface-container-high border border-outline-variant/50 px-2 py-0.5 rounded text-[11px] text-on-surface flex items-center gap-1">
-                                Todos los productos de la categoría
-                            </span>
-                            <span class="bg-surface-container-high border border-secondary/30 text-secondary px-2 py-0.5 rounded text-[11px] flex items-center gap-1">
-                                Excluir Outlet / Rebajas <button class="hover:text-white"><span class="material-symbols-outlined text-[12px]">close</span></button>
-</span>
-                        </div>
-                        <button class="text-secondary text-xs font-semibold hover:underline px-2" type="button">Explorar...</button>
-                    </div>
-                </div>
-                <!-- Estado Inicial -->
-                <div>
-                    <label class="block text-on-surface font-medium mb-2">Estado del Cupón</label>
-                    <div class="flex items-center gap-6">
-                        <label class="flex items-center gap-2 text-on-surface cursor-pointer">
-                            <input checked="" class="text-secondary focus:ring-0" name="initial_status" type="radio">
-                            <span class="font-medium text-emerald-400">Activo inmediatamente</span>
-                        </label>
-                        <label class="flex items-center gap-2 text-on-surface-variant cursor-pointer hover:text-on-surface">
-                            <input class="text-secondary focus:ring-0" name="initial_status" type="radio">
-                            <span class="">Borrador</span>
-                        </label>
-                        <label class="flex items-center gap-2 text-on-surface-variant cursor-pointer hover:text-on-surface">
-                            <input class="text-secondary focus:ring-0" name="initial_status" type="radio">
-                            <span class="">Inactivo</span>
-                        </label>
-                    </div>
+                    <label class="block text-on-surface font-medium mb-1.5">Descripción *</label>
+                    <input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg px-3 py-2.5 text-on-surface focus:border-secondary focus:outline-none" id="couponDescripcion" name="descripcion" type="text" required placeholder="Ej: Especial Black Friday">
                 </div>
             </div>
-        </div>
-        <!-- Modal Footer -->
-        <div class="px-6 py-4 border-t border-surface-container-highest bg-surface-container-lowest/95 flex items-center justify-end gap-3 sticky bottom-0 z-10">
-            <button class="px-5 py-2 rounded-lg border border-outline-variant/40 text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors font-medium text-xs uppercase tracking-wider" onclick="closeModal()" type="button">
-                Cancelar
-            </button>
-            <button class="flex items-center gap-2 px-6 py-2 rounded-lg bg-secondary hover:bg-secondary-fixed text-on-secondary font-semibold text-xs uppercase tracking-wider shadow-[0_0_15px_rgba(233,195,73,0.3)] hover:shadow-[0_0_20px_rgba(233,195,73,0.5)] transition-all" onclick="closeModal()" type="button">
-                <span class="material-symbols-outlined text-[18px]">save</span> Guardar Cupón
-            </button>
-        </div>
+            <div>
+                <label class="block text-on-surface font-medium mb-2">Tipo de Descuento *</label>
+                <div class="grid grid-cols-3 gap-3">
+                    <label class="coupon-tipo-option cursor-pointer border border-outline-variant/40 rounded-xl p-3 flex flex-col items-center justify-center text-center gap-1.5">
+                        <input class="sr-only" name="tipo" type="radio" value="porcentaje" checked>
+                        <span class="material-symbols-outlined text-xl">percent</span>
+                        <span class="font-semibold text-xs">Porcentaje</span>
+                    </label>
+                    <label class="coupon-tipo-option cursor-pointer border border-outline-variant/40 rounded-xl p-3 flex flex-col items-center justify-center text-center gap-1.5">
+                        <input class="sr-only" name="tipo" type="radio" value="monto_fijo">
+                        <span class="material-symbols-outlined text-xl">payments</span>
+                        <span class="font-semibold text-xs">Monto Fijo</span>
+                    </label>
+                    <label class="coupon-tipo-option cursor-pointer border border-outline-variant/40 rounded-xl p-3 flex flex-col items-center justify-center text-center gap-1.5">
+                        <input class="sr-only" name="tipo" type="radio" value="envio_gratis">
+                        <span class="material-symbols-outlined text-xl">local_shipping</span>
+                        <span class="font-semibold text-xs">Envío Gratis</span>
+                    </label>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div id="couponValorField">
+                    <label class="block text-on-surface font-medium mb-1.5">Valor del Descuento *</label>
+                    <input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg px-3 py-2 text-on-surface focus:border-secondary focus:outline-none" id="couponValor" name="valor" type="number" min="0" step="1">
+                </div>
+                <div>
+                    <label class="block text-on-surface font-medium mb-1.5">Compra Mínima (CLP)</label>
+                    <input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg px-3 py-2 text-on-surface focus:border-secondary focus:outline-none" id="couponCompraMinima" name="compraMinima" type="number" min="0" step="1" value="0">
+                </div>
+                <div id="couponTopeField">
+                    <label class="block text-on-surface font-medium mb-1.5">Tope Máximo (CLP)</label>
+                    <input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg px-3 py-2 text-on-surface focus:border-secondary focus:outline-none" id="couponTope" name="topeMaximo" type="number" min="0" step="1" placeholder="Sin tope">
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-on-surface font-medium mb-1.5">Fecha de Inicio *</label>
+                    <input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg px-3 py-2 text-on-surface focus:border-secondary focus:outline-none" id="couponFechaInicio" name="fechaInicio" type="date" required>
+                </div>
+                <div>
+                    <label class="block text-on-surface font-medium mb-1.5">Fecha de Vencimiento</label>
+                    <input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg px-3 py-2 text-on-surface focus:border-secondary focus:outline-none" id="couponFechaFin" name="fechaFin" type="date">
+                </div>
+                <div>
+                    <label class="block text-on-surface font-medium mb-1.5">Límite Total de Usos</label>
+                    <input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg px-3 py-2 text-on-surface focus:border-secondary focus:outline-none" id="couponLimiteUsos" name="limiteUsos" type="number" min="1" placeholder="Ilimitado">
+                </div>
+                <div>
+                    <label class="block text-on-surface font-medium mb-1.5">Límite de Usos por Cliente</label>
+                    <input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg px-3 py-2 text-on-surface focus:border-secondary focus:outline-none" id="couponLimitePorCliente" name="limitePorCliente" type="number" min="1" value="1">
+                </div>
+            </div>
+            <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" name="activo" id="couponActivo" class="checkbox-premium" checked>
+                <span class="font-body-md text-body-md text-on-surface">Activo inmediatamente</span>
+            </label>
+            <div class="flex items-center justify-end gap-3 pt-2 border-t border-surface-container-highest">
+                <button class="px-5 py-2 rounded-lg border border-outline-variant/40 text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors font-medium text-xs uppercase tracking-wider" onclick="closeCouponModal()" type="button">Cancelar</button>
+                <button class="flex items-center gap-2 px-6 py-2 rounded-lg bg-secondary hover:bg-secondary-fixed text-on-secondary font-semibold text-xs uppercase tracking-wider transition-all" type="submit">
+                    <span class="material-symbols-outlined text-[18px]">save</span> Guardar Cupón
+                </button>
+            </div>
+        </form>
     </div>
 </div>
+
+<% if (cuponEditando) { %>
+    <script>
+        window.__editarCupon = {
+            id: <%- JSON.stringify(cuponEditando.id) %>,
+            codigo: <%- JSON.stringify(cuponEditando.codigo) %>,
+            descripcion: <%- JSON.stringify(cuponEditando.descripcion) %>,
+            tipo: <%- JSON.stringify(cuponEditando.tipo) %>,
+            valor: <%- JSON.stringify(cuponEditando.valor) %>,
+            compraMinima: <%- JSON.stringify(cuponEditando.compra_minima) %>,
+            topeMaximo: <%- JSON.stringify(cuponEditando.tope_maximo) %>,
+            fechaInicio: <%- JSON.stringify(cuponEditando.fecha_inicio ? cuponEditando.fecha_inicio.toISOString().slice(0,10) : '') %>,
+            fechaFin: <%- JSON.stringify(cuponEditando.fecha_fin ? cuponEditando.fecha_fin.toISOString().slice(0,10) : '') %>,
+            limiteUsos: <%- JSON.stringify(cuponEditando.limite_usos) %>,
+            limitePorCliente: <%- JSON.stringify(cuponEditando.limite_por_cliente) %>,
+            activo: <%- JSON.stringify(cuponEditando.activo) %>
+        };
+    </script>
+<% } %>
+
+<style>
+    .coupon-tipo-option:has(input:checked) {
+        border-color: var(--secondary, #e9c349);
+        background: rgba(233, 195, 73, 0.12);
+        color: #e9c349;
+    }
+</style>
+
 <script src="/javascripts/admin/sidebar-toggle.js"></script>
 <script src="/javascripts/admin/cupones.js"></script>
-</body></html>
+</body>
+</html>
