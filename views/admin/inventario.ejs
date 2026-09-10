@@ -5,201 +5,139 @@
 </head>
 <body class="bg-surface-container-lowest text-on-surface font-body-md text-body-md">
 
-<!-- Topbar móvil -->
 <%- include('../partials/admin/mobile-topbar') %>
-
-<!-- Sidebar -->
 <%- include('../partials/admin/sidebar', { activo: 'inventario', pedidosPendientes: typeof pedidosPendientes !== 'undefined' ? pedidosPendientes : 0 }) %>
+
+<% const ESTADO_LABELS = { disponible: 'Disponible', bajo: 'Stock Bajo', critico: 'Stock Crítico', agotado: 'Agotado' }; %>
+<% const ESTADO_BADGE = {
+    disponible: 'bg-surface-container-high text-secondary',
+    bajo: 'bg-secondary-container/40 text-secondary-fixed',
+    critico: 'bg-error-container/40 text-error',
+    agotado: 'bg-surface-container-highest text-outline'
+}; %>
+<% const TIPO_MOV_LABELS = { entrada: 'Entrada manual', salida: 'Salida manual', ajuste: 'Ajuste', venta: 'Venta', devolucion: 'Devolución' }; %>
 
 <div class="pl-64">
     <main class="relative bg-surface-container-lowest min-h-screen px-8 py-8">
         <div class="flex flex-col w-full space-y-8 pb-16">
-            <!-- 1. Encabezado de Página -->
+            <!-- Encabezado -->
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div class="space-y-2">
-<span class="font-label-sm text-label-sm uppercase tracking-[0.2em] text-secondary flex items-center gap-2">
-<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
-        MÓDULO DE CONTROL DE EXISTENCIAS &amp; TRAZABILIDAD
-      </span>
-                    <h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">
-                        Gestión de Inventario
-                    </h1>
+                    <span class="font-label-sm text-label-sm uppercase tracking-[0.2em] text-secondary flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                        MÓDULO DE CONTROL DE EXISTENCIAS &amp; TRAZABILIDAD
+                    </span>
+                    <h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Gestión de Inventario</h1>
                     <p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">
-                        Supervisión de existencias en tiempo real, reservas de pedidos y auditoría estricta de
-                        movimientos.
+                        Supervisión de existencias en tiempo real, reservas de pedidos (carritos activos) y auditoría de movimientos.
                     </p>
                 </div>
-                <!-- Indicador de Sincronización en Vivo -->
-                <div class="flex items-center gap-3 px-4 py-2 rounded-lg bg-surface-container-low shadow-sm">
-<span class="relative flex h-2.5 w-2.5">
-<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
-<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-secondary"></span>
-</span>
-                    <div class="flex flex-col">
-                        <span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Bodega Principal (Madrid)</span>
-                        <span class="font-label-md text-label-md text-on-surface">Sincronizado hace 2 min</span>
-                    </div>
-                </div>
             </div>
-            <!-- 2. Barra de Métricas Rápidas / Indicadores de Stock -->
+
+            <!-- Métricas -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                <!-- Métricas: Disponible -->
-                <div class="p-6 rounded-xl bg-surface-container-low flex flex-col justify-between transition-all duration-300 hover:bg-surface-container">
+                <div class="p-6 rounded-xl bg-surface-container-low flex flex-col justify-between">
                     <div class="flex items-center justify-between">
                         <span class="font-label-md text-label-md text-on-surface-variant tracking-wider uppercase">Disponible</span>
                         <span class="px-2.5 py-1 rounded-full bg-surface-container-high text-secondary font-label-sm text-label-sm flex items-center gap-1.5">
-<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Óptimo
-        </span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> <%= metricas.disponible %> refs
+                        </span>
                     </div>
                     <div class="mt-4 flex items-baseline justify-between">
-                        <span class="font-headline-md text-headline-md text-on-surface">1.480</span>
+                        <span class="font-headline-md text-headline-md text-on-surface"><%= metricas.totalDisponible %></span>
                         <span class="font-label-sm text-label-sm text-outline">Unidades netas</span>
                     </div>
-                    <div class="mt-3 w-full bg-surface-container-highest rounded-full h-1 overflow-hidden">
-                        <div class="bg-secondary h-full rounded-full w-[88%]"></div>
-                    </div>
                 </div>
-                <!-- Métricas: Stock Bajo -->
-                <div class="p-6 rounded-xl bg-surface-container-low flex flex-col justify-between transition-all duration-300 hover:bg-surface-container">
+                <div class="p-6 rounded-xl bg-surface-container-low flex flex-col justify-between">
                     <div class="flex items-center justify-between">
                         <span class="font-label-md text-label-md text-on-surface-variant tracking-wider uppercase">Stock Bajo</span>
                         <span class="px-2.5 py-1 rounded-full bg-secondary-container/40 text-secondary-fixed font-label-sm text-label-sm flex items-center gap-1.5">
-<span class="material-symbols-outlined text-[14px]">warning</span> Atención
-        </span>
+                            <span class="material-symbols-outlined text-[14px]">warning</span> Atención
+                        </span>
                     </div>
                     <div class="mt-4 flex items-baseline justify-between">
-                        <span class="font-headline-md text-headline-md text-secondary-fixed">18</span>
-                        <span class="font-label-sm text-label-sm text-outline">8 referencias</span>
-                    </div>
-                    <div class="mt-3 w-full bg-surface-container-highest rounded-full h-1 overflow-hidden">
-                        <div class="bg-secondary-fixed h-full rounded-full w-[24%]"></div>
+                        <span class="font-headline-md text-headline-md text-secondary-fixed"><%= metricas.bajo %></span>
+                        <span class="font-label-sm text-label-sm text-outline">referencias</span>
                     </div>
                 </div>
-                <!-- Métricas: Stock Crítico -->
-                <div class="p-6 rounded-xl bg-surface-container-low flex flex-col justify-between transition-all duration-300 hover:bg-surface-container">
+                <div class="p-6 rounded-xl bg-surface-container-low flex flex-col justify-between">
                     <div class="flex items-center justify-between">
                         <span class="font-label-md text-label-md text-on-surface-variant tracking-wider uppercase">Stock Crítico</span>
                         <span class="px-2.5 py-1 rounded-full bg-error-container/40 text-error font-label-sm text-label-sm flex items-center gap-1.5">
-<span class="material-symbols-outlined text-[14px]">priority_high</span> Urgente
-        </span>
+                            <span class="material-symbols-outlined text-[14px]">priority_high</span> Urgente
+                        </span>
                     </div>
                     <div class="mt-4 flex items-baseline justify-between">
-                        <span class="font-headline-md text-headline-md text-error">5</span>
-                        <span class="font-label-sm text-label-sm text-outline">Por agotar hoy</span>
-                    </div>
-                    <div class="mt-3 w-full bg-surface-container-highest rounded-full h-1 overflow-hidden">
-                        <div class="bg-error h-full rounded-full w-[12%]"></div>
+                        <span class="font-headline-md text-headline-md text-error"><%= metricas.critico %></span>
+                        <span class="font-label-sm text-label-sm text-outline">referencias</span>
                     </div>
                 </div>
-                <!-- Métricas: Agotado -->
-                <div class="p-6 rounded-xl bg-surface-container-low flex flex-col justify-between transition-all duration-300 hover:bg-surface-container">
+                <div class="p-6 rounded-xl bg-surface-container-low flex flex-col justify-between">
                     <div class="flex items-center justify-between">
                         <span class="font-label-md text-label-md text-on-surface-variant tracking-wider uppercase">Agotado</span>
                         <span class="px-2.5 py-1 rounded-full bg-surface-container-highest text-outline font-label-sm text-label-sm flex items-center gap-1.5">
-<span class="material-symbols-outlined text-[14px]">block</span> Alerta
-        </span>
+                            <span class="material-symbols-outlined text-[14px]">block</span> Alerta
+                        </span>
                     </div>
                     <div class="mt-4 flex items-baseline justify-between">
-                        <span class="font-headline-md text-headline-md text-outline">3</span>
-                        <span class="font-label-sm text-label-sm text-outline">Variantes en cero</span>
-                    </div>
-                    <div class="mt-3 w-full bg-surface-container-highest rounded-full h-1 overflow-hidden">
-                        <div class="bg-outline h-full rounded-full w-[100%]"></div>
+                        <span class="font-headline-md text-headline-md text-outline"><%= metricas.agotado %></span>
+                        <span class="font-label-sm text-label-sm text-outline">referencias</span>
                     </div>
                 </div>
             </div>
-            <!-- 3. Pestañas Principales y Botones de Acción Global -->
-            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pt-2">
-                <!-- Pestañas -->
-                <div class="flex items-center p-1.5 bg-surface-container-low rounded-xl w-fit">
-                    <button class="flex items-center gap-2.5 px-5 py-2.5 rounded-lg font-label-md text-label-md transition-all text-on-surface-variant"
-                            id="tab-existencias" onclick="switchView('existencias')">
-                        <span class="material-symbols-outlined text-[18px]">inventory</span>
-                        <span class="">Listado de Existencias</span>
-                        <span class="ml-1 px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm">124</span>
-                    </button>
-                    <button class="flex items-center gap-2.5 px-5 py-2.5 rounded-lg hover:text-on-surface font-label-md text-label-md transition-all bg-surface-container text-secondary shadow-sm"
-                            id="tab-movimientos" onclick="switchView('movimientos')">
-                        <span class="material-symbols-outlined text-[18px]">history</span>
-                        <span class="">Movimientos de Inventario</span>
-                        <span class="flex h-2 w-2 rounded-full bg-secondary"></span>
-                    </button>
-                </div>
-                <!-- Botones de Acción Rápida -->
-                <div class="flex flex-wrap items-center gap-3">
-                    <button class="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-secondary text-on-secondary font-label-md text-label-md font-bold transition-all hover:bg-secondary-fixed shadow-md"
-                            onclick="openModal('Entrada manual')">
-                        <span class="material-symbols-outlined text-[18px]">add</span>
-                        <span class="">+ Agregar Stock</span>
-                    </button>
-                    <button class="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright font-label-md text-label-md transition-all"
-                            onclick="openModal('Ajuste')">
-                        <span class="material-symbols-outlined text-[18px]">tune</span>
-                        <span class="">Ajustar Stock</span>
-                    </button>
-                    <button class="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright font-label-md text-label-md transition-all"
-                            onclick="openModal('Salida manual')">
-                        <span class="material-symbols-outlined text-[18px]">remove</span>
-                        <span class="">Descontar Stock</span>
-                    </button>
-                    <button class="flex items-center gap-2 px-3.5 py-2.5 rounded-lg bg-surface-container-low text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all"
-                            title="Exportar Reporte Excel / CSV">
-                        <span class="material-symbols-outlined text-[20px]">ios_share</span>
-                    </button>
-                </div>
+
+            <!-- Tabs -->
+            <div class="flex items-center p-1.5 bg-surface-container-low rounded-xl w-fit">
+                <button class="flex items-center gap-2.5 px-5 py-2.5 rounded-lg font-label-md text-label-md transition-all" id="tab-existencias" onclick="switchView('existencias')">
+                    <span class="material-symbols-outlined text-[18px]">inventory</span>
+                    <span>Listado de Existencias</span>
+                    <span class="ml-1 px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm"><%= productos.length %></span>
+                </button>
+                <button class="flex items-center gap-2.5 px-5 py-2.5 rounded-lg font-label-md text-label-md transition-all" id="tab-movimientos" onclick="switchView('movimientos')">
+                    <span class="material-symbols-outlined text-[18px]">history</span>
+                    <span>Movimientos de Inventario</span>
+                </button>
             </div>
-            <!-- CONTENEDOR: VISTA 1 - LISTADO DE EXISTENCIAS -->
+
+            <!-- VISTA: EXISTENCIAS -->
             <div class="space-y-6 hidden" id="view-existencias">
-                <!-- 4. Filtros de Búsqueda y Selección -->
-                <div class="p-5 rounded-xl bg-surface-container-low shadow-sm">
+                <form method="GET" action="/admin/inventario" class="p-5 rounded-xl bg-surface-container-low shadow-sm">
                     <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-                        <!-- Búsqueda textual -->
                         <div class="md:col-span-5 relative">
                             <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
-                            <input class="w-full bg-surface-container rounded-lg pl-10 pr-4 py-2.5 font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:ring-1 focus:ring-secondary transition-all"
-                                   placeholder="Buscar por producto, variante o SKU..." type="text">
+                            <input name="busqueda" value="<%= filtros.busqueda %>" class="w-full bg-surface-container rounded-lg pl-10 pr-4 py-2.5 font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:ring-1 focus:ring-secondary transition-all" placeholder="Buscar por producto o SKU..." type="text">
                         </div>
-                        <!-- Selector de Estado -->
                         <div class="md:col-span-3">
-                            <select class="w-full bg-surface-container rounded-lg px-4 py-2.5 font-body-md text-body-md text-on-surface focus:outline-none focus:ring-1 focus:ring-secondary transition-all cursor-pointer">
-                                <option value="all">Todos los estados</option>
-                                <option value="critico">Stock Crítico</option>
-                                <option value="bajo">Stock Bajo</option>
-                                <option value="agotado">Agotado</option>
-                                <option value="disponible">Disponible</option>
+                            <select name="estado" class="w-full bg-surface-container rounded-lg px-4 py-2.5 font-body-md text-body-md text-on-surface focus:outline-none focus:ring-1 focus:ring-secondary transition-all cursor-pointer">
+                                <option value="" <%= filtros.estado === '' ? 'selected' : '' %>>Todos los estados</option>
+                                <% Object.entries(ESTADO_LABELS).forEach(([valor, label]) => { %>
+                                    <option value="<%= valor %>" <%= filtros.estado === valor ? 'selected' : '' %>><%= label %></option>
+                                <% }) %>
                             </select>
                         </div>
-                        <!-- Selector de Categoría -->
                         <div class="md:col-span-2">
-                            <select class="w-full bg-surface-container rounded-lg px-4 py-2.5 font-body-md text-body-md text-on-surface focus:outline-none focus:ring-1 focus:ring-secondary transition-all cursor-pointer">
-                                <option value="all">Colecciones</option>
-                                <option value="lenceria">Alta Lencería</option>
-                                <option value="bienestar">Wellness &amp; Tacto</option>
-                                <option value="aromas">Aromaterapia &amp; Ceras</option>
-                                <option value="accesorios">Cuero &amp; Joyería</option>
+                            <select name="categoriaId" class="w-full bg-surface-container rounded-lg px-4 py-2.5 font-body-md text-body-md text-on-surface focus:outline-none focus:ring-1 focus:ring-secondary transition-all cursor-pointer">
+                                <option value="" <%= filtros.categoriaId === '' ? 'selected' : '' %>>Colecciones</option>
+                                <% categorias.forEach(cat => { %>
+                                    <option value="<%= cat.id %>" <%= String(filtros.categoriaId) === String(cat.id) ? 'selected' : '' %>><%= cat.nombre %></option>
+                                <% }) %>
                             </select>
                         </div>
-                        <!-- Botones de Filtrado -->
                         <div class="md:col-span-2 flex items-center justify-end gap-2">
-                            <button class="px-4 py-2.5 rounded-lg bg-secondary text-on-secondary font-label-md text-label-md font-semibold hover:bg-secondary-fixed transition-colors">
-                                Filtrar
-                            </button>
-                            <button class="px-3 py-2.5 rounded-lg text-outline hover:text-on-surface font-label-sm text-label-sm uppercase tracking-wider transition-colors">
-                                Limpiar
-                            </button>
+                            <button type="submit" class="px-4 py-2.5 rounded-lg bg-secondary text-on-secondary font-label-md text-label-md font-semibold hover:bg-secondary-fixed transition-colors">Filtrar</button>
+                            <a href="/admin/inventario" class="px-3 py-2.5 rounded-lg text-outline hover:text-on-surface font-label-sm text-label-sm uppercase tracking-wider transition-colors">Limpiar</a>
                         </div>
                     </div>
-                </div>
-                <!-- 5. Tabla Principal de Inventario -->
+                </form>
+
                 <div class="bg-surface-container-low rounded-xl shadow-sm overflow-hidden">
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse">
                             <thead>
                             <tr class="bg-surface-container font-label-sm text-label-sm uppercase tracking-widest text-outline">
                                 <th class="py-4 px-6">Producto</th>
-                                <th class="py-4 px-4">Variante</th>
                                 <th class="py-4 px-4">SKU</th>
-                                <th class="py-4 px-4 text-right">Stock Actual</th>
+                                <th class="py-4 px-4 text-right">Stock Físico</th>
                                 <th class="py-4 px-4 text-right">Reservado</th>
                                 <th class="py-4 px-4 text-right">Disponible</th>
                                 <th class="py-4 px-4 text-right">Mínimo</th>
@@ -208,295 +146,66 @@
                             </tr>
                             </thead>
                             <tbody class="divide-y divide-surface-container-highest/20 font-body-md text-body-md">
-                            <!-- Fila 1: L'Amour Silk Robe -->
-                            <tr class="hover:bg-surface-container/60 transition-colors">
-                                <td class="py-4 px-6">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-12 h-12 rounded-lg bg-surface-container-highest overflow-hidden flex-shrink-0">
-                                            <img class="w-full h-full object-cover"
-                                                 data-alt="Silk satin luxury kimono in deep midnight black on a soft velvet stand, moody atelier lighting with gold reflex, high end fashion still life"
-                                                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwkCCl24cPK0jOqqUAW5gcwRvoqh8JOajcJVAwI_DUIAZ_ljMXydmSa_C-ZdXEU_kEKpAPRwolW_maAId7Z-n930jq0zc_rdVHAUTAGsMzl-ayMMLV6HTwuljTYExCiheQXki95ZNmvtiY5jU_9v-ScNyDxC6un6FmTeOS13uto0tnVbRCivT9GPYk9du6YeEBGzUBnXX_nrJjcC0qNFVYUJyXtb7Aqzrv-h-ZZAcUlhGubxhon9A">
+                            <% if (productos.length === 0) { %>
+                                <tr><td colspan="8" class="p-8 text-center text-on-surface-variant">No hay productos que coincidan con estos filtros.</td></tr>
+                            <% } %>
+                            <% productos.forEach(p => { %>
+                                <tr class="hover:bg-surface-container/60 transition-colors">
+                                    <td class="py-4 px-6">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-12 h-12 rounded-lg bg-surface-container-highest overflow-hidden flex-shrink-0">
+                                                <% if (p.imagen) { %><img class="w-full h-full object-cover" src="<%= p.imagen %>" alt="<%= p.nombre %>"><% } %>
+                                            </div>
+                                            <div class="flex flex-col">
+                                                <span class="font-headline-md text-base text-on-surface font-semibold"><%= p.nombre %></span>
+                                                <span class="font-label-sm text-label-sm text-outline"><%= p.categoria_nombre || '—' %><%= p.subcategoria_nombre ? ' / ' + p.subcategoria_nombre : '' %></span>
+                                            </div>
                                         </div>
-                                        <div class="flex flex-col">
-                                            <span class="font-headline-md text-base text-on-surface font-semibold">L'Amour Silk Robe</span>
-                                            <span class="font-label-sm text-label-sm text-outline">Seda Mulberry 100%</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="py-4 px-4 text-on-surface-variant font-label-md text-label-md">Negro / M</td>
-                                <td class="py-4 px-4 font-mono font-label-sm text-label-sm text-outline">LX-RB-001-BK
-                                </td>
-                                <td class="py-4 px-4 text-right font-medium text-on-surface">45</td>
-                                <td class="py-4 px-4 text-right text-outline">5</td>
-                                <td class="py-4 px-4 text-right font-bold text-secondary text-base">40</td>
-                                <td class="py-4 px-4 text-right text-outline">10</td>
-                                <td class="py-4 px-4 text-center">
-<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-high text-secondary font-label-sm text-label-sm">
-<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
-                  Disponible
-                </span>
-                                </td>
-                                <td class="py-4 px-6 text-right">
-                                    <div class="flex items-center justify-end gap-1">
+                                    </td>
+                                    <td class="py-4 px-4 font-mono font-label-sm text-label-sm text-outline"><%= p.sku %></td>
+                                    <td class="py-4 px-4 text-right font-medium text-on-surface"><%= p.stock %></td>
+                                    <td class="py-4 px-4 text-right text-outline"><%= p.reservado %></td>
+                                    <td class="py-4 px-4 text-right font-bold text-base <%= p.estadoCalculado === 'critico' || p.estadoCalculado === 'agotado' ? 'text-error' : 'text-secondary' %>"><%= p.disponible %></td>
+                                    <td class="py-4 px-4 text-right text-outline"><%= p.stock_minimo %></td>
+                                    <td class="py-4 px-4 text-center">
+                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full <%= ESTADO_BADGE[p.estadoCalculado] %> font-label-sm text-label-sm">
+                                            <%= ESTADO_LABELS[p.estadoCalculado] %>
+                                        </span>
+                                    </td>
+                                    <td class="py-4 px-6 text-right">
                                         <button class="p-1.5 rounded-lg text-outline hover:text-secondary hover:bg-surface-container-high transition-colors"
-                                                onclick="openModalFor('L\'Amour Silk Robe - Negro / M', 'LX-RB-001-BK', 45, 40)"
-                                                title="Ajustar Stock">
+                                                onclick="openModalFor(<%= p.id %>, '<%= p.nombre.replace(/'/g, "\\'") %>', '<%= p.sku %>', <%= p.stock %>, <%= p.disponible %>)"
+                                                title="Registrar Movimiento">
                                             <span class="material-symbols-outlined text-[18px]">tune</span>
                                         </button>
-                                        <button class="p-1.5 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors"
-                                                onclick="switchView('movimientos')" title="Ver Historial SKU">
-                                            <span class="material-symbols-outlined text-[18px]">history</span>
-                                        </button>
-                                        <button class="p-1.5 rounded-lg text-outline hover:text-primary transition-colors"
-                                                onclick="openQuickAdd('LX-RB-001-BK')" title="Agregar Stock Rápido">
-                                            <span class="material-symbols-outlined text-[18px]">add_circle</span>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!-- Fila 2: Élixir Sensuel Vibrante -->
-                            <tr class="hover:bg-surface-container/60 transition-colors">
-                                <td class="py-4 px-6">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-12 h-12 rounded-lg bg-surface-container-highest overflow-hidden flex-shrink-0">
-                                            <img class="w-full h-full object-cover"
-                                                 data-alt="High luxury rose gold metallic wellness intimate device placed gracefully on a dark obsidian pedestal, soft dramatic spotlighting"
-                                                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuCuxsx01nvDR4pksmpVB9dcNGurtOXIfM7nHxDPhS7KzUsNfYofKwz7T3DgqixXtX2dPXvzDeWqJ42DEBKhlZFHquNCLPWTXATyADwY6h0aiQj44KcCUboxWV5lz7NL0aybIPQuWB6nbZoY8XMghunSZb_twJsChxnGni6U-U24YLIhOTWQWna7w71jNKukkO134sy1fzjoCp6bXYzUD7zN7Dca6ZAAIuLOhKSpXVxp7GKGsRsa5F8">
-                                        </div>
-                                        <div class="flex flex-col">
-                                            <span class="font-headline-md text-base text-on-surface font-semibold">Élixir Sensuel Vibrante</span>
-                                            <span class="font-label-sm text-label-sm text-outline">Silicona médica &amp; oro rosado</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="py-4 px-4 text-on-surface-variant font-label-md text-label-md">Oro Rosa / 8
-                                    Func.
-                                </td>
-                                <td class="py-4 px-4 font-mono font-label-sm text-label-sm text-outline">
-                                    LX-VIB-042-GLD
-                                </td>
-                                <td class="py-4 px-4 text-right font-medium text-on-surface">8</td>
-                                <td class="py-4 px-4 text-right text-outline">2</td>
-                                <td class="py-4 px-4 text-right font-bold text-secondary-fixed text-base">6</td>
-                                <td class="py-4 px-4 text-right text-outline">5</td>
-                                <td class="py-4 px-4 text-center">
-<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container/30 text-secondary-fixed font-label-sm text-label-sm">
-<span class="w-1.5 h-1.5 rounded-full bg-secondary-fixed"></span>
-                  Stock Bajo
-                </span>
-                                </td>
-                                <td class="py-4 px-6 text-right">
-                                    <div class="flex items-center justify-end gap-1">
-                                        <button class="p-1.5 rounded-lg text-outline hover:text-secondary hover:bg-surface-container-high transition-colors"
-                                                onclick="openModalFor('Élixir Sensuel Vibrante', 'LX-VIB-042-GLD', 8, 6)"
-                                                title="Ajustar Stock">
-                                            <span class="material-symbols-outlined text-[18px]">tune</span>
-                                        </button>
-                                        <button class="p-1.5 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors"
-                                                onclick="switchView('movimientos')" title="Ver Historial SKU">
-                                            <span class="material-symbols-outlined text-[18px]">history</span>
-                                        </button>
-                                        <button class="p-1.5 rounded-lg text-outline hover:text-primary transition-colors"
-                                                onclick="openQuickAdd('LX-VIB-042-GLD')" title="Agregar Stock Rápido">
-                                            <span class="material-symbols-outlined text-[18px]">add_circle</span>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!-- Fila 3: Arnés Velvet Noir -->
-                            <tr class="hover:bg-surface-container/60 transition-colors">
-                                <td class="py-4 px-6">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-12 h-12 rounded-lg bg-surface-container-highest overflow-hidden flex-shrink-0">
-                                            <img class="w-full h-full object-cover"
-                                                 data-alt="Sophisticated artisanal leather and velvet harness in burgundy and gold brass hardware, luxurious shadow gradient background"
-                                                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuCa-AN4EshxgOh8UCA_dv4vymEzf2pK4zSqSeMuNh-nyuaKTY4NVSi1DPuCPz65vwBLO3CMVtjphsRS-Vy1m6Vw3O9F7PDaFbmkVeP7d5l07UcmKK6F6J7Y4ad9BLXNoYvv_100jHYORAGnlnOQZHjTyQSkmHV25bLu2W3ZFRjexFYVuO-Y5o9YqRNw1yC_AXw26dLjpf-3CdmpvPmta9pzcYQcDVDtb8IPyY0jg8PTlbzGCU0eZQc">
-                                        </div>
-                                        <div class="flex flex-col">
-                                            <span class="font-headline-md text-base text-on-surface font-semibold">Arnés Velvet Noir</span>
-                                            <span class="font-label-sm text-label-sm text-outline">Cuero toscano y herrajes oro</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="py-4 px-4 text-on-surface-variant font-label-md text-label-md">Burdeos /
-                                    Única
-                                </td>
-                                <td class="py-4 px-4 font-mono font-label-sm text-label-sm text-outline">
-                                    LX-HAR-019-BUR
-                                </td>
-                                <td class="py-4 px-4 text-right font-medium text-on-surface">3</td>
-                                <td class="py-4 px-4 text-right text-outline">2</td>
-                                <td class="py-4 px-4 text-right font-bold text-error text-base">1</td>
-                                <td class="py-4 px-4 text-right text-outline">5</td>
-                                <td class="py-4 px-4 text-center">
-<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-error-container/40 text-error font-label-sm text-label-sm">
-<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
-                  Stock Crítico
-                </span>
-                                </td>
-                                <td class="py-4 px-6 text-right">
-                                    <div class="flex items-center justify-end gap-1">
-                                        <button class="p-1.5 rounded-lg text-outline hover:text-secondary hover:bg-surface-container-high transition-colors"
-                                                onclick="openModalFor('Arnés Velvet Noir', 'LX-HAR-019-BUR', 3, 1)"
-                                                title="Ajustar Stock">
-                                            <span class="material-symbols-outlined text-[18px]">tune</span>
-                                        </button>
-                                        <button class="p-1.5 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors"
-                                                onclick="switchView('movimientos')" title="Ver Historial SKU">
-                                            <span class="material-symbols-outlined text-[18px]">history</span>
-                                        </button>
-                                        <button class="p-1.5 rounded-lg text-outline hover:text-primary transition-colors"
-                                                onclick="openQuickAdd('LX-HAR-019-BUR')" title="Agregar Stock Rápido">
-                                            <span class="material-symbols-outlined text-[18px]">add_circle</span>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!-- Fila 4: Aceite de Masaje Cuir Doré -->
-                            <tr class="hover:bg-surface-container/60 transition-colors">
-                                <td class="py-4 px-6">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-12 h-12 rounded-lg bg-surface-container-highest overflow-hidden flex-shrink-0">
-                                            <img class="w-full h-full object-cover"
-                                                 data-alt="Amber frosted glass dropper bottle with luxurious gold foil label holding botanical elixir massage oil, dark reflective surface"
-                                                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_JPWM54De6pzHHVLH2Aqa7SJen4F-ggx3Ocg4OOsAbsHe4ZpmfyCfvJagY1ZjWL8cuXBr1IPf7fwtE4LYItbfTC_eO8T-NSczcUfEeBVTkC7NBWp8E1DKyHK_0Q-yJfj0VGuXz1YCyHmigZ0zXi3nL4rqfvuzNFKYSAQgN-vdd20QuyhsPkB5D9p4WKCfpuRQNISr6-spBl5A3sB7wHnfg2sWJo1Tj_xpVV0wVdbwhzDqhTVJyRw">
-                                        </div>
-                                        <div class="flex flex-col">
-                                            <span class="font-headline-md text-base text-on-surface font-semibold">Aceite de Masaje Cuir Doré</span>
-                                            <span class="font-label-sm text-label-sm text-outline">Extracto de Jojoba &amp; Bergamota</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="py-4 px-4 text-on-surface-variant font-label-md text-label-md">120ml /
-                                    Jazmín
-                                </td>
-                                <td class="py-4 px-4 font-mono font-label-sm text-label-sm text-outline">
-                                    LX-OIL-008-120
-                                </td>
-                                <td class="py-4 px-4 text-right font-medium text-outline">0</td>
-                                <td class="py-4 px-4 text-right text-outline">0</td>
-                                <td class="py-4 px-4 text-right font-bold text-outline text-base">0</td>
-                                <td class="py-4 px-4 text-right text-outline">10</td>
-                                <td class="py-4 px-4 text-center">
-<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-highest text-outline font-label-sm text-label-sm">
-<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
-                  Agotado
-                </span>
-                                </td>
-                                <td class="py-4 px-6 text-right">
-                                    <div class="flex items-center justify-end gap-1">
-                                        <button class="p-1.5 rounded-lg text-outline hover:text-secondary hover:bg-surface-container-high transition-colors"
-                                                onclick="openModalFor('Aceite de Masaje Cuir Doré', 'LX-OIL-008-120', 0, 0)"
-                                                title="Ajustar Stock">
-                                            <span class="material-symbols-outlined text-[18px]">tune</span>
-                                        </button>
-                                        <button class="p-1.5 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors"
-                                                onclick="switchView('movimientos')" title="Ver Historial SKU">
-                                            <span class="material-symbols-outlined text-[18px]">history</span>
-                                        </button>
-                                        <button class="p-1.5 rounded-lg text-outline hover:text-primary transition-colors"
-                                                onclick="openQuickAdd('LX-OIL-008-120')" title="Agregar Stock Rápido">
-                                            <span class="material-symbols-outlined text-[18px]">add_circle</span>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!-- Fila 5: Vela Aromática Sensations -->
-                            <tr class="hover:bg-surface-container/60 transition-colors">
-                                <td class="py-4 px-6">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-12 h-12 rounded-lg bg-surface-container-highest overflow-hidden flex-shrink-0">
-                                            <img class="w-full h-full object-cover"
-                                                 data-alt="Black matte luxury scented candle with flickering gentle flame illuminating subtle gilded embossed emblem, dark ambient background"
-                                                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcEu2wbAL18M6xyuPqWFXsBsYTFE3FZQwOdeBSn221XGvFC9Yz1SeDbCjxrBQkrJasB0gFo8t12yfkooyF17GQuKXEQIdKqXoT3x3VPO2nxKuEc4g3OrPZNF9DFV0mPNHQGkhXGs8lhbYVLr36DrLk8j57LgHCbvBxhYyZEpdtZXmvr_JnKDv84Bny4ZW2iH1Lspl48SBVndoTqUTJYHqxmR-YV0iWJhn7z5jY8sxikSYheZopnjQ">
-                                        </div>
-                                        <div class="flex flex-col">
-                                            <span class="font-headline-md text-base text-on-surface font-semibold">Vela Aromática Sensations</span>
-                                            <span class="font-label-sm text-label-sm text-outline">Cera de soja &amp; mecha de algodón</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="py-4 px-4 text-on-surface-variant font-label-md text-label-md">240g / Sándalo
-                                    &amp; Vainilla
-                                </td>
-                                <td class="py-4 px-4 font-mono font-label-sm text-label-sm text-outline">
-                                    LX-CDL-014-240
-                                </td>
-                                <td class="py-4 px-4 text-right font-medium text-on-surface">82</td>
-                                <td class="py-4 px-4 text-right text-outline">10</td>
-                                <td class="py-4 px-4 text-right font-bold text-secondary text-base">72</td>
-                                <td class="py-4 px-4 text-right text-outline">15</td>
-                                <td class="py-4 px-4 text-center">
-<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-high text-secondary font-label-sm text-label-sm">
-<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
-                  Disponible
-                </span>
-                                </td>
-                                <td class="py-4 px-6 text-right">
-                                    <div class="flex items-center justify-end gap-1">
-                                        <button class="p-1.5 rounded-lg text-outline hover:text-secondary hover:bg-surface-container-high transition-colors"
-                                                onclick="openModalFor('Vela Aromática Sensations', 'LX-CDL-014-240', 82, 72)"
-                                                title="Ajustar Stock">
-                                            <span class="material-symbols-outlined text-[18px]">tune</span>
-                                        </button>
-                                        <button class="p-1.5 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors"
-                                                onclick="switchView('movimientos')" title="Ver Historial SKU">
-                                            <span class="material-symbols-outlined text-[18px]">history</span>
-                                        </button>
-                                        <button class="p-1.5 rounded-lg text-outline hover:text-primary transition-colors"
-                                                onclick="openQuickAdd('LX-CDL-014-240')" title="Agregar Stock Rápido">
-                                            <span class="material-symbols-outlined text-[18px]">add_circle</span>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
+                            <% }) %>
                             </tbody>
                         </table>
                     </div>
-                    <!-- Paginación de Tabla -->
-                    <div class="flex items-center justify-between px-6 py-4 bg-surface-container font-label-sm text-label-sm text-outline">
-                        <span class="">Mostrando 1-5 de 124 referencias registradas</span>
-                        <div class="flex items-center gap-2">
-                            <button class="px-3 py-1.5 rounded bg-surface-container-low text-on-surface hover:bg-surface-container-high transition-colors disabled:opacity-40"
-                                    disabled="">Anterior
-                            </button>
-                            <span class="px-3 py-1.5 rounded bg-secondary text-on-secondary font-semibold">1</span>
-                            <button class="px-3 py-1.5 rounded bg-surface-container-low text-on-surface hover:bg-surface-container-high transition-colors">
-                                2
-                            </button>
-                            <button class="px-3 py-1.5 rounded bg-surface-container-low text-on-surface hover:bg-surface-container-high transition-colors">
-                                3
-                            </button>
-                            <span class="px-1">...</span>
-                            <button class="px-3 py-1.5 rounded bg-surface-container-low text-on-surface hover:bg-surface-container-high transition-colors">
-                                Siguiente
-                            </button>
-                        </div>
-                    </div>
                 </div>
             </div>
-            <!-- 6. CONTENEDOR: VISTA 2 - MOVIMIENTOS DE INVENTARIO (Auditoría & Trazabilidad) -->
+
+            <!-- VISTA: MOVIMIENTOS -->
             <div class="space-y-6" id="view-movimientos">
-                <!-- Encabezado de la Sección de Auditoría -->
-                <div class="p-6 rounded-xl bg-surface-container-low flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <form method="GET" action="/admin/inventario" class="p-6 rounded-xl bg-surface-container-low flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <input type="hidden" name="vista" value="movimientos">
                     <div>
-                        <h2 class="font-headline-md text-headline-md text-on-surface">Auditoría de Movimientos
-                            Recientes</h2>
-                        <p class="font-body-md text-body-md text-on-surface-variant">Historial inmutable de entradas,
-                            salidas y ajustes de stock.</p>
+                        <h2 class="font-headline-md text-headline-md text-on-surface">Auditoría de Movimientos Recientes</h2>
+                        <p class="font-body-md text-body-md text-on-surface-variant">Últimos 50 registros. Historial inmutable de entradas, salidas y ajustes de stock.</p>
                     </div>
                     <div class="flex items-center gap-3">
                         <span class="font-label-sm text-label-sm text-outline">Filtrar por evento:</span>
-                        <select class="bg-surface-container rounded-lg px-3 py-1.5 font-label-md text-label-md text-on-surface focus:outline-none focus:ring-1 focus:ring-secondary">
-                            <option>Todos los movimientos</option>
-                            <option>Entradas</option>
-                            <option>Ventas</option>
-                            <option>Ajustes de merma</option>
-                            <option>Devoluciones</option>
+                        <select name="tipoMovimiento" onchange="this.form.submit()" class="bg-surface-container rounded-lg px-3 py-1.5 font-label-md text-label-md text-on-surface focus:outline-none focus:ring-1 focus:ring-secondary">
+                            <option value="" <%= filtros.tipoMovimiento === '' ? 'selected' : '' %>>Todos los movimientos</option>
+                            <% Object.entries(TIPO_MOV_LABELS).forEach(([valor, label]) => { %>
+                                <option value="<%= valor %>" <%= filtros.tipoMovimiento === valor ? 'selected' : '' %>><%= label %></option>
+                            <% }) %>
                         </select>
                     </div>
-                </div>
-                <!-- Tabla de Trazabilidad -->
+                </form>
+
                 <div class="bg-surface-container-low rounded-xl shadow-sm overflow-hidden">
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse">
@@ -513,244 +222,128 @@
                             </tr>
                             </thead>
                             <tbody class="divide-y divide-surface-container-highest/20 font-body-md text-body-md">
-                            <!-- Movimiento 1 -->
-                            <tr class="hover:bg-surface-container/60 transition-colors">
-                                <td class="py-4 px-6 font-label-sm text-label-sm text-outline whitespace-nowrap">24 Oct
-                                    2023, 15:30
-                                </td>
-                                <td class="py-4 px-4">
-                                    <div class="flex flex-col">
-                                        <span class="font-semibold text-on-surface">Élixir Sensuel Vibrante - Oro Rosa</span>
-                                        <span class="font-mono font-label-sm text-label-sm text-outline">LX-VIB-042-GLD</span>
-                                    </div>
-                                </td>
-                                <td class="py-4 px-4">
-<span class="px-2.5 py-1 rounded-full bg-surface-container-high text-secondary font-label-sm text-label-sm inline-flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px]">arrow_downward</span> Entrada manual
-                </span>
-                                </td>
-                                <td class="py-4 px-4 text-center font-bold text-secondary">+20</td>
-                                <td class="py-4 px-4 text-right text-outline">5</td>
-                                <td class="py-4 px-4 text-right font-medium text-on-surface">25</td>
-                                <td class="py-4 px-6 text-on-surface-variant font-label-md text-label-md">
-                                    Reabastecimiento proveedor Francia
-                                </td>
-                                <td class="py-4 px-6 whitespace-nowrap">
-                                    <div class="flex flex-col">
-                                        <span class="font-medium text-on-surface text-sm">Isabella Rossellini</span>
-                                        <span class="font-label-sm text-label-sm text-secondary">Admin Central</span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!-- Movimiento 2 -->
-                            <tr class="hover:bg-surface-container/60 transition-colors">
-                                <td class="py-4 px-6 font-label-sm text-label-sm text-outline whitespace-nowrap">24 Oct
-                                    2023, 13:15
-                                </td>
-                                <td class="py-4 px-4">
-                                    <div class="flex flex-col">
-                                        <span class="font-semibold text-on-surface">L'Amour Silk Robe - Negro / M</span>
-                                        <span class="font-mono font-label-sm text-label-sm text-outline">LX-RB-001-BK</span>
-                                    </div>
-                                </td>
-                                <td class="py-4 px-4">
-<span class="px-2.5 py-1 rounded-full bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm inline-flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px]">shopping_cart</span> Venta
-                </span>
-                                </td>
-                                <td class="py-4 px-4 text-center font-bold text-error">-2</td>
-                                <td class="py-4 px-4 text-right text-outline">47</td>
-                                <td class="py-4 px-4 text-right font-medium text-on-surface">45</td>
-                                <td class="py-4 px-6 text-on-surface-variant font-label-md text-label-md">Venta Pedido
-                                    #LX-5021
-                                </td>
-                                <td class="py-4 px-6 whitespace-nowrap">
-                                    <div class="flex flex-col">
-                                        <span class="font-medium text-on-surface text-sm">Sistema Automático</span>
-                                        <span class="font-label-sm text-label-sm text-outline">API Checkout</span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!-- Movimiento 3 -->
-                            <tr class="hover:bg-surface-container/60 transition-colors">
-                                <td class="py-4 px-6 font-label-sm text-label-sm text-outline whitespace-nowrap">23 Oct
-                                    2023, 18:40
-                                </td>
-                                <td class="py-4 px-4">
-                                    <div class="flex flex-col">
-                                        <span class="font-semibold text-on-surface">Arnés Velvet Noir - Burdeos</span>
-                                        <span class="font-mono font-label-sm text-label-sm text-outline">LX-HAR-019-BUR</span>
-                                    </div>
-                                </td>
-                                <td class="py-4 px-4">
-<span class="px-2.5 py-1 rounded-full bg-error-container/40 text-error font-label-sm text-label-sm inline-flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px]">tune</span> Ajuste
-                </span>
-                                </td>
-                                <td class="py-4 px-4 text-center font-bold text-error">-1</td>
-                                <td class="py-4 px-4 text-right text-outline">4</td>
-                                <td class="py-4 px-4 text-right font-medium text-on-surface">3</td>
-                                <td class="py-4 px-6 text-on-surface-variant font-label-md text-label-md">Control de
-                                    calidad por empaque dañado
-                                </td>
-                                <td class="py-4 px-6 whitespace-nowrap">
-                                    <div class="flex flex-col">
-                                        <span class="font-medium text-on-surface text-sm">Carlos Domínguez</span>
-                                        <span class="font-label-sm text-label-sm text-outline">Logística Bodega</span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!-- Movimiento 4 -->
-                            <tr class="hover:bg-surface-container/60 transition-colors">
-                                <td class="py-4 px-6 font-label-sm text-label-sm text-outline whitespace-nowrap">23 Oct
-                                    2023, 11:05
-                                </td>
-                                <td class="py-4 px-4">
-                                    <div class="flex flex-col">
-                                        <span class="font-semibold text-on-surface">Vela Aromática Sensations</span>
-                                        <span class="font-mono font-label-sm text-label-sm text-outline">LX-CDL-014-240</span>
-                                    </div>
-                                </td>
-                                <td class="py-4 px-4">
-<span class="px-2.5 py-1 rounded-full bg-surface-container-high text-primary font-label-sm text-label-sm inline-flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px]">undo</span> Devolución
-                </span>
-                                </td>
-                                <td class="py-4 px-4 text-center font-bold text-secondary">+1</td>
-                                <td class="py-4 px-4 text-right text-outline">81</td>
-                                <td class="py-4 px-4 text-right font-medium text-on-surface">82</td>
-                                <td class="py-4 px-6 text-on-surface-variant font-label-md text-label-md">Devolución
-                                    cliente Pedido #LX-4980
-                                </td>
-                                <td class="py-4 px-6 whitespace-nowrap">
-                                    <div class="flex flex-col">
-                                        <span class="font-medium text-on-surface text-sm">Isabella Rossellini</span>
-                                        <span class="font-label-sm text-label-sm text-secondary">Admin Central</span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!-- Movimiento 5 -->
-                            <tr class="hover:bg-surface-container/60 transition-colors">
-                                <td class="py-4 px-6 font-label-sm text-label-sm text-outline whitespace-nowrap">22 Oct
-                                    2023, 09:20
-                                </td>
-                                <td class="py-4 px-4">
-                                    <div class="flex flex-col">
-                                        <span class="font-semibold text-on-surface">Aceite de Masaje Cuir Doré</span>
-                                        <span class="font-mono font-label-sm text-label-sm text-outline">LX-OIL-008-120</span>
-                                    </div>
-                                </td>
-                                <td class="py-4 px-4">
-<span class="px-2.5 py-1 rounded-full bg-surface-container-highest text-error font-label-sm text-label-sm inline-flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px]">remove_circle_outline</span> Salida manual
-                </span>
-                                </td>
-                                <td class="py-4 px-4 text-center font-bold text-error">-5</td>
-                                <td class="py-4 px-4 text-right text-outline">5</td>
-                                <td class="py-4 px-4 text-right font-medium text-on-surface">0</td>
-                                <td class="py-4 px-6 text-on-surface-variant font-label-md text-label-md">Muestra para
-                                    showroom exclusivo Marbella
-                                </td>
-                                <td class="py-4 px-6 whitespace-nowrap">
-                                    <div class="flex flex-col">
-                                        <span class="font-medium text-on-surface text-sm">Carlos Domínguez</span>
-                                        <span class="font-label-sm text-label-sm text-outline">Logística Bodega</span>
-                                    </div>
-                                </td>
-                            </tr>
+                            <% if (movimientos.length === 0) { %>
+                                <tr><td colspan="8" class="p-8 text-center text-on-surface-variant">Aún no hay movimientos registrados.</td></tr>
+                            <% } %>
+                            <% movimientos.forEach(m => { %>
+                                <% const variacion = m.stock_nuevo - m.stock_anterior; %>
+                                <tr class="hover:bg-surface-container/60 transition-colors">
+                                    <td class="py-4 px-6 font-label-sm text-label-sm text-outline whitespace-nowrap">
+                                        <%= new Date(m.created_at).toLocaleString('es-CL', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) %>
+                                    </td>
+                                    <td class="py-4 px-4">
+                                        <div class="flex flex-col">
+                                            <span class="font-semibold text-on-surface"><%= m.producto_nombre %></span>
+                                            <span class="font-mono font-label-sm text-label-sm text-outline"><%= m.producto_sku %></span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-4">
+                                        <% if (m.tipo === 'entrada') { %>
+                                            <span class="px-2.5 py-1 rounded-full bg-surface-container-high text-secondary font-label-sm text-label-sm inline-flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-[14px]">arrow_downward</span>
+                                        <% } else if (m.tipo === 'venta') { %>
+                                            <span class="px-2.5 py-1 rounded-full bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm inline-flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-[14px]">shopping_cart</span>
+                                        <% } else if (m.tipo === 'ajuste') { %>
+                                            <span class="px-2.5 py-1 rounded-full bg-error-container/40 text-error font-label-sm text-label-sm inline-flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-[14px]">tune</span>
+                                        <% } else if (m.tipo === 'devolucion') { %>
+                                            <span class="px-2.5 py-1 rounded-full bg-surface-container-high text-primary font-label-sm text-label-sm inline-flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-[14px]">undo</span>
+                                        <% } else if (m.tipo === 'salida') { %>
+                                            <span class="px-2.5 py-1 rounded-full bg-surface-container-highest text-error font-label-sm text-label-sm inline-flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-[14px]">remove_circle_outline</span>
+                                        <% } %>
+                                                <%= TIPO_MOV_LABELS[m.tipo] %></span>
+                                    </td>
+                                    <td class="py-4 px-4 text-center font-bold <%= variacion >= 0 ? 'text-secondary' : 'text-error' %>"><%= variacion >= 0 ? '+' : '' %><%= variacion %></td>
+                                    <td class="py-4 px-4 text-right text-outline"><%= m.stock_anterior %></td>
+                                    <td class="py-4 px-4 text-right font-medium text-on-surface"><%= m.stock_nuevo %></td>
+                                    <td class="py-4 px-6 text-on-surface-variant font-label-md text-label-md"><%= m.motivo %></td>
+                                    <td class="py-4 px-6 whitespace-nowrap">
+                                        <span class="font-medium text-on-surface text-sm"><%= m.actor || 'Sistema' %></span>
+                                    </td>
+                                </tr>
+                            <% }) %>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-            <!-- 7. Modal Interactivo de Acción de Stock ("Ajustar / Registrar Movimiento") -->
-            <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 transition-opacity hidden"
-                 id="modal-stock">
+
+            <!-- Modal: Registrar Movimiento -->
+            <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 transition-opacity hidden" id="modal-stock">
                 <div class="bg-surface-container-low rounded-2xl max-w-lg w-full p-8 shadow-2xl space-y-6 relative">
-                    <!-- Botón de Cerrar -->
-                    <button class="absolute top-6 right-6 p-2 rounded-full text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors"
-                            onclick="closeModal()">
+                    <button class="absolute top-6 right-6 p-2 rounded-full text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors" onclick="closeModal()">
                         <span class="material-symbols-outlined text-[20px]">close</span>
                     </button>
-                    <!-- Encabezado del Modal -->
                     <div class="space-y-1">
                         <span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary">Acción Directa de Bodega</span>
-                        <h3 class="font-headline-md text-headline-md text-on-surface" id="modal-title">Ajustar
-                            Existencias</h3>
-                        <p class="font-label-md text-label-md text-outline" id="modal-product-subtitle">L'Amour Silk
-                            Robe - Negro / M (LX-RB-001-BK)</p>
+                        <h3 class="font-headline-md text-headline-md text-on-surface">Registrar Movimiento</h3>
+                        <p class="font-label-md text-label-md text-outline" id="modal-product-subtitle"></p>
                     </div>
-                    <!-- Selector de Tipo de Acción -->
-                    <div class="space-y-2">
-                        <label class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Tipo de
-                            Movimiento</label>
-                        <div class="grid grid-cols-3 gap-2">
-                            <button class="py-2.5 px-3 rounded-lg bg-secondary text-on-secondary font-semibold font-label-md text-label-md flex items-center justify-center gap-1.5 transition-colors"
-                                    id="btn-mov-entrada" onclick="setMovementType('entrada')" type="button">
-                                <span class="material-symbols-outlined text-secondary text-[18px]">add</span> Entrada
-                                (+)
-                            </button>
-                            <button class="py-2.5 px-3 rounded-lg bg-surface-container text-on-surface font-label-md text-label-md flex items-center justify-center gap-1.5 transition-colors"
-                                    id="btn-mov-salida" onclick="setMovementType('salida')" type="button">
-                                <span class="material-symbols-outlined text-error text-[18px]">remove</span> Salida (-)
-                            </button>
-                            <button class="py-2.5 px-3 rounded-lg bg-surface-container text-on-surface font-label-md text-label-md flex items-center justify-center gap-1.5 transition-colors"
-                                    id="btn-mov-ajuste" onclick="setMovementType('ajuste')" type="button">
-                                <span class="material-symbols-outlined text-[18px]">tune</span> Ajuste (=)
+
+                    <form id="form-movimiento" method="POST" action="/admin/inventario/movimiento" class="space-y-6">
+                        <input type="hidden" name="productoId" id="input-producto-id">
+
+                        <div class="space-y-2">
+                            <label class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Tipo de Movimiento</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button type="button" class="btn-mov py-2.5 px-3 rounded-lg font-label-md text-label-md flex items-center justify-center gap-1.5 transition-colors" id="btn-mov-entrada" onclick="setMovementType('entrada')">
+                                    <span class="material-symbols-outlined text-[18px]">add</span> Entrada (+)
+                                </button>
+                                <button type="button" class="btn-mov py-2.5 px-3 rounded-lg font-label-md text-label-md flex items-center justify-center gap-1.5 transition-colors" id="btn-mov-salida" onclick="setMovementType('salida')">
+                                    <span class="material-symbols-outlined text-[18px]">remove</span> Salida (-)
+                                </button>
+                                <button type="button" class="btn-mov py-2.5 px-3 rounded-lg font-label-md text-label-md flex items-center justify-center gap-1.5 transition-colors" id="btn-mov-ajuste" onclick="setMovementType('ajuste')">
+                                    <span class="material-symbols-outlined text-[18px]">tune</span> Ajuste (=)
+                                </button>
+                            </div>
+                            <input type="hidden" name="tipo" id="input-tipo" value="entrada">
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="font-label-sm text-label-sm uppercase tracking-wider text-outline" for="input-qty" id="label-qty">Cantidad de Unidades</label>
+                            <input class="w-full bg-surface-container rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface focus:outline-none focus:ring-1 focus:ring-secondary transition-all" id="input-qty" name="cantidad" min="0" oninput="updateCalculation()" type="number" required>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="font-label-sm text-label-sm uppercase tracking-wider text-outline flex items-center justify-between" for="input-reason">
+                                <span>Motivo del Movimiento (Obligatorio)</span>
+                                <span class="text-secondary font-label-sm text-label-sm">Auditoría Requerida</span>
+                            </label>
+                            <textarea class="w-full bg-surface-container rounded-lg px-4 py-2.5 font-body-md text-body-md text-on-surface focus:outline-none focus:ring-1 focus:ring-secondary transition-all" id="input-reason" name="motivo" placeholder="Ej. Recepción de lote, rotura de inventario o muestra promocional..." rows="2" required></textarea>
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-surface-container flex items-center justify-between">
+                            <div class="flex flex-col">
+                                <span class="font-label-sm text-label-sm text-outline">Stock Físico Actual</span>
+                                <span class="font-headline-md text-lg text-on-surface font-semibold" id="calc-current">0 uds</span>
+                            </div>
+                            <span class="material-symbols-outlined text-outline">arrow_forward</span>
+                            <div class="flex flex-col text-right">
+                                <span class="font-label-sm text-label-sm text-secondary">Stock Proyectado</span>
+                                <span class="font-headline-md text-lg text-secondary font-bold" id="calc-projected">0 uds</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-end gap-3 pt-2">
+                            <button class="px-5 py-2.5 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright font-label-md text-label-md transition-colors" onclick="closeModal()" type="button">Cancelar</button>
+                            <button class="px-6 py-2.5 rounded-lg bg-secondary text-on-secondary font-label-md text-label-md font-bold hover:bg-secondary-fixed transition-colors shadow-md" type="submit">
+                                Confirmar y Guardar en Historial
                             </button>
                         </div>
-                    </div>
-                    <!-- Input de Cantidad -->
-                    <div class="space-y-2">
-                        <label class="font-label-sm text-label-sm uppercase tracking-wider text-outline"
-                               for="input-qty">Cantidad de Unidades</label>
-                        <input class="w-full bg-surface-container rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface focus:outline-none focus:ring-1 focus:ring-secondary transition-all"
-                               id="input-qty" min="1" oninput="updateCalculation()" type="number" value="5"
-                               placeholder="3">
-                    </div>
-                    <!-- Motivo Obligatorio -->
-                    <div class="space-y-2">
-                        <label class="font-label-sm text-label-sm uppercase tracking-wider text-outline flex items-center justify-between"
-                               for="input-reason">
-                            <span class="">Motivo del Ajuste (Obligatorio)</span>
-                            <span class="text-secondary font-label-sm text-label-sm">Auditoría Requerida</span>
-                        </label>
-                        <textarea
-                                class="w-full bg-surface-container rounded-lg px-4 py-2.5 font-body-md text-body-md text-on-surface focus:outline-none focus:ring-1 focus:ring-secondary transition-all"
-                                id="input-reason"
-                                placeholder="Ej. Recepción de lote, rotura de inventario o muestra promocional..."
-                                rows="2"></textarea>
-                    </div>
-                    <!-- Resumen Calculado de Existencias -->
-                    <div class="p-4 rounded-xl bg-surface-container flex items-center justify-between">
-                        <div class="flex flex-col">
-                            <span class="font-label-sm text-label-sm text-outline">Stock Físico Actual</span>
-                            <span class="font-headline-md text-lg text-on-surface font-semibold" id="calc-current">45 uds</span>
-                        </div>
-                        <span class="material-symbols-outlined text-outline">arrow_forward</span>
-                        <div class="flex flex-col text-right">
-                            <span class="font-label-sm text-label-sm text-secondary">Stock Proyectado</span>
-                            <span class="font-headline-md text-lg text-secondary font-bold"
-                                  id="calc-projected">45 uds</span>
-                        </div>
-                    </div>
-                    <!-- Acciones de Modal -->
-                    <div class="flex items-center justify-end gap-3 pt-2">
-                        <button class="px-5 py-2.5 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright font-label-md text-label-md transition-colors"
-                                onclick="closeModal()" type="button">
-                            Cancelar
-                        </button>
-                        <button class="px-6 py-2.5 rounded-lg bg-secondary text-on-secondary font-label-md text-label-md font-bold hover:bg-secondary-fixed transition-colors shadow-md"
-                                onclick="confirmMovement()" type="button">
-                            Confirmar y Guardar en Historial
-                        </button>
-                    </div>
+                    </form>
                 </div>
             </div>
 
         </div>
     </main>
 </div>
+
+<script>
+    window.__vistaInicial = <%- JSON.stringify(filtros.tipoMovimiento || (typeof filtros !== 'undefined' ? '' : '')) %>;
+</script>
 <script src="/javascripts/admin/sidebar-toggle.js"></script>
 <script src="/javascripts/admin/inventario.js"></script>
 </body>

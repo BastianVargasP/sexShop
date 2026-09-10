@@ -6,6 +6,7 @@ import * as productosAdminController from '../controllers/adminProductosControll
 import * as categoriasAdminController from '../controllers/adminCategoriasController.js';
 import * as pedidosAdminController from '../controllers/adminPedidosController.js';
 import * as cuponesAdminController from '../controllers/adminCuponesController.js';
+import * as inventarioAdminController from '../controllers/adminInventarioController.js';
 
 const router = express.Router();
 
@@ -61,7 +62,9 @@ router.get('/pedidos', pedidosAdminController.listarPedidos);
 router.post('/pedidos/:id/estado', pedidosAdminController.actualizarEstado);
 router.post('/pedidos/:id/pago', pedidosAdminController.actualizarEstadoPago);
 
-router.get('/inventario', adminController.mostrarInventario);
+router.get('/inventario', inventarioAdminController.mostrarInventario);
+router.post('/inventario/movimiento', inventarioAdminController.registrarMovimiento);
+
 router.get('/configuracion', adminController.mostrarConfiguracion);
 
 export default router;
