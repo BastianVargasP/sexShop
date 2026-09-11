@@ -27,7 +27,7 @@ export const procesarLogin = async (req, res) => {
         }
 
         const resultado = await pool.query(
-            'SELECT id, nombre, apellido, email, password_hash, telefono, rol FROM clientes WHERE email = $1',
+            'SELECT id, nombre, apellido, email, password_hash, telefono, rol, bloqueado FROM clientes WHERE email = $1',
             [email]
         );
 
@@ -49,6 +49,15 @@ export const procesarLogin = async (req, res) => {
                 ok: false,
                 mensaje: MENSAJE_CREDENCIALES_INVALIDAS,
                 error: { status: 401, stack: 'Verifica tus datos e intenta nuevamente.' }
+            });
+        }
+
+        if (usuario.bloqueado) {
+            registrarActividad(`🔐❌ POST /autenticacion/login - RECHAZADO: Cuenta bloqueada (${email}).`);
+            return res.status(403).render('error', {
+                ok: false,
+                mensaje: 'Tu cuenta se encuentra bloqueada. Contacta a soporte para más información.',
+                error: { status: 403, stack: 'Si crees que esto es un error, contáctanos.' }
             });
         }
 

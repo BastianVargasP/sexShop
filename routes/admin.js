@@ -7,6 +7,7 @@ import * as categoriasAdminController from '../controllers/adminCategoriasContro
 import * as pedidosAdminController from '../controllers/adminPedidosController.js';
 import * as cuponesAdminController from '../controllers/adminCuponesController.js';
 import * as inventarioAdminController from '../controllers/adminInventarioController.js';
+import * as clientesAdminController from '../controllers/adminClientesController.js';
 
 const router = express.Router();
 
@@ -56,7 +57,10 @@ router.post('/cupones/:id/editar', cuponesAdminController.actualizarCupon);
 router.post('/cupones/:id/activar', cuponesAdminController.alternarActivo);
 router.post('/cupones/:id/eliminar', cuponesAdminController.eliminarCupon);
 
-router.get('/clientes', adminController.mostrarClientes);
+router.get('/clientes', clientesAdminController.listarClientes);
+router.get('/clientes/:id/detalle', clientesAdminController.obtenerDetalleCliente);
+router.post('/clientes/:id/bloquear', clientesAdminController.alternarBloqueo);
+router.post('/clientes/:id/eliminar', clientesAdminController.eliminarCliente);
 
 router.get('/pedidos', pedidosAdminController.listarPedidos);
 router.post('/pedidos/:id/estado', pedidosAdminController.actualizarEstado);
