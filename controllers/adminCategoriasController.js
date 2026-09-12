@@ -1,6 +1,7 @@
 import { pool } from '../helpers/database.js';
 import { registrarActividad } from '../helpers/logger.js';
 import { generarSlugUnico } from '../helpers/slug.js';
+import { quiereJson } from '../helpers/peticiones.js';
 
 /* ==================== Listado (categorías + subcategorías) ==================== */
 
@@ -93,9 +94,10 @@ export const crearCategoria = async (req, res, next) => {
         const { nombre, descripcion, imagen, activa } = req.body;
 
         if (!nombre) {
+            const mensaje = 'El nombre de la categoría es obligatorio.';
+            if (quiereJson(req)) return res.status(400).json({ ok: false, error: mensaje });
             return res.status(400).render('error', {
-                ok: false,
-                mensaje: 'El nombre de la categoría es obligatorio.',
+                ok: false, mensaje,
                 error: { status: 400, stack: 'Revisa el formulario e intenta nuevamente.' }
             });
         }
@@ -108,16 +110,19 @@ export const crearCategoria = async (req, res, next) => {
         const ordenResult = await pool.query('SELECT COALESCE(MAX(orden), -1) + 1 AS siguiente FROM categorias');
         const siguienteOrden = ordenResult.rows[0].siguiente;
 
-        await pool.query(
+        const insertResult = await pool.query(
             `INSERT INTO categorias (nombre, slug, descripcion, imagen, orden, activa)
-             VALUES ($1, $2, $3, $4, $5, $6)`,
+             VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, nombre, slug, activa`,
             [nombre, slug, descripcion || null, imagen || null, siguienteOrden, activa !== undefined]
         );
 
         registrarActividad(`📂 POST /admin/categorias - ÉXITO: categoría "${nombre}" creada (slug ${slug}).`);
+
+        if (quiereJson(req)) return res.json({ ok: true, categoria: insertResult.rows[0] });
         res.redirect('/admin/categorias');
     } catch (error) {
         registrarActividad(`📂❌ POST /admin/categorias - ERROR: ${error.message}`);
+        if (quiereJson(req)) return res.status(500).json({ ok: false, error: 'No se pudo crear la categoría.' });
         next(error);
     }
 };
@@ -221,18 +226,20 @@ export const crearSubcategoria = async (req, res, next) => {
         const { nombre, categoriaId, imagen, activa } = req.body;
 
         if (!nombre || !categoriaId) {
+            const mensaje = 'El nombre y la categoría principal son obligatorios.';
+            if (quiereJson(req)) return res.status(400).json({ ok: false, error: mensaje });
             return res.status(400).render('error', {
-                ok: false,
-                mensaje: 'El nombre y la categoría principal son obligatorios.',
+                ok: false, mensaje,
                 error: { status: 400, stack: 'Revisa el formulario e intenta nuevamente.' }
             });
         }
 
         const categoriaPadre = await pool.query('SELECT id FROM categorias WHERE id = $1', [categoriaId]);
         if (categoriaPadre.rows.length === 0) {
+            const mensaje = 'La categoría principal seleccionada no existe.';
+            if (quiereJson(req)) return res.status(400).json({ ok: false, error: mensaje });
             return res.status(400).render('error', {
-                ok: false,
-                mensaje: 'La categoría principal seleccionada no existe.',
+                ok: false, mensaje,
                 error: { status: 400, stack: 'Selecciona una categoría válida.' }
             });
         }
@@ -251,16 +258,19 @@ export const crearSubcategoria = async (req, res, next) => {
         );
         const siguienteOrden = ordenResult.rows[0].siguiente;
 
-        await pool.query(
+        const insertResult = await pool.query(
             `INSERT INTO subcategorias (categoria_id, nombre, slug, imagen, orden, activa)
-             VALUES ($1, $2, $3, $4, $5, $6)`,
+             VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, nombre, categoria_id, activa`,
             [categoriaId, nombre, slug, imagen || null, siguienteOrden, activa !== undefined]
         );
 
         registrarActividad(`📂 POST /admin/subcategorias - ÉXITO: subcategoría "${nombre}" creada.`);
+
+        if (quiereJson(req)) return res.json({ ok: true, subcategoria: insertResult.rows[0] });
         res.redirect('/admin/categorias');
     } catch (error) {
         registrarActividad(`📂❌ POST /admin/subcategorias - ERROR: ${error.message}`);
+        if (quiereJson(req)) return res.status(500).json({ ok: false, error: 'No se pudo crear la subcategoría.' });
         next(error);
     }
 };

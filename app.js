@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
-import {formatearCLP} from "./helpers/formato.js";
+import {formatearCLP, formatearFecha} from "./helpers/formato.js";
 import { pool } from './helpers/database.js';
 
 // Importación de archivos de ruteo (locales) según el éstandar ES6
@@ -72,6 +72,7 @@ app.use(session({
 app.use(async (req, res, next) => {
     res.locals.usuario = req.session.usuario || null;
     res.locals.formatearCLP = formatearCLP;
+    res.locals.formatearFecha = formatearFecha;
     res.locals.cantidadCarrito = 0;
 
     if (req.session.usuario) {

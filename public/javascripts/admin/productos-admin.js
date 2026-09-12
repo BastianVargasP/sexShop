@@ -69,3 +69,121 @@ document.addEventListener('DOMContentLoaded', () => {
         overlay.classList.remove('opacity-0');
     }
 });
+
+function abrirModalNuevaCategoria() {
+    document.getElementById('inputNuevaCategoriaNombre').value = '';
+    document.getElementById('errorNuevaCategoria').classList.add('hidden');
+    const modal = document.getElementById('modalNuevaCategoria');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+function cerrarModalNuevaCategoria() {
+    const modal = document.getElementById('modalNuevaCategoria');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+
+async function guardarNuevaCategoria() {
+    const nombre = document.getElementById('inputNuevaCategoriaNombre').value.trim();
+    const errorEl = document.getElementById('errorNuevaCategoria');
+    errorEl.classList.add('hidden');
+
+    if (!nombre) {
+        errorEl.textContent = 'El nombre es obligatorio.';
+        errorEl.classList.remove('hidden');
+        return;
+    }
+
+    try {
+        const respuesta = await fetch('/admin/categorias', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            credentials: 'same-origin',
+            body: JSON.stringify({ nombre, activa: true })
+        });
+        const datos = await respuesta.json();
+
+        if (!datos.ok) {
+            errorEl.textContent = datos.error || 'No se pudo crear la categoría.';
+            errorEl.classList.remove('hidden');
+            return;
+        }
+
+        const selectCategoria = document.getElementById('selectCategoria');
+        const option = document.createElement('option');
+        option.value = datos.categoria.id;
+        option.textContent = datos.categoria.nombre;
+        option.selected = true;
+        selectCategoria.appendChild(option);
+        selectCategoria.value = datos.categoria.id;
+        actualizarSubcategorias(datos.categoria.id, null);
+
+        cerrarModalNuevaCategoria();
+    } catch (error) {
+        errorEl.textContent = 'Ocurrió un error de conexión.';
+        errorEl.classList.remove('hidden');
+    }
+}
+
+function abrirModalNuevaSubcategoria() {
+    const selectCategoria = document.getElementById('selectCategoria');
+    if (!selectCategoria.value) {
+        alert('Primero selecciona una categoría.');
+        return;
+    }
+    document.getElementById('nuevaSubcategoriaCategoriaNombre').textContent =
+        selectCategoria.options[selectCategoria.selectedIndex].textContent;
+    document.getElementById('inputNuevaSubcategoriaNombre').value = '';
+    document.getElementById('errorNuevaSubcategoria').classList.add('hidden');
+    const modal = document.getElementById('modalNuevaSubcategoria');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+function cerrarModalNuevaSubcategoria() {
+    const modal = document.getElementById('modalNuevaSubcategoria');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+
+async function guardarNuevaSubcategoria() {
+    const categoriaId = document.getElementById('selectCategoria').value;
+    const nombre = document.getElementById('inputNuevaSubcategoriaNombre').value.trim();
+    const errorEl = document.getElementById('errorNuevaSubcategoria');
+    errorEl.classList.add('hidden');
+
+    if (!nombre) {
+        errorEl.textContent = 'El nombre es obligatorio.';
+        errorEl.classList.remove('hidden');
+        return;
+    }
+
+    try {
+        const respuesta = await fetch('/admin/subcategorias', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            credentials: 'same-origin',
+            body: JSON.stringify({ nombre, categoriaId, activa: true })
+        });
+        const datos = await respuesta.json();
+
+        if (!datos.ok) {
+            errorEl.textContent = datos.error || 'No se pudo crear la subcategoría.';
+            errorEl.classList.remove('hidden');
+            return;
+        }
+
+        window.__subcategorias = window.__subcategorias || [];
+        window.__subcategorias.push({
+            id: datos.subcategoria.id,
+            nombre: datos.subcategoria.nombre,
+            categoriaId: datos.subcategoria.categoria_id,
+            activa: datos.subcategoria.activa
+        });
+
+        actualizarSubcategorias(categoriaId, datos.subcategoria.id);
+        cerrarModalNuevaSubcategoria();
+    } catch (error) {
+        errorEl.textContent = 'Ocurrió un error de conexión.';
+        errorEl.classList.remove('hidden');
+    }
+}

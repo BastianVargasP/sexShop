@@ -141,7 +141,7 @@
 
     function poblarModal(pedido) {
         document.getElementById('modal-numero-pedido').textContent = `#${pedido.numero_pedido}`;
-        document.getElementById('modal-fecha-pedido').textContent = new Date(pedido.created_at).toLocaleString('es-CL');
+        document.getElementById('modal-fecha-pedido').textContent = formatearFecha(pedido.created_at, { day: '2-digit', month: 'short', year: 'numeric' });
 
         document.getElementById('modal-cliente-nombre').textContent = `${pedido.cliente_nombre} ${pedido.cliente_apellido}`;
         document.getElementById('modal-cliente-email').textContent = pedido.cliente_email || '';
@@ -182,7 +182,7 @@
                         ${index === 0 ? '<span class="material-symbols-outlined text-[14px] text-on-primary">check</span>' : '<span class="w-2 h-2 rounded-full bg-secondary/50"></span>'}
                     </div>
                     <p class="text-on-surface font-medium text-sm">${window.__ESTADO_LABELS[h.estado] || h.estado} · ${window.__PAGO_LABELS[h.estado_pago] || h.estado_pago}</p>
-                    <p class="text-on-surface-variant text-xs">${new Date(h.created_at).toLocaleString('es-CL')} - Por: ${h.actor || 'Sistema'}</p>
+                    <p class="text-on-surface-variant text-xs">${formatearFecha(h.created_at, { day: '2-digit', month: 'short', year: 'numeric' })} - Por: ${h.actor || 'Sistema'}</p>
                 </div>
             `).join('');
     }

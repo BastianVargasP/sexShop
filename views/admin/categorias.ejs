@@ -18,11 +18,6 @@
                     productos de la boutique. Mantén las colecciones organizadas para una experiencia de descubrimiento
                     refinada.</p>
             </div>
-            <button class="bg-secondary text-on-secondary font-label-md text-label-md px-6 py-3 rounded-DEFAULT uppercase tracking-widest flex items-center gap-2 hover:bg-secondary-fixed-dim transition-all duration-300 shadow-[0_0_15px_rgba(233,195,73,0.15)] active:scale-95 shrink-0"
-                    onclick="openCreateCategoryModal()">
-                <span class="material-symbols-outlined text-[18px]">add</span>
-                Crear Categoría
-            </button>
         </div>
 
         <!-- Tabs -->
@@ -119,12 +114,6 @@
 
             <!-- ===== TABLA: SUBCATEGORÍAS ===== -->
             <div class="overflow-x-auto w-full hidden" id="table-sub-wrapper">
-                <div class="flex justify-end p-4 border-b border-secondary/10 bg-surface-container-high/30">
-                    <button class="bg-secondary text-on-secondary font-label-sm text-label-sm px-4 py-2 rounded flex items-center gap-1.5 hover:bg-secondary-fixed-dim transition-colors"
-                            onclick="openCreateSubcategoryModal()" <%= categorias.length === 0 ? 'disabled title="Crea primero una categoría principal"' : '' %>>
-                        <span class="material-symbols-outlined text-[16px]">add</span> Crear Subcategoría
-                    </button>
-                </div>
                 <table class="w-full text-left border-collapse min-w-[800px]" id="subcategories-table">
                     <thead>
                     <tr class="bg-surface-container-high/50 border-b border-secondary/10">

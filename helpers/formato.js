@@ -13,3 +13,6 @@ export const formatearCLP = (valor) => {
     const numero = Number(valor) || 0;
     return formateadorCLP.format(numero);
 };
+
+export const formatearFecha = (fecha, opciones = {}) =>
+    new Date(fecha).toLocaleDateString('es-CL', { timeZone: 'America/Santiago', hour12: false,  ...opciones });

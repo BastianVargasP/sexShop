@@ -1,6 +1,5 @@
 import { pool, getDbClient } from '../helpers/database.js';
 import { registrarActividad } from '../helpers/logger.js';
-import { quiereJson } from '../helpers/peticiones.js';
 
 const ENVIO_EXPRESS = 5990;
 
@@ -142,7 +141,7 @@ export const procesarCheckout = async (req, res, next) => {
         const subtotal = items.reduce((acc, item) => acc + Number(item.precio) * item.cantidad, 0);
         let envio = ENVIO_EXPRESS;
 
-        const total = Math.max(0, subtotal + envio - descuento);
+        const total = Math.max(0, subtotal + envio);
         const numeroPedido = generarNumeroPedido();
 
         const pedidoResult = await conexion.query(
@@ -191,20 +190,11 @@ export const procesarCheckout = async (req, res, next) => {
             [pedidoId, `${req.session.usuario.nombre} ${req.session.usuario.apellido} (cliente)`]
         );
 
-        if (cuponAplicado) {
-            await conexion.query(
-                `INSERT INTO cupones_usos (cupon_id, cliente_id, pedido_id) VALUES ($1, $2, $3)`,
-                [cuponAplicado.id, req.session.usuario.id, pedidoId]
-            );
-        }
-
         await conexion.query('DELETE FROM carrito_items WHERE cliente_id = $1', [req.session.usuario.id]);
 
         await conexion.query('COMMIT');
 
-        delete req.session.cuponCodigo;
-
-        registrarActividad(`💳 POST /checkout - ÉXITO: pedido ${numeroPedido} creado (cliente #${req.session.usuario.id})${cuponAplicado ? ` con cupón ${cuponAplicado.codigo}` : ''}.`);
+        registrarActividad(`💳 POST /checkout - ÉXITO: pedido ${numeroPedido} creado (cliente #${req.session.usuario.id}).`);
         res.redirect(`/pedidos/${pedidoId}`);
     } catch (error) {
         try {

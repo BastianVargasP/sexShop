@@ -139,22 +139,6 @@
         }
     };
 
-    window.openCreateCategoryModal = function () {
-        openCategoryModal({
-            action: '/admin/categorias',
-            title: 'Nueva Categoría',
-            esSubcategoria: false
-        });
-    };
-
-    window.openCreateSubcategoryModal = function () {
-        openCategoryModal({
-            action: '/admin/subcategorias',
-            title: 'Nueva Subcategoría',
-            esSubcategoria: true
-        });
-    };
-
     // Si la vista se cargó en modo edición (vino de /admin/categorias/:id/editar
     // o /admin/subcategorias/:id/editar), abrir el modal ya precargado.
     document.addEventListener('DOMContentLoaded', () => {
