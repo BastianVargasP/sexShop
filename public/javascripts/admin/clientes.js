@@ -46,24 +46,9 @@
             </div>`;
     }
 
-    function renderCupones(cupones) {
-        if (!cupones || cupones.length === 0) {
-            return '<p class="text-on-surface-variant text-sm text-center py-4">Este cliente no ha usado cupones.</p>';
-        }
-        return `
-            <div class="flex flex-wrap gap-2">
-                ${cupones.map((c) => `
-                    <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-high border border-secondary/30 text-secondary">
-                        <span class="material-symbols-outlined text-[15px]">confirmation_number</span>
-                        <span class="font-mono text-xs font-bold tracking-wider">${c.codigo}</span>
-                        <span class="text-[10px] text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded">×${c.veces_usado}</span>
-                    </div>
-                `).join('')}
-            </div>`;
-    }
 
     function poblarDrawer(datos) {
-        const { cliente, direccion, resumen, pedidos, cupones } = datos;
+        const { cliente, direccion, resumen, pedidos} = datos;
         const iniciales = ((cliente.nombre[0] || '') + (cliente.apellido[0] || '')).toUpperCase();
 
         document.getElementById('drawer-avatar').textContent = iniciales;
@@ -163,14 +148,6 @@
                     <h3 class="font-headline-md text-base font-semibold text-secondary tracking-wide uppercase text-sm">Últimos Pedidos</h3>
                 </div>
                 ${renderPedidos(pedidos)}
-            </section>
-
-            <section class="space-y-3 pb-4">
-                <div class="flex items-center gap-2 pb-1 border-b border-[#262626]">
-                    <span class="material-symbols-outlined text-secondary text-[20px]">loyalty</span>
-                    <h3 class="font-headline-md text-base font-semibold text-secondary tracking-wide uppercase text-sm">Cupones Utilizados</h3>
-                </div>
-                ${renderCupones(cupones)}
             </section>
         `;
 

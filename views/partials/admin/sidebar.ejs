@@ -41,9 +41,6 @@ const relleno = (path) => (path === activo ? " style=\"font-variation-settings: 
         <a class="<%= clase('pagos') %>" data-path="pagos" href="/admin/pagos">
             <span class="material-symbols-outlined"<%- relleno('pagos') %>>payments</span> Pagos
         </a>
-        <a class="<%= clase('cupones') %>" data-path="cupones" href="/admin/cupones">
-            <span class="material-symbols-outlined"<%- relleno('cupones') %>>local_offer</span> Cupones
-        </a>
 
         <div class="mt-4 mb-1 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest opacity-50">Inventario</div>
         <a class="<%= clase('inventario') %>" data-path="inventario" href="/admin/inventario">

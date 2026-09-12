@@ -1,6 +1,5 @@
 import { pool, getDbClient } from '../helpers/database.js';
 import { registrarActividad } from '../helpers/logger.js';
-import { validarCupon } from '../helpers/cupones.js';
 import { quiereJson } from '../helpers/peticiones.js';
 
 const ENVIO_EXPRESS = 5990;
@@ -8,7 +7,7 @@ const ENVIO_EXPRESS = 5990;
 const generarNumeroPedido = () =>
     `PED-${Date.now().toString(36).toUpperCase()}`;
 
-const calcularTotales = async (clienteId, cuponCodigo) => {
+const calcularTotales = async (clienteId) => {
     const itemsResult = await pool.query(
         `SELECT ci.id, ci.producto_id, ci.cantidad,
                 p.nombre, p.descripcion_corta, p.imagen, p.precio
@@ -21,40 +20,21 @@ const calcularTotales = async (clienteId, cuponCodigo) => {
 
     const items = itemsResult.rows;
     const subtotal = items.reduce((acc, item) => acc + Number(item.precio) * item.cantidad, 0);
-    let envio = ENVIO_EXPRESS;
-    let descuento = 0;
-    let cuponAplicado = null;
-    let errorCupon = null;
+    const envio = ENVIO_EXPRESS;
+    const total = subtotal + envio;
 
-    if (cuponCodigo) {
-        const validacion = await validarCupon({ codigo: cuponCodigo, clienteId, subtotal, envio });
-        if (validacion.ok) {
-            descuento = validacion.descuento;
-            if (validacion.envioGratis) envio = 0;
-            cuponAplicado = validacion.cupon;
-        } else {
-            errorCupon = validacion.error;
-        }
-    }
-
-    const total = Math.max(0, subtotal + envio - descuento);
-    return { items, subtotal, envio, descuento, total, cuponAplicado, errorCupon };
+    return { items, subtotal, envio, total };
 };
 
 /* ==================== Mostrar checkout ==================== */
 
 export const mostrarCheckout = async (req, res, next) => {
     try {
-        const { items, subtotal, envio, descuento, total, cuponAplicado, errorCupon } =
-            await calcularTotales(req.session.usuario.id, req.session.cuponCodigo);
+        const { items, subtotal, envio, descuento, total } =
+            await calcularTotales(req.session.usuario.id);
 
         if (items.length === 0) {
             return res.redirect('/carrito');
-        }
-
-        // Si el cupón guardado en sesión ya no es válido (expiró, se agotó, etc.), lo limpiamos
-        if (req.session.cuponCodigo && errorCupon) {
-            delete req.session.cuponCodigo;
         }
 
         const direccionesResult = await pool.query(
@@ -74,8 +54,6 @@ export const mostrarCheckout = async (req, res, next) => {
             envio,
             descuento,
             total,
-            cupon: cuponAplicado,
-            errorCupon: errorCupon && req.session.cuponCodigo ? null : errorCupon,
             direcciones: direccionesResult.rows,
             metodosPago: metodosPagoResult.rows
         });
@@ -85,44 +63,6 @@ export const mostrarCheckout = async (req, res, next) => {
     }
 };
 
-/* ==================== Aplicar / quitar cupón (AJAX) ==================== */
-
-export const aplicarCupon = async (req, res) => {
-    try {
-        const { codigo } = req.body;
-        const { subtotal, envio, descuento, total, cuponAplicado, errorCupon } =
-            await calcularTotales(req.session.usuario.id, codigo);
-
-        if (errorCupon) {
-            return res.status(400).json({ ok: false, error: errorCupon });
-        }
-
-        req.session.cuponCodigo = codigo.trim().toUpperCase();
-        registrarActividad(`🏷️ POST /checkout/cupon - ÉXITO: cliente #${req.session.usuario.id} aplicó "${req.session.cuponCodigo}".`);
-
-        res.json({
-            ok: true,
-            subtotal,
-            envio,
-            descuento,
-            total,
-            cupon: { codigo: cuponAplicado.codigo, descripcion: cuponAplicado.descripcion }
-        });
-    } catch (error) {
-        registrarActividad(`🏷️❌ POST /checkout/cupon - ERROR: ${error.message}`);
-        res.status(500).json({ ok: false, error: 'No se pudo aplicar el cupón.' });
-    }
-};
-
-export const quitarCupon = async (req, res) => {
-    try {
-        delete req.session.cuponCodigo;
-        const { subtotal, envio, total } = await calcularTotales(req.session.usuario.id, null);
-        res.json({ ok: true, subtotal, envio, descuento: 0, total });
-    } catch (error) {
-        res.status(500).json({ ok: false, error: 'No se pudo quitar el cupón.' });
-    }
-};
 
 /* ==================== Procesar checkout (crear pedido) ==================== */
 
@@ -201,37 +141,16 @@ export const procesarCheckout = async (req, res, next) => {
 
         const subtotal = items.reduce((acc, item) => acc + Number(item.precio) * item.cantidad, 0);
         let envio = ENVIO_EXPRESS;
-        let descuento = 0;
-        let cuponAplicado = null;
-
-        // Se revalida el cupón dentro de la transacción, por si cambió de estado entre que se mostró el checkout y se confirmó el pago
-        if (req.session.cuponCodigo) {
-            const validacion = await validarCupon({
-                codigo: req.session.cuponCodigo,
-                clienteId: req.session.usuario.id,
-                subtotal,
-                envio
-            });
-            if (validacion.ok) {
-                descuento = validacion.descuento;
-                if (validacion.envioGratis) envio = 0;
-                cuponAplicado = validacion.cupon;
-            }
-            // si ya no es válido, simplemente se procesa el pedido sin descuento
-        }
 
         const total = Math.max(0, subtotal + envio - descuento);
         const numeroPedido = generarNumeroPedido();
 
         const pedidoResult = await conexion.query(
-            `INSERT INTO pedidos (cliente_id, numero_pedido, estado, estado_pago, subtotal, envio, total, direccion_id, metodo_pago_id, cupon_id, cupon_codigo, descuento)
+            `INSERT INTO pedidos (cliente_id, numero_pedido, estado, estado_pago, subtotal, envio, total, direccion_id, metodo_pago_id)
              VALUES ($1, $2, 'procesando', 'pagado', $3, $4, $5, $6, $7, $8, $9, $10)
                  RETURNING id`,
             [
                 req.session.usuario.id, numeroPedido, subtotal, envio, total, direccionId, metodoPagoId,
-                cuponAplicado ? cuponAplicado.id : null,
-                cuponAplicado ? cuponAplicado.codigo : null,
-                descuento
             ]
         );
         const pedidoId = pedidoResult.rows[0].id;

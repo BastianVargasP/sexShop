@@ -6,7 +6,5 @@ const router = express.Router();
 
 router.get('/checkout', estaAutenticado, checkoutController.mostrarCheckout);
 router.post('/checkout', estaAutenticado, checkoutController.procesarCheckout);
-router.post('/checkout/cupon', estaAutenticado, checkoutController.aplicarCupon);
-router.post('/checkout/cupon/quitar', estaAutenticado, checkoutController.quitarCupon);
 
 export default router;

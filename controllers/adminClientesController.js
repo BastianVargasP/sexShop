@@ -115,17 +115,6 @@ export const obtenerDetalleCliente = async (req, res) => {
             [req.params.id]
         );
 
-        const cuponesResult = await pool.query(
-            `SELECT c.codigo, c.tipo, c.valor, COUNT(*) AS veces_usado, COALESCE(SUM(p.descuento), 0) AS descuento_total
-             FROM cupones_usos u
-             JOIN cupones c ON c.id = u.cupon_id
-             LEFT JOIN pedidos p ON p.id = u.pedido_id
-             WHERE u.cliente_id = $1
-             GROUP BY c.id, c.codigo, c.tipo, c.valor
-             ORDER BY MAX(u.created_at) DESC`,
-            [req.params.id]
-        );
-
         res.json({
             ok: true,
             cliente: {
@@ -135,7 +124,6 @@ export const obtenerDetalleCliente = async (req, res) => {
             direccion: direccionResult.rows[0] || null,
             resumen: resumenResult.rows[0],
             pedidos: pedidosResult.rows,
-            cupones: cuponesResult.rows
         });
     } catch (error) {
         registrarActividad(`❌ GET /admin/clientes/${req.params.id}/detalle - ERROR: ${error.message}`);

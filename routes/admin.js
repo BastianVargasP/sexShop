@@ -5,7 +5,6 @@ import * as adminController from '../controllers/adminController.js';
 import * as productosAdminController from '../controllers/adminProductosController.js';
 import * as categoriasAdminController from '../controllers/adminCategoriasController.js';
 import * as pedidosAdminController from '../controllers/adminPedidosController.js';
-import * as cuponesAdminController from '../controllers/adminCuponesController.js';
 import * as inventarioAdminController from '../controllers/adminInventarioController.js';
 import * as clientesAdminController from '../controllers/adminClientesController.js';
 
@@ -49,13 +48,6 @@ router.post('/subcategorias/:id/editar', categoriasAdminController.actualizarSub
 router.post('/subcategorias/:id/activar', categoriasAdminController.alternarActivoSubcategoria);
 router.post('/subcategorias/:id/eliminar', categoriasAdminController.eliminarSubcategoria);
 router.post('/subcategorias/orden', categoriasAdminController.actualizarOrdenSubcategorias);
-
-router.get('/cupones', cuponesAdminController.listarCupones);
-router.post('/cupones', cuponesAdminController.crearCupon);
-router.get('/cupones/:id/editar', cuponesAdminController.mostrarFormularioEditar);
-router.post('/cupones/:id/editar', cuponesAdminController.actualizarCupon);
-router.post('/cupones/:id/activar', cuponesAdminController.alternarActivo);
-router.post('/cupones/:id/eliminar', cuponesAdminController.eliminarCupon);
 
 router.get('/clientes', clientesAdminController.listarClientes);
 router.get('/clientes/:id/detalle', clientesAdminController.obtenerDetalleCliente);
