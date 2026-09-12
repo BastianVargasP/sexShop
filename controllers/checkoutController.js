@@ -173,6 +173,32 @@ export const procesarCheckout = async (req, res, next) => {
         }
 
         const items = itemsResult.rows;
+
+        // Bloqueamos las filas de stock de los productos involucrados (en orden estable por id,
+        // para evitar deadlocks si dos checkouts distintos comparten productos) y validamos
+        // que haya stock físico suficiente antes de cobrar nada.
+        const productoIds = [...items.map((i) => i.producto_id)].sort((a, b) => a - b);
+        const stockResult = await conexion.query(
+            'SELECT id, nombre, stock FROM productos WHERE id = ANY($1::int[]) FOR UPDATE',
+            [productoIds]
+        );
+        const stockPorProducto = new Map(stockResult.rows.map((p) => [p.id, p]));
+
+        const faltantes = items.filter((item) => {
+            const producto = stockPorProducto.get(item.producto_id);
+            return !producto || producto.stock < item.cantidad;
+        });
+
+        if (faltantes.length > 0) {
+            await conexion.query('ROLLBACK');
+            const nombres = faltantes.map((f) => stockPorProducto.get(f.producto_id)?.nombre || f.nombre).join(', ');
+            return res.status(409).render('error', {
+                ok: false,
+                mensaje: `No hay stock suficiente para: ${nombres}. Ajusta las cantidades en tu carrito e intenta nuevamente.`,
+                error: { status: 409, stack: 'El stock disponible cambió entre que agregaste el producto y confirmaste la compra.' }
+            });
+        }
+
         const subtotal = items.reduce((acc, item) => acc + Number(item.precio) * item.cantidad, 0);
         let envio = ENVIO_EXPRESS;
         let descuento = 0;
@@ -216,6 +242,28 @@ export const procesarCheckout = async (req, res, next) => {
                  VALUES ($1, $2, $3, $4, $5, $6, $7)`,
                 [pedidoId, item.producto_id, item.nombre, item.descripcion_corta, item.imagen, item.precio, item.cantidad]
             );
+
+            // Descuento automático de stock físico, con su rastro en el historial de inventario
+            const stockAnterior = stockPorProducto.get(item.producto_id).stock;
+            const stockNuevo = stockAnterior - item.cantidad;
+
+            await conexion.query('UPDATE productos SET stock = $1 WHERE id = $2', [stockNuevo, item.producto_id]);
+
+            await conexion.query(
+                `INSERT INTO movimientos_inventario (producto_id, tipo, cantidad, stock_anterior, stock_nuevo, motivo, actor)
+                 VALUES ($1, 'venta', $2, $3, $4, $5, $6)`,
+                [
+                    item.producto_id,
+                    item.cantidad,
+                    stockAnterior,
+                    stockNuevo,
+                    `Venta automática - Pedido ${numeroPedido}`,
+                    `${req.session.usuario.nombre} ${req.session.usuario.apellido} (cliente)`
+                ]
+            );
+
+            // Actualizamos el mapa en memoria por si el mismo producto aparece más de una vez (no debería, pero por seguridad)
+            stockPorProducto.set(item.producto_id, { ...stockPorProducto.get(item.producto_id), stock: stockNuevo });
         }
 
         await conexion.query(
