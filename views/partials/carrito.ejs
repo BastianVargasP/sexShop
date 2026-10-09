@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+    <%- include('partials/head') %>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex relative flex-col">
+<!-- TopNavBar -->
+<%- include('partials/header') %>
+<!-- Main Content -->
+<main class="flex-grow pt-8 pb-8 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full">
+    <!-- Header -->
+    <div class="mb-6 flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-surface-container-highest pb-6">
+        <div>
+            <h1 class="font-headline-xl text-headline-xl text-on-surface mb-2">Tu Selección</h1>
+            <p class="font-body-lg text-body-lg text-on-surface-variant"><%= totalArticulos %> artículo<%= totalArticulos !== 1 ? 's' : '' %> en tu carrito</p>
+        </div>
+        <a class="font-label-md text-label-md text-secondary hover:text-primary transition-colors flex items-center gap-2 group"
+           href="/productos">
+            <span class="material-symbols-outlined group-hover:-translate-x-1 transition-transform"
+                  data-icon="arrow_back">arrow_back</span>
+            Seguir comprando
+        </a>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+        <!-- Cart Items List -->
+        <div class="lg:col-span-8 flex flex-col gap-6" id="listaCarrito">
+            <% if (items.length === 0) { %>
+                <div class="glass-panel rounded-lg p-12 flex flex-col items-center justify-center text-center gap-4">
+                    <span class="material-symbols-outlined text-secondary text-5xl">shopping_bag</span>
+                    <p class="font-body-md text-body-md text-on-surface-variant">Tu carrito está vacío.</p>
+                    <a href="/productos" class="mt-2 font-label-md text-label-md text-secondary hover:text-secondary-fixed underline underline-offset-4 transition-colors">
+                        Explorar colección
+                    </a>
+                </div>
+            <% } %>
+            <% items.forEach(item => { %>
+                <div class="glass-panel rounded-lg p-4 md:p-6 flex flex-col sm:flex-row gap-6 items-start sm:items-center glow-hover transition-all duration-300 relative group" data-carrito-item="<%= item.id %>">
+                    <div class="w-full sm:w-32 h-32 bg-surface-container-lowest rounded-md overflow-hidden relative shrink-0">
+                        <img class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-300" src="<%= item.imagen %>" alt="<%= item.nombre %>">
+                    </div>
+                    <div class="flex-grow flex flex-col gap-2 w-full">
+                        <div class="flex justify-between items-start gap-4">
+                            <div>
+                                <h3 class="font-headline-md text-headline-md text-on-surface text-2xl"><%= item.nombre %></h3>
+                                <p class="font-label-sm text-label-sm text-secondary uppercase tracking-widest mt-1"><%= item.descripcion_corta %></p>
+                            </div>
+                            <button aria-label="Remove item" data-carrito-accion="eliminar" data-carrito-item-id="<%= item.id %>"
+                                    class="text-on-surface-variant hover:text-error transition-colors p-1">
+                                <span class="material-symbols-outlined" data-icon="close">close</span>
+                            </button>
+                        </div>
+                        <div class="flex flex-wrap justify-between items-end gap-4 mt-4">
+                            <div class="flex items-center border border-secondary/30 rounded bg-surface-container-lowest">
+                                <button aria-label="Decrease quantity" data-carrito-accion="decrementar" data-carrito-item-id="<%= item.id %>"
+                                        class="px-3 py-1 text-on-surface-variant hover:text-secondary transition-colors">
+                                    <span class="material-symbols-outlined text-sm" data-icon="remove">remove</span>
+                                </button>
+                                <span class="font-body-md text-body-md text-on-surface w-8 text-center" data-carrito-cantidad><%= item.cantidad %></span>
+                                <button aria-label="Increase quantity" data-carrito-accion="incrementar" data-carrito-item-id="<%= item.id %>"
+                                        class="px-3 py-1 text-on-surface-variant hover:text-secondary transition-colors">
+                                    <span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+                                </button>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-headline-md text-headline-md text-secondary text-xl" data-carrito-precio-unitario="<%= item.precio %>">
+                                    <%= formatearCLP((Number(item.precio) * item.cantidad)) %>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+        <!-- Order Summary Sidebar -->
+        <div class="lg:col-span-4 mt-8 lg:mt-0">
+            <div class="glass-panel rounded-lg p-6 md:p-8 top-28 flex flex-col gap-6">
+                <h2 class="font-headline-md text-headline-md text-on-surface border-b border-secondary/20 pb-4">Resumen
+                    del Pedido</h2>
+                <div class="flex flex-col gap-4 font-body-md text-body-md text-on-surface-variant">
+                    <div class="flex justify-between items-center">
+                        <span class="">Subtotal</span>
+                        <span class="text-on-surface" id="carritoSubtotal"><%= formatearCLP(subtotal) %></span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="">Envío</span>
+                        <span class="text-on-surface">Se coordina por WhatsApp</span>
+                    </div>
+                </div>
+                <div class="border-t border-secondary/20 pt-4 flex justify-between items-end mt-2">
+                    <span class="font-label-md text-label-md text-on-surface uppercase tracking-widest">Total</span>
+                    <span class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-secondary" id="carritoTotal"><%= formatearCLP(subtotal) %></span>
+                </div>
+                <a href="/carrito/whatsapp" target="_blank" rel="noopener"
+                   class="w-full bg-secondary text-on-secondary-container font-label-md text-label-md py-4 rounded-md uppercase tracking-widest font-bold hover:bg-secondary-fixed transition-colors mt-4 flex justify-center items-center gap-2 group">
+                    <span class="material-symbols-outlined text-sm">chat</span>
+                    Enviar pedido por WhatsApp
+                </a>
+                <p class="font-label-sm text-label-sm text-on-surface-variant text-center opacity-70 mt-2 flex items-center justify-center gap-1">
+                    <span class="material-symbols-outlined text-[16px]" data-icon="chat">chat</span>
+                    Confirmaremos stock, envío y pago por WhatsApp
+                </p>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- Footer -->
+<%- include('partials/footer') %>
+<div id="snapdom-sandbox" data-snapdom-sandbox="true" aria-hidden="true"
+     style="position: absolute; left: -9999px; top: -9999px; width: 0px; height: 0px; overflow: hidden;"></div>
+<script src="/javascripts/carrito.js"></script>
+</body>
+</html>

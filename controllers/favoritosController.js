@@ -9,7 +9,9 @@ export const listarFavoritos = async (req, res, next) => {
                     p.descripcion_corta AS producto_descripcion,
                     p.imagen AS producto_imagen,
                     p.precio,
-                    p.etiqueta
+                    p.etiqueta,
+                    p.stock,
+                    p.stock_minimo
              FROM favoritos f
                       JOIN productos p ON p.id = f.producto_id
              WHERE f.cliente_id = $1

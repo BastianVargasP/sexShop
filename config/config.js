@@ -11,7 +11,8 @@ const REQUIRED_ENV_VARS = [
     'DB_NAME',
     'EMAIL_USER',
     'EMAIL_PASSWORD',
-    'SESSION_SECRET'
+    'SESSION_SECRET',
+    'WHATSAPP_NUMBER'
 ];
 
 REQUIRED_ENV_VARS.forEach((envVar) => {
@@ -37,5 +38,9 @@ export const config = {
     },
     session: {
         secret: process.env.SESSION_SECRET,
+    },
+    whatsapp: {
+        // Solo dígitos con código de país, ej: 56912345678
+        numero: process.env.WHATSAPP_NUMBER.replace(/\D/g, ''),
     }
 };

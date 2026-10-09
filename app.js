@@ -7,6 +7,8 @@ import morgan from 'morgan';
 import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
 import {formatearCLP, formatearFecha} from "./helpers/formato.js";
+import {enlaceWhatsApp} from "./helpers/whatsapp.js";
+import {pocasUnidades} from "./helpers/stock.js";
 import { pool } from './helpers/database.js';
 
 // Importación de archivos de ruteo (locales) según el éstandar ES6
@@ -20,7 +22,6 @@ import pedidosRouter from './routes/pedidos.js';
 import pagosRouter from './routes/pagos.js';
 import carritoRouter from './routes/carrito.js';
 import favoritosRouter from './routes/favoritos.js';
-import checkoutRouter from './routes/checkout.js';
 import adminRouter from './routes/admin.js';
 
 // Importación de configuración y logger propios del proyecto
@@ -68,11 +69,13 @@ app.use(session({
     }
 }));
 
-// Middleware "inyector": copia el usuario de la sesión a res.locals para TODAS las vistas
+// Middleware "inyector": copia el usuario de la sesión y helpers a res.locals para TODAS las vistas
 app.use(async (req, res, next) => {
     res.locals.usuario = req.session.usuario || null;
     res.locals.formatearCLP = formatearCLP;
     res.locals.formatearFecha = formatearFecha;
+    res.locals.enlaceWhatsApp = enlaceWhatsApp;
+    res.locals.pocasUnidades = pocasUnidades;
     res.locals.cantidadCarrito = 0;
 
     if (req.session.usuario) {
@@ -110,7 +113,6 @@ app.use('/', pagosRouter);
 app.use('/', direccionesRouter);
 app.use('/', carritoRouter);
 app.use('/', favoritosRouter);
-app.use('/', checkoutRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
 app.use('/admin', adminRouter);

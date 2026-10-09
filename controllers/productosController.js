@@ -13,36 +13,37 @@ const obtenerFavoritosIds = async (clienteId) => {
 
 export const listarProductos = async (req, res, next) => {
     try {
+        // El catálogo solo muestra productos activos y con stock disponible
         const resultado = await pool.query(
             `SELECT p.*, c.nombre AS categoria_nombre, s.nombre AS subcategoria_nombre
              FROM productos p
                       LEFT JOIN categorias c ON c.id = p.categoria_id
                       LEFT JOIN subcategorias s ON s.id = p.subcategoria_id
-             WHERE p.activo = TRUE
+             WHERE p.activo = TRUE AND p.stock > 0
              ORDER BY p.destacado DESC, p.created_at DESC`
         );
 
-        // Solo categorías activas y con al menos un producto activo
+        // Solo categorías activas y con al menos un producto activo y con stock
         const categoriasResult = await pool.query(
             `SELECT c.id, c.nombre
              FROM categorias c
              WHERE c.activa = TRUE
                AND EXISTS (
-                 SELECT 1 FROM productos p WHERE p.categoria_id = c.id AND p.activo = TRUE
+                 SELECT 1 FROM productos p WHERE p.categoria_id = c.id AND p.activo = TRUE AND p.stock > 0
              )
              ORDER BY c.orden ASC, c.nombre ASC`
         );
 
-        // Solo subcategorías activas, con producto activo, y cuya categoría padre también esté activa
+        // Solo subcategorías activas, con producto activo y con stock, y cuya categoría padre también esté activa
         const subcategoriasResult = await pool.query(
             `SELECT s.id, s.nombre, s.categoria_id
              FROM subcategorias s
-             JOIN categorias c ON c.id = s.categoria_id
+                      JOIN categorias c ON c.id = s.categoria_id
              WHERE s.activa = TRUE
                AND c.activa = TRUE
                AND EXISTS (
-                   SELECT 1 FROM productos p WHERE p.subcategoria_id = s.id AND p.activo = TRUE
-               )
+                 SELECT 1 FROM productos p WHERE p.subcategoria_id = s.id AND p.activo = TRUE AND p.stock > 0
+             )
              ORDER BY s.orden ASC, s.nombre ASC`
         );
 
@@ -66,8 +67,8 @@ export const verProducto = async (req, res, next) => {
         const resultado = await pool.query(
             `SELECT p.*, c.nombre AS categoria_nombre, s.nombre AS subcategoria_nombre
              FROM productos p
-             LEFT JOIN categorias c ON c.id = p.categoria_id
-             LEFT JOIN subcategorias s ON s.id = p.subcategoria_id
+                      LEFT JOIN categorias c ON c.id = p.categoria_id
+                      LEFT JOIN subcategorias s ON s.id = p.subcategoria_id
              WHERE p.id = $1 AND p.activo = TRUE`,
             [req.params.id]
         );
@@ -75,10 +76,11 @@ export const verProducto = async (req, res, next) => {
 
         const producto = resultado.rows[0];
 
-        // Relacionados: prioriza misma subcategoría; si no hay suficientes, completa con la misma categoría
+        // Relacionados: prioriza misma subcategoría; si no hay suficientes, completa con la misma categoría.
+        // Se excluyen los productos sin stock.
         const relacionadosResult = await pool.query(
             `SELECT * FROM productos
-             WHERE activo = TRUE AND id != $1 AND categoria_id = $2
+             WHERE activo = TRUE AND stock > 0 AND id != $1 AND categoria_id = $2
              ORDER BY (subcategoria_id = $3) DESC, destacado DESC, created_at DESC
                  LIMIT 3`,
             [producto.id, producto.categoria_id, producto.subcategoria_id]

@@ -12,7 +12,7 @@
     <div class="mb-6 flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-surface-container-highest pb-6">
         <div>
             <h1 class="font-headline-xl text-headline-xl text-on-surface mb-2">Tu Selección</h1>
-            <p class="font-body-lg text-body-lg text-on-surface-variant">2 artículos en tu carrito</p>
+            <p class="font-body-lg text-body-lg text-on-surface-variant"><%= totalArticulos %> artículo<%= totalArticulos !== 1 ? 's' : '' %> en tu carrito</p>
         </div>
         <a class="font-label-md text-label-md text-secondary hover:text-primary transition-colors flex items-center gap-2 group"
            href="/productos">
@@ -82,27 +82,52 @@
                         <span class="text-on-surface" id="carritoSubtotal"><%= formatearCLP(subtotal) %></span>
                     </div>
                     <div class="flex justify-between items-center">
-                        <span class="">Envío Estimado</span>
-                        <span class="text-on-surface">Gratis</span>
+                        <span class="">Envío</span>
+                        <span class="text-on-surface">Se coordina por WhatsApp</span>
                     </div>
                 </div>
                 <div class="border-t border-secondary/20 pt-4 flex justify-between items-end mt-2">
                     <span class="font-label-md text-label-md text-on-surface uppercase tracking-widest">Total</span>
                     <span class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-secondary" id="carritoTotal"><%= formatearCLP(subtotal) %></span>
                 </div>
-                <a href="/checkout" class="w-full bg-secondary text-on-secondary-container font-label-md text-label-md py-4 rounded-md uppercase tracking-widest font-bold hover:bg-secondary-fixed transition-colors mt-4 flex justify-center items-center gap-2 group">
-                    Finalizar Compra
-                    <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform"
-                          data-icon="arrow_forward">arrow_forward</span>
-                </a>
+                <form method="POST" action="/carrito/whatsapp" target="_blank" id="formPedidoWhatsapp" class="contents">
+                    <button type="submit" <%= items.length === 0 ? 'disabled' : '' %>
+                            class="w-full bg-secondary text-on-secondary-container font-label-md text-label-md py-4 rounded-md uppercase tracking-widest font-bold hover:bg-secondary-fixed transition-colors mt-4 flex justify-center items-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span class="material-symbols-outlined text-sm">chat</span>
+                        Enviar pedido por WhatsApp
+                    </button>
+                </form>
                 <p class="font-label-sm text-label-sm text-on-surface-variant text-center opacity-70 mt-2 flex items-center justify-center gap-1">
-                    <span class="material-symbols-outlined text-[16px]" data-icon="lock">lock</span>
-                    Pago seguro y encriptado
+                    <span class="material-symbols-outlined text-[16px]" data-icon="chat">chat</span>
+                    Confirmaremos stock, envío y pago por WhatsApp
                 </p>
             </div>
         </div>
     </div>
 </main>
+<!-- Modal: problemas de stock -->
+<div id="modalStock" class="fixed inset-0 z-[10000] hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modalStockTitulo">
+    <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" data-modal-stock-cerrar></div>
+    <div class="relative glass-panel bg-surface-container-low border border-secondary/30 rounded-xl w-full max-w-lg p-6 md:p-8 flex flex-col gap-5 shadow-2xl max-h-[90vh] overflow-y-auto">
+        <div class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-error text-3xl shrink-0" id="modalStockIcono">inventory_2</span>
+            <div>
+                <h2 id="modalStockTitulo" class="font-headline-md text-headline-md text-on-surface text-2xl"></h2>
+                <p id="modalStockSubtitulo" class="font-body-md text-body-md text-on-surface-variant mt-1"></p>
+            </div>
+        </div>
+        <ul id="modalStockLista" class="flex flex-col gap-2"></ul>
+        <div class="flex flex-col-reverse sm:flex-row gap-3 sm:justify-end pt-2">
+            <button type="button" data-modal-stock-cerrar
+                    class="px-5 py-3 rounded-md border border-outline-variant text-on-surface-variant font-label-md text-label-md uppercase tracking-wider hover:text-secondary hover:border-secondary/50 transition-colors">
+                Cerrar
+            </button>
+            <button type="button" id="modalStockAccion"
+                    class="px-5 py-3 rounded-md bg-secondary text-on-secondary-container font-label-md text-label-md uppercase tracking-wider font-bold hover:bg-secondary-fixed transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+            </button>
+        </div>
+    </div>
+</div>
 <!-- Footer -->
 <%- include('partials/footer') %>
 <div id="snapdom-sandbox" data-snapdom-sandbox="true" aria-hidden="true"

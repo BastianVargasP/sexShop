@@ -40,6 +40,11 @@
                     <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">favorite</span>
                 </button>
                 <div class="relative h-80 w-full overflow-hidden bg-surface-container-lowest">
+                    <% if (pocasUnidades(fav)) { %>
+                    <span class="absolute bottom-3 left-3 z-10 inline-flex items-center gap-1 bg-error-container/90 text-on-error-container text-xs font-bold px-2.5 py-1 rounded-full backdrop-blur-sm">
+                        <span class="material-symbols-outlined text-[14px]">local_fire_department</span> Pocas unidades
+                    </span>
+                    <% } %>
                     <a href="/productos/<%= fav.producto_id %>" class="block w-full h-full">
                         <% if (fav.producto_imagen) { %>
                         <img class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100" src="<%= fav.producto_imagen %>" alt="<%= fav.producto_nombre %>">
@@ -59,9 +64,15 @@
                     <% } %>
                     <div class="flex justify-between items-center mt-2">
                         <span class="font-label-md text-lg text-secondary"><%= formatearCLP(fav.precio) %></span>
-                        <button type="button" data-add-carrito data-producto-id="<%= fav.producto_id %>" class="bg-secondary text-on-secondary-container hover:bg-secondary-fixed transition-colors p-2 rounded-full flex items-center justify-center">
+                        <% if (fav.stock > 0) { %>
+                        <button type="button" data-add-carrito data-producto-id="<%= fav.producto_id %>"
+                                title="Añadir al carrito"
+                                class="bg-secondary text-on-secondary-container hover:bg-secondary-fixed transition-colors p-2 rounded-full flex items-center justify-center">
                             <span class="material-symbols-outlined text-sm">shopping_bag</span>
                         </button>
+                        <% } else { %>
+                        <span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant border border-outline-variant px-3 py-1 rounded-full">Agotado</span>
+                        <% } %>
                     </div>
                 </div>
             </div>

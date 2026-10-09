@@ -76,6 +76,160 @@
         if (totalEl) totalEl.textContent = formatearCLP(subtotal);
     }
 
+    // ---------- Modal de problemas de stock (solo en /carrito) ----------
+    const modalStock = document.querySelector('#modalStock');
+
+    function cerrarModalStock() {
+        if (!modalStock) return;
+        modalStock.classList.add('hidden');
+        modalStock.classList.remove('flex');
+    }
+
+    function abrirModalStock(problemas) {
+        if (!modalStock) return;
+        const hayAgotados = problemas.some((p) => p.agotado);
+        const hayInsuficientes = problemas.some((p) => !p.agotado);
+
+        const titulo = modalStock.querySelector('#modalStockTitulo');
+        const subtitulo = modalStock.querySelector('#modalStockSubtitulo');
+        const lista = modalStock.querySelector('#modalStockLista');
+        const accion = modalStock.querySelector('#modalStockAccion');
+
+        if (hayInsuficientes) {
+            titulo.textContent = 'El pedido supera el stock disponible';
+            subtitulo.textContent = hayAgotados
+                ? 'Algunos productos tienen menos unidades de las que pediste y otros se agotaron, lo sentimos.'
+                : 'Algunos productos tienen menos unidades de las que pediste.';
+        } else {
+            titulo.textContent = problemas.length > 1
+                ? 'Algunos productos están agotados, lo sentimos'
+                : 'El producto está agotado, lo sentimos';
+            subtitulo.textContent = 'Quítalos del carrito para continuar con tu pedido.';
+        }
+
+        lista.replaceChildren();
+        problemas.forEach((p) => {
+            const li = document.createElement('li');
+            li.className = 'flex justify-between items-center gap-4 bg-surface-container rounded-md px-4 py-3';
+
+            const nombre = document.createElement('span');
+            nombre.className = 'font-body-md text-body-md text-on-surface';
+            nombre.textContent = p.nombre;
+
+            const detalle = document.createElement('span');
+            detalle.className = 'font-label-sm text-label-sm text-error text-right shrink-0';
+            detalle.textContent = p.agotado
+                ? 'Agotado'
+                : `Pediste ${p.solicitado}, quedan ${p.disponible}`;
+
+            li.append(nombre, detalle);
+            lista.appendChild(li);
+        });
+
+        if (hayInsuficientes) {
+            accion.textContent = hayAgotados ? 'Quitar agotados y ajustar cantidades' : 'Ajustar cantidades';
+            accion.dataset.ruta = '/carrito/ajustar-cantidades';
+        } else {
+            accion.textContent = problemas.length > 1 ? 'Quitar productos agotados' : 'Quitar producto agotado';
+            accion.dataset.ruta = '/carrito/quitar-agotados';
+        }
+        accion.disabled = false;
+
+        modalStock.classList.remove('hidden');
+        modalStock.classList.add('flex');
+        accion.focus();
+    }
+
+    if (modalStock) {
+        modalStock.addEventListener('click', (evento) => {
+            if (evento.target.closest('[data-modal-stock-cerrar]')) cerrarModalStock();
+        });
+        document.addEventListener('keydown', (evento) => {
+            if (evento.key === 'Escape') cerrarModalStock();
+        });
+
+        modalStock.querySelector('#modalStockAccion').addEventListener('click', async (evento) => {
+            const boton = evento.currentTarget;
+            boton.disabled = true;
+            try {
+                const respuesta = await fetch(boton.dataset.ruta, {
+                    method: 'POST',
+                    headers: { Accept: 'application/json' },
+                    credentials: 'same-origin'
+                });
+                const datos = await respuesta.json().catch(() => null);
+                if (!respuesta.ok || !datos || !datos.ok) {
+                    mostrarToast('No se pudo actualizar el carrito. Intenta de nuevo.', 'error');
+                    boton.disabled = false;
+                    return;
+                }
+                window.location.reload();
+            } catch (error) {
+                mostrarToast('Ocurrió un error de conexión.', 'error');
+                boton.disabled = false;
+            }
+        });
+    }
+
+    // ---------- Enviar el pedido por WhatsApp ----------
+    // El servidor crea el pedido y vacía el carrito; si el stock no alcanza responde 409 con el detalle
+    // y se muestra el modal en esta misma pestaña (sin abrir nada). Solo si el pedido se crea bien
+    // se abre WhatsApp en una pestaña nueva; si el navegador la bloquea, se abre en esta.
+    const formPedidoWhatsapp = document.querySelector('#formPedidoWhatsapp');
+    if (formPedidoWhatsapp) {
+        let enviando = false;
+
+        formPedidoWhatsapp.addEventListener('submit', async (evento) => {
+            evento.preventDefault();
+            if (enviando) return;
+            enviando = true;
+
+            const boton = formPedidoWhatsapp.querySelector('button[type="submit"]');
+            if (boton) boton.disabled = true;
+
+            try {
+                const respuesta = await fetch(formPedidoWhatsapp.action, {
+                    method: 'POST',
+                    headers: { Accept: 'application/json' },
+                    credentials: 'same-origin'
+                });
+
+                if (respuesta.status === 401) {
+                    mostrarToast('Tu sesión expiró. Inicia sesión nuevamente.', 'error');
+                    enviando = false;
+                    if (boton) boton.disabled = false;
+                    return;
+                }
+
+                const datos = await respuesta.json().catch(() => null);
+
+                if (respuesta.ok && datos && datos.ok) {
+                    // Sin 'noopener': con esa opción window.open siempre devuelve null y no se podría detectar el bloqueo
+                    const pestanaWhatsapp = window.open(datos.url, '_blank');
+                    if (pestanaWhatsapp) {
+                        pestanaWhatsapp.opener = null;
+                        // El carrito quedó vacío: esta pestaña pasa a "Mis pedidos"
+                        window.location.assign('/pedidos');
+                    } else {
+                        window.location.assign(datos.url); // popup bloqueado: WhatsApp en esta pestaña
+                    }
+                    return; // no se rehabilita el botón: la página cambia de ruta
+                }
+
+                if (respuesta.status === 409 && datos && Array.isArray(datos.problemas)) {
+                    abrirModalStock(datos.problemas);
+                } else {
+                    mostrarToast((datos && datos.error) || 'No se pudo enviar el pedido. Intenta de nuevo.', 'error');
+                }
+            } catch (error) {
+                mostrarToast('Ocurrió un error de conexión.', 'error');
+            }
+
+            enviando = false;
+            if (boton) boton.disabled = false;
+        });
+    }
+
     // Añadir al carrito (botones en /productos y /producto/:id)
     document.addEventListener('click', async (evento) => {
         const boton = evento.target.closest('[data-add-carrito]');
@@ -104,7 +258,7 @@
 
             const datos = await respuesta.json();
             if (!datos.ok) {
-                mostrarToast('No se pudo añadir el producto. Intenta de nuevo.', 'error');
+                mostrarToast(datos.error || 'No se pudo añadir el producto. Intenta de nuevo.', 'error');
                 return;
             }
 
