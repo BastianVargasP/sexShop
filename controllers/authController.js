@@ -4,7 +4,10 @@ import validator from 'validator';
 import { registrarActividad } from '../helpers/logger.js';
 import { pool } from '../helpers/database.js';
 
-const MENSAJE_CREDENCIALES_INVALIDAS = 'Email o contraseña incorrectos.';
+const MENSAJE_ERROR_LOGIN = 'Error al intentar iniciar sesión. Verifica tus datos.';
+
+const renderLoginConError = (res, email) =>
+    res.status(401).render('login', { errorLogin: MENSAJE_ERROR_LOGIN, emailPrevio: email || '' });
 
 export const mostrarLogin = (req, res) => {
     res.render('login');
@@ -18,12 +21,8 @@ export const procesarLogin = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        if (!validator.isEmail(email) || !password) {
-            return res.status(400).render('error', {
-                ok: false,
-                mensaje: MENSAJE_CREDENCIALES_INVALIDAS,
-                error: { status: 400, stack: 'Revisa el formulario e intenta nuevamente.' }
-            });
+        if (!validator.isEmail(email || '') || !password) {
+            return renderLoginConError(res, email);
         }
 
         const resultado = await pool.query(
@@ -33,11 +32,7 @@ export const procesarLogin = async (req, res) => {
 
         if (resultado.rows.length === 0) {
             registrarActividad(`🔐❌ POST /autenticacion/login - RECHAZADO: Email no registrado (${email}).`);
-            return res.status(401).render('error', {
-                ok: false,
-                mensaje: MENSAJE_CREDENCIALES_INVALIDAS,
-                error: { status: 401, stack: 'Verifica tus datos e intenta nuevamente.' }
-            });
+            return renderLoginConError(res, email);
         }
 
         const usuario = resultado.rows[0];
@@ -45,11 +40,7 @@ export const procesarLogin = async (req, res) => {
 
         if (!passwordCorrecta) {
             registrarActividad(`🔐❌ POST /autenticacion/login - RECHAZADO: Contraseña incorrecta (${email}).`);
-            return res.status(401).render('error', {
-                ok: false,
-                mensaje: MENSAJE_CREDENCIALES_INVALIDAS,
-                error: { status: 401, stack: 'Verifica tus datos e intenta nuevamente.' }
-            });
+            return renderLoginConError(res, email);
         }
 
         if (usuario.bloqueado) {
